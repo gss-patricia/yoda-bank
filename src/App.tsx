@@ -1,32 +1,20 @@
 import React from "react";
-
 import { Provider } from "react-redux";
-import { combineReducers, createStore } from "redux";
+//import { combineReducers, createStore } from "redux";
+//import { devToolsEnhancer } from "redux-devtools-extension";
+import {createMuiTheme, MuiThemeProvider} from "@material-ui/core"
+import {BrowserRouter, Switch, Route} from "react-router-dom";
+import Theme from "./Theme";
+import PageRegister from "./pages/PageRegister";
 
-import Todo from "./components/Todo";
-import todoReducers from "./components/reducers/todoReducers";
-import { TodoItemProps } from "./components/TodoItem";
-import { devToolsEnhancer } from "redux-devtools-extension";
-
-// 1. Criar o Store
-// 2. Criar os reducers
-// 3. Mapear o store no componente
-// 4. Usar o store nos elementos filhos (dispatch)
-
-export interface TodoState {
-  todos: TodoItemProps[];
-}
-
-const store = createStore(todoReducers, devToolsEnhancer({}));
-
-function App() {
-  return (
-    <Provider store={store}>
-      <div className="App">
-        <Todo />
-      </div>
-    </Provider>
-  );
-}
+const App = () => (
+  <BrowserRouter>  
+    <Theme>
+      <Switch>
+        <Route path="/register" component={PageRegister} />                
+      </Switch>    
+    </Theme>  
+  </BrowserRouter>
+)
 
 export default App;
