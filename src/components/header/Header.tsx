@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Header = ({}) => {
+const Header = () => {
   const classes = useStyles();
   return (
     <Grid container component="main" className={classes.root}>
