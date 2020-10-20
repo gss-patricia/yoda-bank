@@ -4,21 +4,22 @@ import {Link} from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Logo from '../../assets/logo.svg';
 import background from '../../assets/background.svg'
+import './Register.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
   },
   image: {   
-    backgroundImage: `url(${background})`,  
-    opacity: 0.5,
+    backgroundImage: `url(${background})`,
+    opacity: 0.7,
     backgroundRepeat: 'no-repeat',
-    backgroundColor: theme.palette.primary.main,      
+    backgroundColor: theme.palette.primary.main,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   },
   link:{
-    justifyContent: 'center'    
+    justifyContent: 'center'
   },
   paper: {
     margin: theme.spacing(8, 4),
@@ -33,11 +34,24 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },  
-  teste: {
-    opacity: 1,
-    color: 'while',
-    justifyContent: 'center' 
+  boxPhrase: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: '100vh'
   },  
+  phrase: {
+    fontFamily: 'Roboto',
+    fontWeight: 700,
+    fontSize: '60px',
+    lineHeight: '62px',
+    textAlign: 'center',
+    color: '#FFFFFF',
+  }  ,
+  backGreen: {
+    opacity: 0.8,
+    backgroundColor: theme.palette.primary.main,
+  }  
+
 }));
 
 export default function SignInSide() {
@@ -47,7 +61,7 @@ export default function SignInSide() {
     <Grid container component="main" className={classes.root}>
       <CssBaseline />      
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        <div className={classes.paper}>          
+        <div className={classes.paper}>
           <img src={Logo} alt="Logo"/>
           <Typography component="h1" variant="h5">
             Você para a força, deve entrar
@@ -70,7 +84,7 @@ export default function SignInSide() {
               id="email"
               label="Email Address"
               name="email"
-              autoComplete="email"              
+              autoComplete="email"
             />
             <TextField
               variant="outlined"
@@ -100,30 +114,38 @@ export default function SignInSide() {
               name="confirmarSenha"
               label="Confirmar Senha"
               type="password"
-              id="confirmarSenha"            
-            />            
+              id="confirmarSenha"
+            />
             <Button
               type="submit"
-              fullWidth              
+              fullWidth
               variant="contained"
               color="primary"
               className={`${classes.submit}`}
             >
               CADASTRAR
-            </Button>            
-            <Grid container className={classes.link}>              
+            </Button>
+            <Grid container className={classes.link}>
               <Grid item>
                 <Link to={'/login'}>
                   {"Já sou da força"}
                 </Link>
               </Grid>
-            </Grid>            
+            </Grid>
           </form>
         </div>
       </Grid> 
-      <Grid item xs={false} sm={4} md={7} className={`${classes.image}`}>  
-        <p className={classes.teste}>Faça ou não faça,
-           tentativa não há!</p>
+      <Grid item xs={false} sm={4} md={7} className={`${classes.image}`}>
+      <div className={classes.backGreen}>
+          <div className={classes.boxPhrase}>
+            <p className={classes.phrase}>
+              Faça ou não<br/>
+              faça,<br/>
+              tentativa não <br/>
+              há!
+            </p>
+          </div>
+        </div>
       </Grid>
     </Grid>
   );
