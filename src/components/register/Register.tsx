@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   boxPhrase: {
     justifyContent: 'center',
     alignItems: 'center',
-    minHeight: '100vh'
+    minHeight: '100%'
   },  
   phrase: {
     fontFamily: 'Roboto',
@@ -49,7 +49,8 @@ const useStyles = makeStyles((theme) => ({
   }  ,
   backGreen: {
     opacity: 0.8,
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.primary.main,  
+    minHeight: '100%'  
   }  
 
 }));
