@@ -1,0 +1,9 @@
+.makeStyles-boxPhrase-7{
+  display: flex;
+}
+
+ @media(max-width:600px){
+  .makeStyles-boxPhrase-7{
+    display: none;
+  }
+} 
