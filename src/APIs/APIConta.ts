@@ -1,5 +1,5 @@
-export const baseURL = "https://beertech-banco-lupulo.herokuapp.com";
 import IUser from "../Interfaces/IUser";
+export const baseURL = "https://beertech-banco-lupulo.herokuapp.com";
 
 export const CREATE_CONTA = (body: IUser) => {
   return {

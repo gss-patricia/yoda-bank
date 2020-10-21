@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Button,
   CssBaseline,
@@ -6,14 +6,18 @@ import {
   Paper,
   Grid,
   Typography,
-  Link,
+  CircularProgress,
 } from "@material-ui/core/";
+import { useHistory, Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
+import { CREATE_CONTA } from "../../APIs/APIConta";
 import Logo from "../../assets/logo.svg";
 import RegisterBackground from "../../assets/background.svg";
 import "./Register.css";
 import useForm from "../../Hooks/useForm";
 import EFieldForm from "../../Enums/EFieldForm";
+import useFetch from "../../Hooks/useFetch";
+import Error from "../../components/error/Error";
 
 export const useStyles = makeStyles((theme) => ({
   root: {
@@ -72,13 +76,41 @@ export const useStyles = makeStyles((theme) => ({
 
 export default function SignInSide() {
   const classes = useStyles();
+  const history = useHistory();
+
+  const { loading, error, request } = useFetch();
   const name = useForm(EFieldForm.text);
   const email = useForm(EFieldForm.email);
   const cpfCNPJ = useForm(EFieldForm.text);
   const password = useForm(EFieldForm.password);
   const confirmPassword = useForm(EFieldForm.password);
 
-  console.log(name.value);
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (
+      (name.validate(),
+      email.validate(),
+      cpfCNPJ.validate(),
+      cpfCNPJ.validate(),
+      password.validate(),
+      password.value === confirmPassword.value)
+    ) {
+      //TODO: Solicitar ao backend a validação de senha/confirmar senha
+      //TODO: Será possivel qualquer um adicionar perfil adm ?
+      const { url, options } = CREATE_CONTA({
+        nome: name.value,
+        email: email.value,
+        cpf: cpfCNPJ.value,
+        senha: password.value,
+        perfil: 1,
+      });
+
+      const { response } = await request(url, options);
+      if (response?.ok) return history.push("/login");
+    }
+  }
+
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
@@ -88,7 +120,7 @@ export default function SignInSide() {
           <Typography component="h1" variant="h5">
             Você para a força, deve entrar
           </Typography>
-          <form className={classes.form} noValidate>
+          <form className={classes.form} onSubmit={handleSubmit}>
             <TextField
               variant="outlined"
               margin="normal"
@@ -151,13 +183,12 @@ export default function SignInSide() {
               color="primary"
               className={`${classes.submit}`}
             >
-              CADASTRAR
+              {loading ? <CircularProgress color="secondary" /> : "CADASTRAR"}
             </Button>
+            <Error error={error} />
             <Grid container className={classes.link}>
               <Grid item>
-                <Link href="/login" variant="body2">
-                  {"Já sou da força"}
-                </Link>
+                <Link to="/login">{"Já sou da força"}</Link>
               </Grid>
             </Grid>
           </form>
