@@ -1,9 +1,9 @@
 export const baseURL = "https://beertech-banco-lupulo.herokuapp.com";
-import IUser from "../Interfaces/IUser";
+import IOperation from "../Interfaces/IOperation";
 
-export const CREATE_CONTA = (body: IUser) => {
+export const PRODUCER_OPERATION = (body: IOperation) => {
   return {
-    url: baseURL + "/conta",
+    url: baseURL + "/producer/operacao",
     options: {
       method: "POST",
       headers: {
@@ -14,14 +14,15 @@ export const CREATE_CONTA = (body: IUser) => {
   };
 };
 
-export const GET_ALL_CONTAS = (page: number = 0, size: number = 25) => {
+export const PRODUCER_TRANSFER = (body: IOperation) => {
   return {
-    url: baseURL + `/conta?page=${page}&size=${size}`,
+    url: baseURL + "/producer/transferencia",
     options: {
-      method: "GET",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
+      body,
     },
   };
 };
