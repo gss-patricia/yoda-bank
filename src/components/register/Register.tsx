@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from "react";
 import {
   Button,
   CssBaseline,
@@ -7,70 +7,78 @@ import {
   Grid,
   Typography,
   Link,
-} from '@material-ui/core/';
-import { makeStyles } from '@material-ui/core/styles';
-import Logo from '../../assets/logo.svg';
-import RegisterBackground from '../../assets/background.svg';
-import './Register.css';
+} from "@material-ui/core/";
+import { makeStyles } from "@material-ui/core/styles";
+import Logo from "../../assets/logo.svg";
+import RegisterBackground from "../../assets/background.svg";
+import "./Register.css";
+import useForm from "../../Hooks/useForm";
+import EFieldForm from "../../Enums/EFieldForm";
 
 export const useStyles = makeStyles((theme) => ({
   root: {
-    height: '100vh',
-    backgroundColor: '#F3EFF5',
+    height: "100vh",
+    backgroundColor: "#F3EFF5",
   },
   imageRegister: {
     backgroundColor: theme.palette.primary.light,
     backgroundImage: `url(${RegisterBackground})`,
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-    position: 'relative',
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
+    position: "relative",
   },
   overlay: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'rgba(148, 236, 190, 0.80)',
-    color: '#FFFFFF',
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(148, 236, 190, 0.80)",
+    color: "#FFFFFF",
   },
   main: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
   paper: {
     margin: theme.spacing(2, 2),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
     padding: theme.spacing(4, 2, 4, 2),
   },
   form: {
-    width: '100%',
+    width: "100%",
     marginTop: theme.spacing(1),
   },
   submit: {
     margin: theme.spacing(2, 0),
   },
   link: {
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   boxPhrase: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    minHeight: '100vh',
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    minHeight: "100vh",
     margin: theme.spacing(0, 10),
-    textShadow: '0.5px 0.5px 1px #000',
+    textShadow: "0.5px 0.5px 1px #000",
   },
   mainPhrase: {
     fontWeight: 500,
-    textAlign: 'center',
+    textAlign: "center",
   },
   secundaryPhrase: { fontWeight: 700 },
 }));
 
 export default function SignInSide() {
   const classes = useStyles();
+  const name = useForm(EFieldForm.text);
+  const email = useForm(EFieldForm.email);
+  const cpfCNPJ = useForm(EFieldForm.text);
+  const password = useForm(EFieldForm.password);
+  const confirmPassword = useForm(EFieldForm.password);
 
+  console.log(name.value);
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
@@ -90,6 +98,7 @@ export default function SignInSide() {
               label="Nome"
               name="nome"
               autoFocus
+              {...name}
             />
             <TextField
               variant="outlined"
@@ -100,6 +109,7 @@ export default function SignInSide() {
               label="Email Address"
               name="email"
               autoComplete="email"
+              {...email}
             />
             <TextField
               variant="outlined"
@@ -109,6 +119,7 @@ export default function SignInSide() {
               id="cpfCNPJ"
               label="CPF/CNPJ"
               name="cpfCNPJ"
+              {...cpfCNPJ}
             />
             <TextField
               variant="outlined"
@@ -120,6 +131,7 @@ export default function SignInSide() {
               type="password"
               id="senha"
               autoComplete="current-password"
+              {...password}
             />
             <TextField
               variant="outlined"
@@ -130,6 +142,7 @@ export default function SignInSide() {
               label="Confirmar Senha"
               type="password"
               id="confirmarSenha"
+              {...confirmPassword}
             />
             <Button
               type="submit"
@@ -143,7 +156,7 @@ export default function SignInSide() {
             <Grid container className={classes.link}>
               <Grid item>
                 <Link href="/login" variant="body2">
-                  {'Já sou da força'}
+                  {"Já sou da força"}
                 </Link>
               </Grid>
             </Grid>
