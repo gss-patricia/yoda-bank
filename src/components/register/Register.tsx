@@ -18,6 +18,7 @@ import useForm from "../../Hooks/useForm";
 import EFieldForm from "../../Enums/EFieldForm";
 import useFetch from "../../Hooks/useFetch";
 import Error from "../../components/error/Error";
+import { EPerfil } from "../../Interfaces/IUser";
 
 export const useStyles = makeStyles((theme) => ({
   root: {
@@ -103,7 +104,7 @@ export default function SignInSide() {
         email: email.value,
         cpf: cpfCNPJ.value,
         senha: password.value,
-        perfil: 1,
+        perfil: EPerfil.USER ? "USER" : "ADM",
       });
 
       const { response } = await request(url, options);
