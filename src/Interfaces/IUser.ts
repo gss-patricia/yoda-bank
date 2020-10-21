@@ -1,7 +1,11 @@
+enum EPerfil {
+  ADMIN,
+  USER,
+}
 export default interface IUser {
-  name: string;
+  cnpj: string;
   email: string;
-  password: string;
-  confirmPassword: string;
-  cpfCNPJ: string;
+  nome: string;
+  perfil: EPerfil;
+  senha: string;
 }
