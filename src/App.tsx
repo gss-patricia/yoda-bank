@@ -1,18 +1,23 @@
-import React from "react";
-import { Provider } from "react-redux";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
-import Theme from "./Theme";
-import PageRegister from "./pages/PageRegister";
-import PageDeposit from "./pages/PageDeposit";
+import React from 'react';
+import { Provider } from 'react-redux';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import Theme from './Theme';
+import PageRegister from './pages/PageRegister';
+import PageDeposit from './pages/PageDeposit';
+import PageLogin from './pages/PageLogin';
 
 const App = () => (
   <BrowserRouter>
     <Theme>
       <Switch>
-        <Route path="/register" component={PageRegister} />                
-        <Route path="/deposit" component={PageDeposit} />                
-      </Switch>    
-    </Theme>  
+        <Route exact path="/">
+          <Redirect to="/login" />
+        </Route>
+        <Route path="/login" component={PageLogin} />
+        <Route path="/register" component={PageRegister} />
+        <Route path="/deposit" component={PageDeposit} />
+      </Switch>
+    </Theme>
   </BrowserRouter>
 );
 

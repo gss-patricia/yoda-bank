@@ -1,15 +1,16 @@
-import React from "react";
-import { createMuiTheme, MuiThemeProvider } from "@material-ui/core";
-import { ChildrenType } from "./global";
+import React from 'react';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
+import { ChildrenType } from './global';
 
 const Theme = ({ children }: ChildrenType) => {
   const theme = createMuiTheme({
     palette: {
       primary: {
-        main: "#219653",
+        light: '#94ECBE',
+        main: '#219653',
       },
       secondary: {
-        main: "#275F40",
+        main: '#275F40',
       },
     },
     overrides: {

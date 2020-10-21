@@ -1,26 +1,24 @@
 import React from 'react';
-import {
-  Button,
-  CssBaseline,
-  TextField,
-  Paper,
-  Grid,
-  Typography,
-  Link,
-} from '@material-ui/core/';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import Link from '@material-ui/core/Link';
+import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import LoginBackground from '../../assets/login-background.svg';
 import Logo from '../../assets/logo.svg';
-import RegisterBackground from '../../assets/background.svg';
-import './Register.css';
 
 export const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
     backgroundColor: '#F3EFF5',
   },
-  imageRegister: {
+  imageLogin: {
     backgroundColor: theme.palette.primary.light,
-    backgroundImage: `url(${RegisterBackground})`,
+    backgroundImage: `url(${LoginBackground})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     position: 'relative',
@@ -68,17 +66,38 @@ export const useStyles = makeStyles((theme) => ({
   secundaryPhrase: { fontWeight: 700 },
 }));
 
-export default function SignInSide() {
+export default function Login() {
   const classes = useStyles();
 
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        <div className={classes.paper}>
+      <Grid item xs={false} sm={4} md={7} className={classes.imageLogin}>
+        <div className={classes.overlay}>
+          <div className={classes.boxPhrase}>
+            <Typography
+              component="h1"
+              variant="h1"
+              className={classes.mainPhrase}
+            >
+              Bem vindo!
+            </Typography>
+            <Typography
+              component="h1"
+              variant="h4"
+              className={classes.mainPhrase}
+            >
+              Em ver você, felizes estamos nós! Para sua conta bancária tenha
+              acesso
+            </Typography>
+          </div>
+        </div>
+      </Grid>
+      <Grid item xs={12} sm={8} md={5} className={classes.main}>
+        <Paper className={classes.paper} elevation={6} square>
           <img src={Logo} alt="Logo Yoda - Bank" width="58" height="60" />
           <Typography component="h1" variant="h5">
-            Você para a força, deve entrar
+            Faça seu login
           </Typography>
           <form className={classes.form} noValidate>
             <TextField
@@ -86,9 +105,10 @@ export default function SignInSide() {
               margin="normal"
               required
               fullWidth
-              id="nome"
-              label="Nome"
-              name="nome"
+              id="email"
+              label="Email ou Usuário"
+              name="email"
+              autoComplete="email"
               autoFocus
             />
             <TextField
@@ -96,83 +116,44 @@ export default function SignInSide() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="cpfCNPJ"
-              label="CPF/CNPJ"
-              name="cpfCNPJ"
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="senha"
+              name="password"
               label="Senha"
               type="password"
-              id="senha"
+              id="password"
               autoComplete="current-password"
             />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="confirmarSenha"
-              label="Confirmar Senha"
-              type="password"
-              id="confirmarSenha"
-            />
+            <Link href="#" variant="body2">
+              Esqueceu a senha?
+            </Link>
             <Button
               type="submit"
               fullWidth
               variant="contained"
               color="primary"
-              className={`${classes.submit}`}
+              className={classes.submit}
             >
-              CADASTRAR
+              Entrar
             </Button>
             <Grid container className={classes.link}>
               <Grid item>
-                <Link href="/login" variant="body2">
-                  {'Já sou da força'}
+                <Link href="/register" variant="body2">
+                  {'Não tem um conta, entrar para força'}
                 </Link>
               </Grid>
             </Grid>
+            <Box mt={3}>
+              <Typography variant="body2" color="textSecondary" align="center">
+                {'Desenvolvido para estudo no BeerTechTalents(2020) - '}
+                <Link
+                  href="https://github.com/gss-patricia/yoda-coins-beertech"
+                  target="_blank"
+                >
+                  Github
+                </Link>
+              </Typography>
+            </Box>
           </form>
-        </div>
-      </Grid>
-      <Grid
-        item
-        xs={false}
-        sm={4}
-        md={7}
-        className={`${classes.imageRegister}`}
-      >
-        <div className={classes.overlay}>
-          <div className={classes.boxPhrase}>
-            <Typography
-              component="h1"
-              variant="h2"
-              className={classes.mainPhrase}
-            >
-              Faça ou não
-              <br />
-              faça,
-              <br />
-              tentativa não <br />
-              há!
-            </Typography>
-          </div>
-        </div>
+        </Paper>
       </Grid>
     </Grid>
   );
