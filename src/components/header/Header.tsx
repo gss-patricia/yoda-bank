@@ -8,9 +8,10 @@ import {
   Box,
   Button,
 } from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
 
 import Logo from "../../assets/logo-white.svg";
+
+import ToggleDrawer from "../toggleDrawer";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,9 +39,6 @@ const useStyles = makeStyles((theme) => ({
     height: "70px",
     padding: theme.spacing(2),
   },
-  menu: {
-    cursor: "pointer",
-  },
   logout: {
     width: "50px",
     marginLeft: "10px",
@@ -56,7 +54,7 @@ const Header = () => {
       <Grid item xs={12} sm={8} md={12} component={Paper} elevation={6} square>
         <div className={classes.headerWrapper}>
           <Box className={classes.paper} width="50%">
-            <MenuIcon className={classes.menu} />
+            <ToggleDrawer />
             <img src={Logo} alt="Logo" />
             <Typography component="h1" variant="h5">
               Yoda Coins Beer
