@@ -14,7 +14,7 @@ export const CREATE_CONTA = (body: IUser) => {
   };
 };
 
-export const GET_CONTA = (page: number = 0, size: number = 25) => {
+export const GET_ALL_CONTAS = (page: number = 0, size: number = 25) => {
   return {
     url: baseURL + `/conta?page=${page}&size=${size}`,
     options: {
