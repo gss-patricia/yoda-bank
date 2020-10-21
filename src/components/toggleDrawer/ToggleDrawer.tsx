@@ -26,6 +26,10 @@ const useStyles = makeStyles({
     cursor: "pointer",
     color: "white",
   },
+  link: {
+    textDecoration: "none",
+    color: "#000",
+  },
 });
 
 export default function TemporaryDrawer() {
@@ -57,8 +61,8 @@ export default function TemporaryDrawer() {
           <ListItemIcon>
             <HomeIcon />
           </ListItemIcon>
-          <Link to="/">
-            <ListItemText primary="Inicio" />
+          <Link className={clsx(classes.link)} to="/">
+            <ListItemText primary="Home" />
           </Link>
         </ListItem>
         <Divider />
@@ -66,8 +70,8 @@ export default function TemporaryDrawer() {
           <ListItemIcon>
             <InboxIcon />
           </ListItemIcon>
-          <Link to="register">
-            <ListItemText primary="Register" />
+          <Link to="register" className={clsx(classes.link)}>
+            <ListItemText primary="Nova Conta" />
           </Link>
         </ListItem>
         <Divider />
@@ -75,8 +79,8 @@ export default function TemporaryDrawer() {
           <ListItemIcon>
             <AttachMoneyIcon />
           </ListItemIcon>
-          <Link to="deposit">
-            <ListItemText primary="Deposit" />
+          <Link to="deposit" className={clsx(classes.link)}>
+            <ListItemText primary="Depósitos" />
           </Link>
         </ListItem>
         <Divider />
