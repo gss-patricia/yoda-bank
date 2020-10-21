@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "flex-start",
     height: "70px",
     padding: theme.spacing(1),
+    width: "30%",
   },
   paperSecond: {
     display: "flex",
@@ -38,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "flex-end",
     height: "70px",
     padding: theme.spacing(2),
+    width: "70%",
   },
   logout: {
     width: "50px",
