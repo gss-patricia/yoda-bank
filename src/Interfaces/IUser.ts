@@ -1,9 +1,9 @@
-enum EPerfil {
+export enum EPerfil {
   ADMIN,
   USER,
 }
 export default interface IUser {
-  cnpj: string;
+  cpf: string;
   email: string;
   nome: string;
   perfil: EPerfil;
