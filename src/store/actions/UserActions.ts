@@ -1,5 +1,6 @@
-enum UserTypes {
-  CREATE,
+enum UserAction {
+  GET_USER,
+  SET_USER,
 }
 
-export default UserTypes;
+export default UserAction;
