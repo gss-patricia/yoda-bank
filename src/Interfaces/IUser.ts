@@ -6,6 +6,6 @@ export default interface IUser {
   cpf: string;
   email: string;
   nome: string;
-  perfil: EPerfil;
+  perfil: string;
   senha: string;
 }

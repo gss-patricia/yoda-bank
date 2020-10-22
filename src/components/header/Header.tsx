@@ -8,9 +8,9 @@ import {
   Box,
   Button,
 } from "@material-ui/core";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 import Logo from "../../assets/logo-white.svg";
-
 import ToggleDrawer from "../toggleDrawer";
 
 const useStyles = makeStyles((theme) => ({
@@ -28,7 +28,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "flex-start",
     height: "70px",
-    padding: theme.spacing(2),
+    padding: theme.spacing(1),
+    width: "30%",
   },
   paperSecond: {
     display: "flex",
@@ -38,16 +39,22 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "flex-end",
     height: "70px",
     padding: theme.spacing(2),
+    width: "70%",
   },
   logout: {
     width: "50px",
     marginLeft: "10px",
     backgroundColor: "#4C2A85",
   },
+  logo: {
+    marginRight: "20px",
+  },
 }));
 
 const Header = () => {
   const classes = useStyles();
+  const matches = useMediaQuery("(min-width:1000px)");
+
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
@@ -56,14 +63,14 @@ const Header = () => {
           <Box className={classes.paper} width="50%">
             <ToggleDrawer />
             <img src={Logo} alt="Logo" />
-            <Typography component="h1" variant="h5">
-              Yoda Coins Beer
-            </Typography>
+            {matches && (
+              <Typography component="h1" variant="h5">
+                Yoda Coins Beer
+              </Typography>
+            )}
           </Box>
           <Box className={classes.paperSecond} width="50%">
-            <Typography component="h1" variant="h5">
-              Fakewilson
-            </Typography>
+            <span>Fakewilson Silva</span>
             <Button
               fullWidth
               variant="contained"
