@@ -9,7 +9,7 @@ export const CREATE_CONTA = (body: IUser) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body,
+      body: JSON.stringify(body),
     },
   };
 };

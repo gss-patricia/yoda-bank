@@ -9,7 +9,7 @@ export const AUTHENTICATE = (body: ILogin) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body,
+      body: JSON.stringify(body),
     },
   };
 };

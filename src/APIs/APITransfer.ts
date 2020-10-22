@@ -9,7 +9,7 @@ export const PRODUCER_OPERATION = (body: ITransfer) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body,
+      body: JSON.stringify(body),
     },
   };
 };

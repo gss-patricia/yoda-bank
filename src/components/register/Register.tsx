@@ -102,9 +102,9 @@ export default function SignInSide() {
       const { url, options } = CREATE_CONTA({
         nome: name.value,
         email: email.value,
-        cpf: cpfCNPJ.value,
+        cnpj: cpfCNPJ.value,
         senha: password.value,
-        perfil: EPerfil.USER ? "USER" : "ADM",
+        perfil: EPerfil.USER ? "USER" : "ADMIN",
       });
 
       const { response } = await request(url, options);
