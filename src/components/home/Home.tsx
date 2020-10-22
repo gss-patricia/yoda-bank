@@ -16,6 +16,7 @@ import {
   Avatar,
   ListItemText,
   Divider,
+  TextField,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 
@@ -40,9 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
   image: {
     width: "50%",
-  },
-  thumbnail: {
-    width: "100px",
+    marginLeft: "-18px",
   },
   box: {
     color: "#275F40",
@@ -62,8 +61,9 @@ const useStyles = makeStyles((theme) => ({
   },
   pigBank: {
     display: "flex",
-    backgroundColor: "white",
-    maxHeight: "81%",
+    maxHeight: "155px",
+    color: "#275F40",
+    marginLeft: "5%",
   },
   depositTitle: {
     textAlign: "center",
@@ -75,8 +75,12 @@ const useStyles = makeStyles((theme) => ({
   inputMargin: {
     margin: "15px 15px",
   },
+  inputWidth: {
+    width: "90%",
+  },
   gridHeigh: {
     maxHeight: "30%",
+    justifyContent: "center",
   },
   transferGrid: {
     backgroundColor: "#FAFAFA",
@@ -97,15 +101,31 @@ const useStyles = makeStyles((theme) => ({
   listItem: {
     textAlign: "right",
   },
+  saldo: {
+    fontWeight: "bold",
+    fontSize: "1.5rem",
+    marginTop: "15px",
+  },
+  saldoInfo: {
+    fontSize: "1.2rem",
+    marginTop: "5px",
+  },
+  date: {
+    color: "#9C9696",
+    marginTop: "30%",
+  },
+  thumbnail: {
+    width: "100px",
+  },
 }));
 
 const Launch: React.FC = () => {
   const classes = useStyles();
 
-  const [checked, setChecked] = useState(-1);
+  const [checked, setChecked] = useState(false);
 
-  const handleExpandClick = (i: number) => {
-    setChecked(checked === i ? -1 : i);
+  const handleExpandClick = () => {
+    setChecked((prev) => !prev);
   };
 
   return (
@@ -132,7 +152,7 @@ const Launch: React.FC = () => {
           md={3}
           className={clsx([classes.marginBottom, classes.transferGrid])}
         >
-          <Box onClick={() => handleExpandClick(1)} className={classes.box}>
+          <Box onClick={handleExpandClick} className={classes.box}>
             <img className={classes.image} alt="transfer" src={transfer} />
             <Typography
               component="h3"
@@ -145,15 +165,18 @@ const Launch: React.FC = () => {
               <AddIcon />
             </Fab>
           </Box>
-          <Collapse in={checked === 1} className={classes.collapsedInput}>
+          <Collapse in={checked} className={classes.collapsedInput}>
+            <TextField
+              label="Chave"
+              className={clsx([classes.inputMargin, classes.inputWidth])}
+            />
             <Input
               className={classes.inputMargin}
-              id="deposit-amount"
               startAdornment={
                 <InputAdornment position="start">R$</InputAdornment>
               }
             />
-            <Button className={classes.button}>Adicionar</Button>
+            <Button className={classes.button}>Transferir</Button>
           </Collapse>
         </Grid>
         <Grid
@@ -163,25 +186,21 @@ const Launch: React.FC = () => {
           elevation={6}
           component={Paper}
           square
-          className={classes.pigBank}
+          className={clsx([classes.pigBank, classes.transferGrid])}
         >
           <img className={classes.image} alt="trasnfer" src={pigbank} />
-          <Box className={classes.boxSkin}>
-            <Typography
-              component="h3"
-              variant="h5"
-              className={classes.typography}
-            >
+          <Box>
+            <Typography component="h3" variant="h5" className={classes.saldo}>
               Meu Saldo
             </Typography>
             <Typography
               component="h2"
               variant="h5"
-              className={classes.typography}
+              className={clsx([classes.saldo, classes.saldoInfo])}
             >
               R$ 5.000,00
             </Typography>
-            <Typography variant="subtitle1" className={classes.typography}>
+            <Typography variant="subtitle1" className={classes.date}>
               00/00/0000 00:00
             </Typography>
           </Box>
