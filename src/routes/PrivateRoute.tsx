@@ -7,13 +7,19 @@ import { StorageState } from "../store/reducers/localStorageReducers";
 const RoutesPrivate = ({ component, ...rest }: any) => {
   const dispatch = useDispatch();
   dispatch({
-    type: LocalStorageActions.LOAD,
+    type: LocalStorageActions.LOAD_LOCAL_STORAGE,
   });
 
-  const yoToken: any = useSelector((state: StorageState) => state);
+  const { localStorageReducers }: any = useSelector(
+    (state: StorageState) => state
+  );
 
   const routeComponent = (props: any) =>
-    yoToken ? React.createElement(component, props) : <Redirect to="/login" />;
+    localStorageReducers?.yoToken ? (
+      React.createElement(component, props)
+    ) : (
+      <Redirect to="/login" />
+    );
   return <Route {...rest} render={routeComponent} />;
 };
 

@@ -14,18 +14,20 @@ const localStorageReducers = (
   action: AnyAction
 ) => {
   switch (action.type) {
-    case LocalStorageActions.LOAD:
+    case LocalStorageActions.GET:
+      return state;
+    case LocalStorageActions.LOAD_LOCAL_STORAGE:
       try {
         const yoToken = localStorage.getItem("yoToken");
         if (yoToken === null) {
           return null;
         }
-        state.yoToken = JSON.parse(yoToken);
-        return state.yoToken;
+        state = { ...state, yoToken: JSON.parse(yoToken) };
+        return state;
       } catch (error) {
         return null;
       }
-    case LocalStorageActions.SAVE:
+    case LocalStorageActions.SAVE_LOCAL_STORAGE:
       try {
         const serializedState = JSON.stringify(action.state);
         localStorage.setItem("yoToken", serializedState);

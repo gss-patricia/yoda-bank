@@ -84,10 +84,12 @@ export const useStyles = makeStyles((theme) => ({
 export default function Login() {
   const dispatch = useDispatch();
 
-  const yoToken: any = useSelector((state: StorageState) => state);
+  const { localStorageReducers }: any = useSelector(
+    (state: StorageState) => state
+  );
 
   dispatch({
-    type: LocalStorageActions.LOAD,
+    type: LocalStorageActions.GET,
   });
 
   const classes = useStyles();
@@ -106,11 +108,11 @@ export default function Login() {
         password: password.value,
       });
 
-      if (!yoToken) {
+      if (!localStorageReducers?.yoToken) {
         const { response, json } = await request(url, options);
         if (response?.ok) {
           dispatch({
-            type: LocalStorageActions.SAVE,
+            type: LocalStorageActions.SAVE_LOCAL_STORAGE,
             state: json.token,
           });
           history.push("/");

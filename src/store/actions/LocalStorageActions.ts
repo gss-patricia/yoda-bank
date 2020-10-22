@@ -1,6 +1,7 @@
 enum LocalStorageAction {
-  LOAD,
-  SAVE,
+  GET,
+  LOAD_LOCAL_STORAGE,
+  SAVE_LOCAL_STORAGE,
 }
 
 export default LocalStorageAction;
