@@ -8,7 +8,8 @@ import {
   Paper, 
   Collapse, 
   InputAdornment,
-  Input} from '@material-ui/core';
+  Input,
+  TextField} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import transfer from '../../assets/transfer.svg';
 import pigbank from '../../assets/pigbank.svg';
@@ -29,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
   image: {
     width: '50%',
+    marginLeft: '-18px',
   },
   box: {
     color: '#275F40',
@@ -43,8 +45,9 @@ const useStyles = makeStyles((theme) => ({
   },
   pigBank: {
     display: 'flex',
-    backgroundColor: '#F3EFF5',
-    maxHeight: '81%',
+    maxHeight: '155px',
+    color: '#275F40',
+    marginLeft: '5%',
   },
   depositTitle: {
     textAlign: 'center',
@@ -56,8 +59,12 @@ const useStyles = makeStyles((theme) => ({
   inputMargin: {
     margin: '15px 15px',
   },
+  inputWidth: {
+    width: '90%',
+  },
   gridHeigh: {
     maxHeight: '30%',
+    justifyContent: 'center',
   },
   transferGrid: {
     backgroundColor: '#FAFAFA',
@@ -66,16 +73,29 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 'bold',
     marginTop: '20px',
   },
+  saldo: {
+    fontWeight: 'bold',
+    fontSize: '1.5rem',
+    marginTop: '15px',
+  },
+  saldoInfo: {
+    fontSize: '1.2rem',
+    marginTop: '5px',
+  },
+  date: {
+    color: '#9C9696',
+    marginTop: '30%',
+  },
 }));
 
 
 const Launch: React.FC = () => {
   const classes = useStyles();
 
-  const [checked, setChecked] = useState(-1);
+  const [checked, setChecked] = useState(false);
 
-  const handleExpandClick = (i: number) => {
-    setChecked(checked === i ? -1 : i);
+  const handleExpandClick = () => {
+    setChecked((prev) => !prev);
   };
 
   return (
@@ -97,16 +117,17 @@ const Launch: React.FC = () => {
           md={3} 
           className={clsx([classes.marginBottom, classes.transferGrid])}
         >
-          <Box onClick={() => handleExpandClick(1)} className={classes.box}>
+          <Box onClick={handleExpandClick} className={classes.box}>
             <img className={classes.image} alt="transfer" src={transfer} />
             <Typography component="h3" variant="h5" className={classes.typography}>
               Transferir
             </Typography>
           </Box>
-          <Collapse in={checked === 1} className={classes.collapsedInput}>
-            <Input className={classes.inputMargin} id="deposit-amount" startAdornment={<InputAdornment position="start">R$</InputAdornment>}/>
+          <Collapse in={checked} className={classes.collapsedInput}>
+            <TextField label="Chave" className={clsx([classes.inputMargin, classes.inputWidth])}/>
+            <Input className={classes.inputMargin} startAdornment={<InputAdornment position="start">R$</InputAdornment>}/>
             <Button className={classes.button}>
-              Adicionar
+              Transferir
             </Button>
           </Collapse>
         </Grid>
@@ -117,16 +138,16 @@ const Launch: React.FC = () => {
           elevation={6} 
           component={Paper} 
           square 
-          className={classes.pigBank}>
+          className={clsx([classes.pigBank, classes.transferGrid])}>
           <img className={classes.image} alt="trasnfer" src={pigbank} />
           <Box>
-            <Typography component="h3" variant="h5" className={classes.typography}>
+            <Typography component="h3" variant="h5" className={classes.saldo}>
               Meu Saldo
             </Typography>
-            <Typography component="h2" variant="h5" className={classes.typography}>
+            <Typography component="h2" variant="h5" className={clsx([classes.saldo, classes.saldoInfo])}>
               R$ 5.000,00
             </Typography>
-            <Typography variant="subtitle1" className={classes.typography}>
+            <Typography variant="subtitle1" className={classes.date}>
               00/00/0000 00:00
             </Typography>
           </Box>
