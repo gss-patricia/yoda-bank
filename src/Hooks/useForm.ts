@@ -1,19 +1,25 @@
 import React from "react";
 import EFieldForm from "../Enums/EFieldForm";
 
+const errorMessages : string[] = [
+  "Informe um email válido. Ex: yoda@yoda.com",
+  "A senha precisa ter no mínimo 8 caracteres, sendo 1 maíusculo, 1 minúsculo e 1 digito.",
+  "Informe apenas números.",
+  "Informação obrigatória, por favor realize o preenchimento"
+];
+
 const types = {
   email: {
     regex: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-    message: "Preencha um email válido",
+    message: errorMessages[0],
   },
   password: {
     regex: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/,
-    message:
-      "A senha precisa ter 1 caracter maíusculo, 1 minúsculo e 1 digito. Com no mínimo 8 caracteres.",
+    message: errorMessages[1],
   },
   number: {
     regex: /^\d+$/,
-    message: "Utilize números apenas.",
+    message: errorMessages[2],
   },
 };
 
@@ -25,7 +31,7 @@ const useForm = (type?: EFieldForm) => {
     if (!type) return true;
 
     if (value.length === 0) {
-      setHelperText("Preencha um valor.");
+      setHelperText(errorMessages[3]);
       return false;
     }
 
@@ -66,6 +72,7 @@ const useForm = (type?: EFieldForm) => {
     setValue,
     onChange,
     helperText,
+    error: (helperText ? true : false),
     validate: () => validate(value),
     onBlur: () => validate(value),
   };

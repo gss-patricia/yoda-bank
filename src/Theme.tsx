@@ -12,6 +12,9 @@ const Theme = ({ children }: ChildrenType) => {
       secondary: {
         main: '#275F40',
       },
+      error: {
+        main: '#B80C09',
+      },
     },
     overrides: {
       MuiButton: {

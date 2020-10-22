@@ -4,6 +4,7 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import Theme from './Theme';
 import PageRegister from './pages/PageRegister';
 import PageDeposit from './pages/PageDeposit';
+import PageHome from './pages/PageHome';
 import PageLogin from './pages/PageLogin';
 
 const App = () => (
@@ -16,6 +17,7 @@ const App = () => (
         <Route path="/login" component={PageLogin} />
         <Route path="/register" component={PageRegister} />
         <Route path="/deposit" component={PageDeposit} />
+        <Route path="/home" component={PageHome} />
       </Switch>
     </Theme>
   </BrowserRouter>

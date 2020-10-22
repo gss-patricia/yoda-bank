@@ -13,7 +13,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { CREATE_CONTA } from "../../APIs/APIConta";
 import Logo from "../../assets/logo.svg";
 import RegisterBackground from "../../assets/background.svg";
-import "./Register.css";
 import useForm from "../../Hooks/useForm";
 import EFieldForm from "../../Enums/EFieldForm";
 import useFetch from "../../Hooks/useFetch";
@@ -67,6 +66,9 @@ export const useStyles = makeStyles((theme) => ({
     minHeight: "100vh",
     margin: theme.spacing(0, 10),
     textShadow: "0.5px 0.5px 1px #000",
+    "@media (max-width: 955px)": {
+      display: "none",
+    },
   },
   mainPhrase: {
     fontWeight: 500,
@@ -184,7 +186,11 @@ export default function SignInSide() {
               color="primary"
               className={`${classes.submit}`}
             >
-              {loading ? <CircularProgress color="secondary" /> : "CADASTRAR"}
+              {loading ? (
+                <CircularProgress size={24} color="secondary" />
+              ) : (
+                "CADASTRAR"
+              )}
             </Button>
             <Error error={error} />
             <Grid container className={classes.link}>
