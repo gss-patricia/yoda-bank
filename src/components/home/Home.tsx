@@ -10,11 +10,6 @@ import {
   InputAdornment,
   Input,
   Fab,
-  List,
-  ListItem,
-  ListItemAvatar,
-  Avatar,
-  ListItemText,
   Divider,
   TextField,
 } from "@material-ui/core";
@@ -23,10 +18,10 @@ import AddIcon from "@material-ui/icons/Add";
 import { makeStyles } from "@material-ui/core/styles";
 import transfer from "../../assets/transfer.svg";
 import pigbank from "../../assets/pigbank.svg";
-import wallet from "../../assets/wallet.svg";
-import cheers from "../../assets/hacker.svg";
 import Header from "../header";
 import clsx from "clsx";
+
+import Extract from "../extract";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,9 +44,6 @@ const useStyles = makeStyles((theme) => ({
     minHeight: "90px",
     position: "relative",
     cursor: "pointer",
-  },
-  boxSkin: {
-    color: "#275F40",
   },
   marginBottom: {
     marginBottom: "30px",
@@ -94,13 +86,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "113px",
     right: "35px",
   },
-  list: {
-    backgroundColor: "white",
-    width: "50%",
-  },
-  listItem: {
-    textAlign: "right",
-  },
   saldo: {
     fontWeight: "bold",
     fontSize: "1.5rem",
@@ -114,8 +99,10 @@ const useStyles = makeStyles((theme) => ({
     color: "#9C9696",
     marginTop: "30%",
   },
-  thumbnail: {
-    width: "100px",
+  centered: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
 }));
 
@@ -212,51 +199,17 @@ const Launch: React.FC = () => {
         alignContent="flex-start"
         justify="center"
         xs={12}
-        sm={12}
+        sm={6}
         md={12}
-        className={clsx([classes.marginTop, classes.gridHeigh])}
+        className={clsx([
+          classes.marginTop,
+          classes.gridHeigh,
+          classes.centered,
+        ])}
       >
-        <List className={classes.list}>
-          <ListItem>
-            <ListItemAvatar>
-              <img
-                className={classes.thumbnail}
-                alt="transfer"
-                src={transfer}
-              />
-            </ListItemAvatar>
-            <ListItemText primary="Transferido foi" />
-            <ListItemText
-              className={classes.listItem}
-              primary=" - $ 10,00"
-              secondary="Jan 9, 2020 - 09:40"
-            />
-          </ListItem>
-          <Divider />
-          <ListItem>
-            <ListItemAvatar>
-              <img className={classes.thumbnail} alt="received" src={cheers} />
-            </ListItemAvatar>
-            <ListItemText primary="Recebido" />
-            <ListItemText
-              className={classes.listItem}
-              primary="$ 100,00"
-              secondary="Jan 9, 2020 - 10:06"
-            />
-          </ListItem>
-          <Divider />
-          <ListItem>
-            <ListItemAvatar>
-              <img className={classes.thumbnail} alt="transfer" src={wallet} />
-            </ListItemAvatar>
-            <ListItemText primary="Estornado" />
-            <ListItemText
-              className={classes.listItem}
-              primary="$5,00"
-              secondary="Jan 9, 2020 - 15:00"
-            />
-          </ListItem>
-        </List>
+        <Grid xs={12} sm={4} md={7} elevation={6} component={Paper} square>
+          <Extract />
+        </Grid>
       </Grid>
     </Grid>
   );
