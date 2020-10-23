@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
   },
   collapsedInput: {
-    backgroundColor: "#F3EFF5",
+    backgroundColor: "white",
   },
   inputMargin: {
     margin: "15px 15px",
