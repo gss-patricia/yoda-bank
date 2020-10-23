@@ -14,10 +14,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import LoginBackground from "../../assets/login-background.svg";
 import Logo from "../../assets/logo.svg";
 import EFieldForm from "../../Enums/EFieldForm";
-import useFetch from "../../Hooks/useFetch";
+import useFetch from "../helpers/Hooks/useFetch";
 import { AUTHENTICATE } from "../../APIs/APIAuth";
 import { useHistory, Link } from "react-router-dom";
-import useForm from "../../Hooks/useForm";
+import useForm from "../helpers/Hooks/useForm";
 import Error from "../../components/error/Error";
 
 export const useStyles = makeStyles((theme) => ({

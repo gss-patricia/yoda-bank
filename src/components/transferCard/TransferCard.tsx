@@ -73,14 +73,11 @@ const useStyles = makeStyles((thee) => ({
 const Transfer = () => {
   const classes = useStyles();
   const [checked, setChecked] = useState(false);
+  const [transferValue, setInputTransfer] = useState();
   const container = React.useRef();
 
   const handleExpandClick = () => {
     setChecked((prev) => !prev);
-  };
-
-  const validateField = () => {
-    console.log(1);
   };
 
   const handleDialog = (param: any) => console.log(param);

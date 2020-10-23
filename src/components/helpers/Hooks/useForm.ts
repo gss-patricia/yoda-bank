@@ -1,11 +1,11 @@
 import React from "react";
-import EFieldForm from "../Enums/EFieldForm";
+import EFieldForm from "../../../Enums/EFieldForm";
 
-const errorMessages : string[] = [
+const errorMessages: string[] = [
   "Informe um email válido. Ex: yoda@yoda.com",
   "A senha precisa ter no mínimo 8 caracteres, sendo 1 maíusculo, 1 minúsculo e 1 digito.",
   "Informe apenas números.",
-  "Informação obrigatória, por favor realize o preenchimento"
+  "Informação obrigatória, por favor realize o preenchimento",
 ];
 
 const types = {
@@ -72,7 +72,7 @@ const useForm = (type?: EFieldForm) => {
     setValue,
     onChange,
     helperText,
-    error: (helperText ? true : false),
+    error: helperText ? true : false,
     validate: () => validate(value),
     onBlur: () => validate(value),
   };
