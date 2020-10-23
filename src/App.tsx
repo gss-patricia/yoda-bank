@@ -9,11 +9,16 @@ import PageRegister from "./pages/PageRegister";
 import PageDeposit from "./pages/PageDeposit";
 import PageHome from "./pages/PageHome";
 import PageLogin from "./pages/PageLogin";
+import UserAction from "./store/actions/UserActions";
 
-store.dispatch({
-  type: LocalStorageActions.LOAD_LOCAL_STORAGE,
-});
-
+store.dispatch(
+  {
+    type: LocalStorageActions.LOAD_LOCAL_STORAGE,
+  },
+  {
+    type: UserAction.GET_USER,
+  }
+);
 const App = () => {
   return (
     <BrowserRouter>
