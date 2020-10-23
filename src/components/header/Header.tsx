@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   makeStyles,
   Grid,
@@ -9,9 +9,12 @@ import {
   Button,
 } from "@material-ui/core";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import LocalStorageActions from "../../store/actions/LocalStorageActions";
 
 import Logo from "../../assets/logo-white.svg";
 import ToggleDrawer from "../toggleDrawer";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,7 +56,25 @@ const useStyles = makeStyles((theme) => ({
 
 const Header = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
   const matches = useMediaQuery("(min-width:1000px)");
+
+  useEffect(() => {
+    dispatch({
+      type: LocalStorageActions.GET,
+    });
+  }, [dispatch]);
+
+  const history = useHistory();
+
+  async function remove() {
+    dispatch({
+      type: LocalStorageActions.REMOVE_LOCAL_STORAGE,
+      state: '',
+    });
+    history.push("/login");
+  }
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -76,6 +97,7 @@ const Header = () => {
               variant="contained"
               color="secondary"
               className={classes.logout}
+              onClick={remove}
             >
               Sair
             </Button>

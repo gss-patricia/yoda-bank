@@ -13,9 +13,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import { CREATE_CONTA } from "../../APIs/APIConta";
 import Logo from "../../assets/logo.svg";
 import RegisterBackground from "../../assets/background.svg";
-import useForm from "../../Hooks/useForm";
+import useForm from "../helpers/Hooks/useForm";
 import EFieldForm from "../../Enums/EFieldForm";
-import useFetch from "../../Hooks/useFetch";
+import useFetch from "../helpers/Hooks/useFetch";
 import Error from "../../components/error/Error";
 import { EPerfil } from "../../Interfaces/IUser";
 
