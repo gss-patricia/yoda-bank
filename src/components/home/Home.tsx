@@ -21,7 +21,9 @@ import pigbank from "../../assets/pigbank.svg";
 import Header from "../header";
 import clsx from "clsx";
 
+import AlertDialog from "../dialog";
 import Extract from "../extract";
+import composeRefs from "../helpers/composeRefs";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -108,8 +110,8 @@ const useStyles = makeStyles((theme) => ({
 
 const Launch: React.FC = () => {
   const classes = useStyles();
-
   const [checked, setChecked] = useState(false);
+  const container = React.useRef();
 
   const handleExpandClick = () => {
     setChecked((prev) => !prev);
@@ -163,7 +165,27 @@ const Launch: React.FC = () => {
                 <InputAdornment position="start">R$</InputAdornment>
               }
             />
-            <Button className={classes.button}>Transferir</Button>
+
+            <AlertDialog
+              title="Transferir"
+              titleId="transfer-op"
+              content="A transferência você confirma?"
+              contentId="transfer-cont"
+              ButtonTextFirst="Não"
+              ButtonTextSecond="Sim"
+            >
+              {({ isOpen, triggerRef, toggle }) => (
+                <>
+                  <Button
+                    className={classes.button}
+                    ref={composeRefs(triggerRef, container)}
+                    onClick={toggle}
+                  >
+                    Transferir
+                  </Button>
+                </>
+              )}
+            </AlertDialog>
           </Collapse>
         </Grid>
         <Grid
