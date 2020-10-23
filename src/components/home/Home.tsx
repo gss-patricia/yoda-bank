@@ -117,6 +117,8 @@ const Launch: React.FC = () => {
     setChecked((prev) => !prev);
   };
 
+  const handleDialog = (param: any) => console.log(param);
+
   return (
     <Grid
       container
@@ -173,6 +175,7 @@ const Launch: React.FC = () => {
               contentId="transfer-cont"
               ButtonTextFirst="Não"
               ButtonTextSecond="Sim"
+              handleAgree={handleDialog}
             >
               {({ isOpen, triggerRef, toggle }) => (
                 <>

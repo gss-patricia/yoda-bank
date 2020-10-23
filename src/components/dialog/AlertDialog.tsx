@@ -5,7 +5,6 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import composeRef from "../helpers/composeRefs";
 
 type RenderChildrenType = {
   isOpen: boolean;
@@ -20,6 +19,7 @@ interface IAlertDialog {
   contentId: string;
   ButtonTextFirst: string;
   ButtonTextSecond?: string;
+  handleAgree: any;
   children: (childrenProps: RenderChildrenType) => ReactNode;
 }
 
@@ -30,12 +30,12 @@ const AlertDialog = ({
   contentId,
   ButtonTextFirst,
   ButtonTextSecond,
+  handleAgree,
   children,
 }: IAlertDialog) => {
   const [open, setOpen] = React.useState(false);
   const isOpen: boolean = open;
   const triggerRef: RefObject<any> = useRef();
-  const container: RefObject<any> = useRef();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -43,11 +43,11 @@ const AlertDialog = ({
 
   const handleClose = () => {
     setOpen(false);
+    handleAgree("Agreee");
   };
 
   return (
     <>
-      ref={composeRef(container)}
       {children({
         isOpen,
         toggle: () => {
