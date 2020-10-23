@@ -17,7 +17,7 @@ const App = () => {
           <Switch>
             <Route path="/login" component={PageLogin} />
             <Route path="/register" component={PageRegister} />
-            <RoutesPrivate path="/" exact component={PageHome} />
+            <RoutesPrivate path="/" component={PageHome} />
             <RoutesPrivate path="/deposit" component={PageDeposit} />
           </Switch>
         </Theme>
