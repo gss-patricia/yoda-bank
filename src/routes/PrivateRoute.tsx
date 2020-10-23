@@ -6,9 +6,11 @@ import { StorageState } from "../store/reducers/localStorageReducers";
 
 const RoutesPrivate = ({ component, ...rest }: any) => {
   const dispatch = useDispatch();
-  dispatch({
-    type: LocalStorageActions.LOAD_LOCAL_STORAGE,
-  });
+  useEffect(() => {
+    dispatch({
+      type: LocalStorageActions.LOAD_LOCAL_STORAGE,
+    });
+  }, [dispatch]);
 
   const { localStorageReducers }: any = useSelector(
     (state: StorageState) => state
