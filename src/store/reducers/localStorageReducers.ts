@@ -40,7 +40,13 @@ const localStorageReducers = (
       } catch (error) {
         console.error(error);
       }
-
+    case LocalStorageActions.REMOVE_LOCAL_STORAGE:
+      try {
+        localStorage.removeItem("yoToken");
+        state = initalState;
+      } catch (error) {
+        return null;
+      }
     default:
       break;
   }
