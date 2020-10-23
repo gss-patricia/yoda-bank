@@ -13,17 +13,14 @@ import {
   Divider,
   TextField,
 } from "@material-ui/core";
-import AddIcon from "@material-ui/icons/Add";
 
 import { makeStyles } from "@material-ui/core/styles";
-import transfer from "../../assets/transfer.svg";
+
 import pigbank from "../../assets/pigbank.svg";
 import Header from "../header";
 import clsx from "clsx";
-
-import AlertDialog from "../dialog";
+import TransferCard from "../transferCard";
 import Extract from "../extract";
-import composeRefs from "../helpers/composeRefs";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,6 +50,9 @@ const useStyles = makeStyles((theme) => ({
   marginTop: {
     marginTop: "50px",
   },
+  transferGrid: {
+    backgroundColor: "#FAFAFA",
+  },
   pigBank: {
     display: "flex",
     maxHeight: "155px",
@@ -76,17 +76,9 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: "30%",
     justifyContent: "center",
   },
-  transferGrid: {
-    backgroundColor: "#FAFAFA",
-  },
   typography: {
     fontWeight: "bold",
     marginTop: "20px",
-  },
-  addIcon: {
-    position: "absolute",
-    marginTop: "113px",
-    right: "35px",
   },
   saldo: {
     fontWeight: "bold",
@@ -110,14 +102,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Launch: React.FC = () => {
   const classes = useStyles();
-  const [checked, setChecked] = useState(false);
-  const container = React.useRef();
-
-  const handleExpandClick = () => {
-    setChecked((prev) => !prev);
-  };
-
-  const handleDialog = (param: any) => console.log(param);
 
   return (
     <Grid
@@ -137,60 +121,7 @@ const Launch: React.FC = () => {
         md={12}
         className={clsx([classes.marginTop, classes.gridHeigh])}
       >
-        <Grid
-          xs={12}
-          sm={9}
-          md={3}
-          className={clsx([classes.marginBottom, classes.transferGrid])}
-        >
-          <Box onClick={handleExpandClick} className={classes.box}>
-            <img className={classes.image} alt="transfer" src={transfer} />
-            <Typography
-              component="h3"
-              variant="h5"
-              className={classes.typography}
-            >
-              Transferir
-            </Typography>
-            <Fab className={classes.addIcon} color="primary" aria-label="add">
-              <AddIcon />
-            </Fab>
-          </Box>
-          <Collapse in={checked} className={classes.collapsedInput}>
-            <TextField
-              label="Chave"
-              className={clsx([classes.inputMargin, classes.inputWidth])}
-            />
-            <Input
-              className={classes.inputMargin}
-              startAdornment={
-                <InputAdornment position="start">R$</InputAdornment>
-              }
-            />
-
-            <AlertDialog
-              title="Transferir"
-              titleId="transfer-op"
-              content="A transferência você confirma?"
-              contentId="transfer-cont"
-              ButtonTextFirst="Não"
-              ButtonTextSecond="Sim"
-              handleAgree={handleDialog}
-            >
-              {({ isOpen, triggerRef, toggle }) => (
-                <>
-                  <Button
-                    className={classes.button}
-                    ref={composeRefs(triggerRef, container)}
-                    onClick={toggle}
-                  >
-                    Transferir
-                  </Button>
-                </>
-              )}
-            </AlertDialog>
-          </Collapse>
-        </Grid>
+        <TransferCard />
         <Grid
           xs={12}
           sm={6}
