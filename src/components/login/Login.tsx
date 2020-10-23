@@ -1,6 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import jwt_decode from "jwt-decode";
 import LocalStorageActions from "../../store/actions/LocalStorageActions";
+import UserActions from "../../store/actions/UserActions";
+
 import { StorageState } from "../../store/reducers/localStorageReducers";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -19,6 +22,7 @@ import { AUTHENTICATE } from "../../APIs/APIAuth";
 import { useHistory, Link } from "react-router-dom";
 import useForm from "../../Hooks/useForm";
 import Error from "../../components/error/Error";
+import IUser from "../../Interfaces/IUser";
 
 export const useStyles = makeStyles((theme) => ({
   root: {
@@ -82,6 +86,7 @@ export const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Login() {
+  const [errorLogin, setErrorLogin] = useState("");
   const dispatch = useDispatch();
 
   const { localStorageReducers }: any = useSelector(
@@ -110,17 +115,21 @@ export default function Login() {
         password: password.value,
       });
 
-      if (!localStorageReducers?.yoToken) {
-        const { response, json } = await request(url, options);
-        if (response?.ok) {
-          dispatch({
-            type: LocalStorageActions.SAVE_LOCAL_STORAGE,
-            state: json.token,
-          });
-          history.push("/");
-        }
-      } else {
+      const { response, json } = await request(url, options);
+      if (response?.ok) {
+        dispatch({
+          type: LocalStorageActions.SAVE_LOCAL_STORAGE,
+          state: json.token,
+        });
+        const user: IUser = jwt_decode(json.token);
+
+        dispatch({
+          type: UserActions.SET_USER,
+          payload: { user: user },
+        });
         history.push("/");
+      } else {
+        setErrorLogin("Usuário ou senha inválido");
       }
     }
   }
@@ -193,7 +202,7 @@ export default function Login() {
                 "ENTRAR"
               )}
             </Button>
-            <Error error={error} />
+            <Error error={errorLogin} />
             <Grid container className={classes.link}>
               <Grid item>
                 <Link to="/register">

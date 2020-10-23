@@ -2,12 +2,14 @@ import { AnyAction } from "redux";
 import UserActions from "../actions/UserActions";
 
 const initialState = {
+  uuid: "",
   user: "",
   email: "",
   profile: "",
 };
 
 export interface UserState {
+  uuid: string;
   user: string;
   email: string;
   profile: string;
