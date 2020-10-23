@@ -6,11 +6,10 @@ import { StorageState } from "../store/reducers/localStorageReducers";
 
 const RoutesPrivate = ({ component, ...rest }: any) => {
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch({
-      type: LocalStorageActions.LOAD_LOCAL_STORAGE,
-    });
-  }, [dispatch]);
+
+  dispatch({
+    type: LocalStorageActions.GET,
+  });
 
   const { localStorageReducers }: any = useSelector(
     (state: StorageState) => state
@@ -22,6 +21,7 @@ const RoutesPrivate = ({ component, ...rest }: any) => {
     ) : (
       <Redirect to="/login" />
     );
+
   return <Route {...rest} render={routeComponent} />;
 };
 
