@@ -37,10 +37,6 @@ const AlertDialog = ({
   const isOpen: boolean = open;
   const triggerRef: RefObject<any> = useRef();
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
   const handleClose = () => {
     setOpen(false);
     handleAgree("Agreee");
