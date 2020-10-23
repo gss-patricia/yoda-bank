@@ -88,9 +88,11 @@ export default function Login() {
     (state: StorageState) => state
   );
 
-  dispatch({
-    type: LocalStorageActions.GET,
-  });
+  useEffect(() => {
+    dispatch({
+      type: LocalStorageActions.GET,
+    });
+  }, [dispatch]);
 
   const classes = useStyles();
   const history = useHistory();
