@@ -141,89 +141,31 @@ const Launch = () => {
     getSaldo();
   }, [saldo]);
 
-  useEffect(() => {
-    async function getExtrato() {
-      if (!yoUuid) return null;
+  const getExtrato = async () => {
+    if (!yoUuid) return null;
 
-      const startDate = new Date();
-      let endDate = new Date();
-      endDate.setDate(endDate.getDate() - 15);
+    const startDate = new Date();
+    let endDate = new Date();
+    endDate.setDate(endDate.getDate() - 15);
 
-      const { url, options } = GET_EXTRATO(
-        yoUuid,
-        yoToken,
-        startDate.toISOString().split("T")[0],
-        endDate.toISOString().split("T")[0]
-      );
-      //const { response, json } = await request(url, options);
-      if (true) {
-        //response?.ok
-        dispatch({
-          type: UserAction.SET_EXTRATO,
-          payload: {
-            //json.content.map((extrato: ExtratoConta) => extrato),
-            extrato: [
-              {
-                descricaoOperacao: "DEPOSITO",
-                id: 0,
-                tipo: "DEPOSITO",
-                valor: 500,
-                timestamp: {
-                  day: 24,
-                  month: 10,
-                  year: 2020,
-                  hours: 12,
-                  minutes: 13,
-                  seconds: 45,
-                },
-              },
-              {
-                descricaoOperacao: "TRANSFERENCIA_DESTINO",
-                id: 1,
-                tipo: "DEPOSITO",
-                valor: 700,
-                timestamp: {
-                  day: 24,
-                  month: 10,
-                  year: 2020,
-                  hours: 12,
-                  minutes: 13,
-                  seconds: 45,
-                },
-              },
-              {
-                descricaoOperacao: "TRANSFERENCIA_ORIGEM",
-                id: 2,
-                tipo: "SAQUE",
-                valor: 500,
-                timestamp: {
-                  day: 24,
-                  month: 10,
-                  year: 2020,
-                  hours: 12,
-                  minutes: 13,
-                  seconds: 45,
-                },
-              },
-              {
-                descricaoOperacao: "SAQUE",
-                id: 3,
-                tipo: "SAQUE",
-                valor: -300,
-                timestamp: {
-                  day: 24,
-                  month: 10,
-                  year: 2020,
-                  hours: 12,
-                  minutes: 13,
-                  seconds: 45,
-                },
-              },
-            ],
-          },
-        });
-      }
+    const { url, options } = GET_EXTRATO(
+      yoUuid,
+      yoToken,
+      startDate.toISOString().split("T")[0],
+      endDate.toISOString().split("T")[0]
+    );
+    const { response, json } = await request(url, options);
+    if (response?.ok) {
+      dispatch({
+        type: UserAction.SET_EXTRATO,
+        payload: {
+          extrato: json.content.map((extrato: ExtratoConta) => extrato),
+        },
+      });
     }
+  };
+
+  useEffect(() => {
     getExtrato();
   }, []);
 
