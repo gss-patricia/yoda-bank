@@ -1,5 +1,5 @@
 import IUser from "../Interfaces/IUser";
-export const baseURL = "https://beertech-banco-lupulo.herokuapp.com";
+import baseURL from "./baseURL";
 
 export const CREATE_CONTA = (body: IUser) => {
   return {
@@ -44,9 +44,9 @@ export const GET_CONTA = (uuid: string, yoToken: string) => {
   };
 };
 
-export const GET_EXTRATO = (uuid: string, yoToken: string) => {
+export const GET_EXTRATO = (uuid: string, yoToken: string, startDate: string, endDate : string) => {
   return {
-    url: baseURL + `/conta/${uuid}/extrato`,
+    url: baseURL + `/conta/${uuid}/extrato?inicio=${startDate}%2000%3A00%3A00&fim${endDate}%2000%3A00%3A00`,
     options: {
       method: "GET",
       headers: {

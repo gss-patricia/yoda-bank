@@ -1,5 +1,5 @@
 import ILogin from "../Interfaces/ILogin";
-export const baseURL = "https://beertech-banco-lupulo.herokuapp.com";
+import baseURL from "./baseURL";
 
 export const AUTHENTICATE = (body: ILogin) => {
   return {
