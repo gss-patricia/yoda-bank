@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 import {
   Grid,
   CssBaseline,
@@ -7,95 +7,95 @@ import {
   Paper,
   Divider,
   CircularProgress,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { useDispatch, useSelector } from "react-redux";
-import pigbank from "../../assets/pigbank.svg";
-import LayoutBase from "../../components/layout";
-import clsx from "clsx";
-import TransferCard from "../transferCard";
-import Extract from "../extract";
-import UserAction from "../../store/actions/UserActions";
-import useFetch from "../helpers/Hooks/useFetch";
-import { GET_SALDO } from "../../APIs/APIConta";
-import IUser from "../../Interfaces/IUser";
-import jwt_decode from "jwt-decode";
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { useDispatch, useSelector } from 'react-redux';
+import pigbank from '../../assets/pigbank.svg';
+import LayoutBase from '../../components/layout';
+import clsx from 'clsx';
+import TransferCard from '../transferCard';
+import Extract from '../extract';
+import UserAction from '../../store/actions/UserActions';
+import useFetch from '../../helpers/Hooks/useFetch';
+import { GET_SALDO } from '../../APIs/APIConta';
+import IUser from '../../Interfaces/IUser';
+import jwt_decode from 'jwt-decode';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: "#F3EFF5",
+    backgroundColor: '#F3EFF5',
   },
   button: {
-    color: "#275F40",
-    fontSize: "1rem",
-    padding: "5px 15px",
-    fontWeight: "bold",
-    margin: "15px 0 15px 7%",
+    color: '#275F40',
+    fontSize: '1rem',
+    padding: '5px 15px',
+    fontWeight: 'bold',
+    margin: '15px 0 15px 7%',
   },
   image: {
-    width: "50%",
-    marginLeft: "-18px",
+    width: '50%',
+    marginLeft: '-18px',
   },
   box: {
-    color: "#275F40",
-    display: "flex",
-    minHeight: "90px",
-    position: "relative",
-    cursor: "pointer",
+    color: '#275F40',
+    display: 'flex',
+    minHeight: '90px',
+    position: 'relative',
+    cursor: 'pointer',
   },
   marginBottom: {
-    marginBottom: "30px",
+    marginBottom: '30px',
   },
   marginTop: {
-    marginTop: "50px",
+    marginTop: '50px',
   },
   transferGrid: {
-    backgroundColor: "#FAFAFA",
+    backgroundColor: '#FAFAFA',
   },
   pigBank: {
-    display: "flex",
-    maxHeight: "155px",
-    color: "#275F40",
-    marginLeft: "5%",
+    display: 'flex',
+    maxHeight: '155px',
+    color: '#275F40',
+    marginLeft: '5%',
   },
   depositTitle: {
-    textAlign: "center",
-    fontWeight: "bold",
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
   collapsedInput: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
   inputMargin: {
-    margin: "15px 15px",
+    margin: '15px 15px',
   },
   inputWidth: {
-    width: "90%",
+    width: '90%',
   },
   gridHeigh: {
-    maxHeight: "30%",
-    justifyContent: "center",
+    maxHeight: '30%',
+    justifyContent: 'center',
   },
   typography: {
-    fontWeight: "bold",
-    marginTop: "20px",
+    fontWeight: 'bold',
+    marginTop: '20px',
   },
   saldo: {
-    fontWeight: "bold",
-    fontSize: "1.5rem",
-    marginTop: "15px",
+    fontWeight: 'bold',
+    fontSize: '1.5rem',
+    marginTop: '15px',
   },
   saldoInfo: {
-    fontSize: "1.2rem",
-    marginTop: "5px",
+    fontSize: '1.2rem',
+    marginTop: '5px',
   },
   date: {
-    color: "#9C9696",
-    marginTop: "30%",
+    color: '#9C9696',
+    marginTop: '30%',
   },
   centered: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 }));
 
@@ -183,9 +183,9 @@ const Launch = () => {
                   {loading || error ? (
                     <CircularProgress size={24} color="secondary" />
                   ) : (
-                    saldo.toLocaleString("pt-br", {
-                      style: "currency",
-                      currency: "BRL",
+                    saldo.toLocaleString('pt-br', {
+                      style: 'currency',
+                      currency: 'BRL',
                     })
                   )}
                 </Typography>
