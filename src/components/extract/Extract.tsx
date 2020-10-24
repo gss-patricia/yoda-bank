@@ -18,8 +18,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#F3EFF5',
   },
   image: {
-    width: '50%',
-    marginLeft: '-18px',
+    [theme.breakpoints.down(400)]: {
+      opacity: '0',
+      position: 'absolute',
+    },
   },
   list: {
     backgroundColor: 'white',

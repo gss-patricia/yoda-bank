@@ -14,6 +14,7 @@ import pigbank from '../../assets/pigbank.svg';
 import LayoutBase from '../../components/layout';
 import clsx from 'clsx';
 import TransferCard from '../transferCard';
+import DepositCard from '../depositCard';
 import Extract from '../extract';
 import UserAction from '../../store/actions/UserActions';
 import useFetch from '../../helpers/Hooks/useFetch';
@@ -23,20 +24,6 @@ import jwt_decode from 'jwt-decode';
 import { ExtratoConta } from '../../store/reducers/userReducers';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: '#F3EFF5',
-  },
-  button: {
-    color: '#275F40',
-    fontSize: '1rem',
-    padding: '5px 15px',
-    fontWeight: 'bold',
-    margin: '15px 0 15px 7%',
-  },
-  image: {
-    width: '50%',
-    marginLeft: '-18px',
-  },
   box: {
     color: '#275F40',
     display: 'flex',
@@ -47,17 +34,31 @@ const useStyles = makeStyles((theme) => ({
   marginBottom: {
     marginBottom: '30px',
   },
-  marginTop: {
-    marginTop: '50px',
-  },
   transferGrid: {
     backgroundColor: '#FAFAFA',
   },
   pigBank: {
     display: 'flex',
-    maxHeight: '155px',
     color: '#275F40',
-    marginLeft: '5%',
+    maxHeight: '155px',
+    minHeight: '155px',
+    margin: '5% 0 10%',
+    [theme.breakpoints.up(600)]: {
+      marginLeft: '5%',
+    },
+    '& img': {
+      margin: '0 5% 0 0',
+    },
+    '& h3': {
+      [theme.breakpoints.down(800)]: {
+        fontSize: '1.3rem',
+      },
+    },
+    '& h2': {
+      [theme.breakpoints.down(800)]: {
+        fontSize: '1.1rem',
+      },
+    },
   },
   depositTitle: {
     textAlign: 'center',
@@ -75,6 +76,8 @@ const useStyles = makeStyles((theme) => ({
   gridHeigh: {
     maxHeight: '30%',
     justifyContent: 'center',
+    borderBottom: '1px solid #D2CDD1',
+    margin: '25px 5%',
   },
   typography: {
     fontWeight: 'bold',
@@ -225,12 +228,7 @@ const Launch = () => {
   }, []);
 
   return (
-    <Grid
-      container
-      component="main"
-      alignContent="flex-start"
-      className={classes.root}
-    >
+    <Grid container component="main" alignContent="flex-start">
       <CssBaseline />
       <LayoutBase>
         <>
@@ -241,19 +239,18 @@ const Launch = () => {
             xs={12}
             sm={12}
             md={12}
-            className={clsx([classes.marginTop, classes.gridHeigh])}
+            className={classes.gridHeigh}
           >
-            <TransferCard />
             <Grid
+              md={9}
+              sm={9}
               xs={12}
-              sm={6}
-              md={3}
               elevation={6}
               component={Paper}
               square
               className={clsx([classes.pigBank, classes.transferGrid])}
             >
-              <img className={classes.image} alt="trasnfer" src={pigbank} />
+              <img alt="trasnfer" src={pigbank} />
               <Box>
                 <Typography
                   component="h3"
@@ -281,6 +278,8 @@ const Launch = () => {
                 </Typography>
               </Box>
             </Grid>
+            <TransferCard />
+            <DepositCard />
           </Grid>
           <Divider />
           <Grid
@@ -288,13 +287,9 @@ const Launch = () => {
             alignContent="flex-start"
             justify="center"
             xs={12}
-            sm={6}
+            sm={12}
             md={12}
-            className={clsx([
-              classes.marginTop,
-              classes.gridHeigh,
-              classes.centered,
-            ])}
+            className={clsx([classes.gridHeigh, classes.centered])}
           >
             <Grid xs={12} sm={4} md={7} elevation={6} component={Paper} square>
               <Extract extrato={extrato} />

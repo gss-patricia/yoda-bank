@@ -15,6 +15,9 @@ const Theme = ({ children }: ChildrenType) => {
       error: {
         main: '#B80C09',
       },
+      background: {
+        default: "#F3EFF5"
+      }
     },
     overrides: {
       MuiButton: {
