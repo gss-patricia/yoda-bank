@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Grid,
   Box,
@@ -21,11 +21,12 @@ import useForm from "../../helpers/Hooks/useForm";
 import EFieldForm from "../../Enums/EFieldForm";
 import TransitionsModal from "../modal";
 import { GET_SALDO } from "../../APIs/APIConta";
+import { PRODUCER_OPERATION } from "../../APIs/APITransfer";
 import useFetch from "../../helpers/Hooks/useFetch";
 import UserAction from "../../store/actions/UserActions";
 import cheers from "../../assets/hacker.svg";
 
-const useStyles = makeStyles((thee) => ({
+const useStyles = makeStyles(() => ({
   root: {
     backgroundColor: "#F3EFF5",
   },
@@ -85,12 +86,15 @@ const Transfer = () => {
   const [checked, setChecked] = useState(false);
   const [openModal, setModal] = useState(false);
 
-  const container = React.useRef();
-  const text = useForm(EFieldForm.text);
+  const container = useRef();
+  const transferForm = useRef();
+
+  const dispatch = useDispatch();
+  const { request } = useFetch();
   const { userReducers }: any = useSelector((state) => state);
   const { localStorageReducers }: any = useSelector((state) => state);
-  const { loading, error, request } = useFetch();
-  const dispatch = useDispatch();
+
+  const text = useForm(EFieldForm.text);
   const receiver = useForm(EFieldForm.text);
   const transferValue = useForm(EFieldForm.text);
 
@@ -101,15 +105,12 @@ const Transfer = () => {
     setChecked((prev) => !prev);
   };
 
-  const handleDialog = (param: any) => {
+  const handleDialog = async (param: any) => {
     if (param === "Sim") {
-      //faz a chamada a api
-      //pega o retorno e mostra alert
-      setTimeout(() => {
-        setModal(true);
-      }, 1000);
+      if (receiver.value.length >= 0 && transferValue.value.length >= 0) {
+        handleSubmit();
+      }
     }
-
     setModal(false);
   };
 
@@ -129,10 +130,24 @@ const Transfer = () => {
     };
 
     getSaldo();
-  }, [userReducers, openModal]);
+  }, [saldo, openModal]);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
+    const { url, options } = PRODUCER_OPERATION(
+      {
+        destino: receiver.value,
+        origem: uuid,
+        valor: 0,
+      },
+      yoToken
+    );
+
+    const { response } = await request(url, options);
+
+    console.log(response);
+    if (response) {
+      setModal(true);
+    }
   };
 
   return (
@@ -151,7 +166,7 @@ const Transfer = () => {
           <AddIcon />
         </Fab>
       </Box>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} id="transferForm">
         <Collapse in={checked} className={classes.collapsedInput}>
           <TextField
             label="Chave"
@@ -166,7 +181,7 @@ const Transfer = () => {
             required
             name="transferValue"
             label="R$"
-            type="text"
+            type="number"
             className={classes.inputMargin}
             id="trasferValue"
             {...text}
@@ -187,7 +202,6 @@ const Transfer = () => {
                   className={classes.button}
                   ref={composeRefs(triggerRef, container)}
                   onClick={toggle}
-                  type="submit"
                 >
                   {isOpen ? (
                     <CircularProgress size={24} color="secondary" />
