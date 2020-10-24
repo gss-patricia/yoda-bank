@@ -11,9 +11,6 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import LoginBackground from '../../assets/login-background.svg';
-import Logo from '../../assets/logo.svg';
 import EFieldForm from '../../Enums/EFieldForm';
 import useFetch from '../../helpers/Hooks/useFetch';
 import { AUTHENTICATE } from '../../APIs/APIAuth';
@@ -21,67 +18,8 @@ import { useHistory, Link } from 'react-router-dom';
 import useForm from '../../helpers/Hooks/useForm';
 import Error from '../../components/error/Error';
 import IUser from '../../Interfaces/IUser';
-
-export const useStyles = makeStyles((theme) => ({
-  root: {
-    height: '100vh',
-    backgroundColor: '#F3EFF5',
-  },
-  imageLogin: {
-    backgroundColor: theme.palette.primary.light,
-    backgroundImage: `url(${LoginBackground})`,
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-    position: 'relative',
-  },
-  overlay: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'rgba(148, 236, 190, 0.80)',
-    color: '#FFFFFF',
-  },
-  main: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  paper: {
-    margin: theme.spacing(2, 2),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: theme.spacing(4, 2, 4, 2),
-  },
-  form: {
-    width: '100%',
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(2, 0),
-  },
-  link: {
-    justifyContent: 'center',
-  },
-  title: {
-    margin: theme.spacing(2, 0),
-  },
-  boxPhrase: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    minHeight: '100vh',
-    margin: theme.spacing(0, 10),
-    textShadow: '0.5px 0.5px 1px #000',
-    '@media (max-width: 955px)': {
-      display: 'none',
-    },
-  },
-  mainPhrase: {
-    fontWeight: 500,
-    textAlign: 'center',
-  },
-  secundaryPhrase: { fontWeight: 700 },
-}));
+import Logo from '../logo/Logo';
+import useStyles from './Login.style';
 
 export default function Login() {
   const [errorLogin, setErrorLogin] = useState('');
@@ -155,7 +93,7 @@ export default function Login() {
       </Grid>
       <Grid item xs={12} sm={8} md={5} className={classes.main}>
         <Paper className={classes.paper} elevation={6} square>
-          <img src={Logo} alt="Logo Yoda - Bank" width="58" height="60" />
+          <Logo />
           <Typography component="h1" variant="h5">
             Faça seu login
           </Typography>
