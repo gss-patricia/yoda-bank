@@ -75,15 +75,6 @@ export default function TemporaryDrawer() {
           </Link>
         </ListItem>
         <Divider />
-        <ListItem button key="page-deposit">
-          <ListItemIcon>
-            <AttachMoneyIcon />
-          </ListItemIcon>
-          <Link to="deposit" className={clsx(classes.link)}>
-            <ListItemText primary="Depósitos" />
-          </Link>
-        </ListItem>
-        <Divider />
       </List>
     </div>
   );

@@ -14,6 +14,7 @@ import pigbank from '../../assets/pigbank.svg';
 import LayoutBase from '../../components/layout';
 import clsx from 'clsx';
 import TransferCard from '../transferCard';
+import DepositCard from '../depositCard';
 import Extract from '../extract';
 import UserAction from '../../store/actions/UserActions';
 import useFetch from '../../helpers/Hooks/useFetch';
@@ -22,16 +23,6 @@ import IUser from '../../Interfaces/IUser';
 import jwt_decode from 'jwt-decode';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: '#F3EFF5',
-  },
-  button: {
-    color: '#275F40',
-    fontSize: '1rem',
-    padding: '5px 15px',
-    fontWeight: 'bold',
-    margin: '15px 0 15px 7%',
-  },
   box: {
     color: '#275F40',
     display: 'flex',
@@ -42,9 +33,6 @@ const useStyles = makeStyles((theme) => ({
   marginBottom: {
     marginBottom: '30px',
   },
-  marginTop: {
-    marginTop: '50px',
-  },
   transferGrid: {
     backgroundColor: '#FAFAFA',
   },
@@ -53,7 +41,23 @@ const useStyles = makeStyles((theme) => ({
     color: "#275F40",
     maxHeight: "155px",
     minHeight: "155px",
-    margin: "10% 5%",
+    margin: "5% 0 10%",
+    [theme.breakpoints.up(600)]: {
+      marginLeft: '5%',
+    },
+    "& img": {
+      margin: '0 5% 0 0',
+    },
+    "& h3": {
+      [theme.breakpoints.down(800)]: {
+        fontSize: '1.3rem',
+      }
+    },
+    "& h2": {
+      [theme.breakpoints.down(800)]: {
+        fontSize: '1.1rem',
+      }
+    },
   },
   depositTitle: {
     textAlign: 'center',
@@ -71,6 +75,8 @@ const useStyles = makeStyles((theme) => ({
   gridHeigh: {
     maxHeight: '30%',
     justifyContent: 'center',
+    borderBottom: '1px solid #D2CDD1',
+    margin: '25px 5%',
   },
   typography: {
     fontWeight: 'bold',
@@ -139,7 +145,6 @@ const Launch = () => {
       container
       component="main"
       alignContent="flex-start"
-      className={classes.root}
     >
       <CssBaseline />
       <LayoutBase>
@@ -151,13 +156,13 @@ const Launch = () => {
             xs={12}
             sm={12}
             md={12}
-            className={clsx([classes.marginTop, classes.gridHeigh])}
+            className={classes.gridHeigh}
           >
-            <TransferCard />
+            
             <Grid
+              md={9}
+              sm={9}
               xs={12}
-              sm={6}
-              md={3}
               elevation={6}
               component={Paper}
               square
@@ -191,6 +196,8 @@ const Launch = () => {
                 </Typography>
               </Box>
             </Grid>
+            <TransferCard />
+            <DepositCard />
           </Grid>
           <Divider />
           <Grid
@@ -198,15 +205,14 @@ const Launch = () => {
             alignContent="flex-start"
             justify="center"
             xs={12}
-            sm={6}
+            sm={12}
             md={12}
             className={clsx([
-              classes.marginTop,
               classes.gridHeigh,
               classes.centered,
             ])}
           >
-            <Grid xs={12} sm={4} md={7} elevation={6} component={Paper} square>
+            <Grid xs={12} sm={8} md={7} elevation={6} component={Paper} square>
               <Extract />
             </Grid>
           </Grid>

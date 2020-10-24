@@ -17,8 +17,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#F3EFF5",
   },
   image: {
-    width: "50%",
-    marginLeft: "-18px",
+    [theme.breakpoints.down(400)]: {
+      opacity: '0',
+      position: 'absolute',
+    },
   },
   list: {
     backgroundColor: "white",
@@ -37,7 +39,7 @@ const Extract = () => {
   return (
     <List className={classes.list}>
       <ListItem>
-        <ListItemAvatar>
+        <ListItemAvatar className={classes.image}>
           <img className={classes.thumbnail} alt="transfer" src={transfer} />
         </ListItemAvatar>
         <ListItemText primary="Transferido foi" />
@@ -49,7 +51,7 @@ const Extract = () => {
       </ListItem>
       <Divider />
       <ListItem>
-        <ListItemAvatar>
+        <ListItemAvatar className={classes.image}>
           <img className={classes.thumbnail} alt="received" src={cheers} />
         </ListItemAvatar>
         <ListItemText primary="Recebido" />
@@ -61,7 +63,7 @@ const Extract = () => {
       </ListItem>
       <Divider />
       <ListItem>
-        <ListItemAvatar>
+        <ListItemAvatar className={classes.image}>
           <img className={classes.thumbnail} alt="transfer" src={wallet} />
         </ListItemAvatar>
         <ListItemText primary="Estornado" />

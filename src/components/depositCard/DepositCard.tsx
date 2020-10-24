@@ -14,7 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import clsx from 'clsx';
 
-import transfer from '../../assets/transfer.svg';
+import wallet from '../../assets/wallet.svg';
 import AlertDialog from '../dialog';
 import composeRefs from '../../helpers/composeRefs';
 
@@ -24,9 +24,11 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '1rem',
     padding: '5px 15px',
     fontWeight: 'bold',
+    marginBottom: '10px',
   },
   image: {
     minWidth: '191px',
+    width: '30%',
     [theme.breakpoints.down(400)]: {
       opacity: '0',
       position: 'absolute',
@@ -59,6 +61,13 @@ const useStyles = makeStyles((theme) => ({
   },
   collapsedInput: {
     padding: '5% 0',
+    display: 'flex',
+    alignContent: 'flex-end',
+    alignItems: 'flex-end',
+    [theme.breakpoints.down(600)]: {
+      flexWrap: 'wrap',
+      minHeight: 'auto',
+    },
   },
   inputMargin: {
     margin: '15px 15px',
@@ -81,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
   transferGrid: {
     backgroundColor: '#fff',
     [theme.breakpoints.up(600)]: {
-      margin: "0 0 5%",
+      margin: "0 0 5% 5%",
     },
   },
   typography: {
@@ -98,7 +107,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Transfer = () => {
+const Deposit = () => {
   const classes = useStyles();
   const [transferValue, setInputTransfer] = useState();
   const container = React.useRef();
@@ -117,16 +126,13 @@ const Transfer = () => {
       className={clsx([classes.marginBottom, classes.transferGrid])}
     >
       <Box className={classes.box}>
-        <img className={classes.image} alt="transfer" src={transfer} />
+        <img className={classes.image} alt="transfer" src={wallet} />
         <Typography component="h3" variant="h5" className={classes.typography}>
-          Transferência
+          Depósito
         </Typography>
+        
       </Box>
       <Box className={classes.collapsedInput}>
-        <TextField
-          label="Chave"
-          className={clsx([classes.inputMargin, classes.inputWidth])}
-        />
         <Input
           className={classes.inputMargin}
           startAdornment={<InputAdornment position="start">R$</InputAdornment>}
@@ -149,7 +155,7 @@ const Transfer = () => {
                 ref={composeRefs(triggerRef, container)}
                 onClick={toggle}
               >
-                Transferir
+                Depositar
               </Button>
             </>
           )}
@@ -159,4 +165,4 @@ const Transfer = () => {
   );
 };
 
-export default Transfer;
+export default Deposit;
