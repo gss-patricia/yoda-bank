@@ -5,8 +5,6 @@ import {
   Typography,
   Button,
   Collapse,
-  InputAdornment,
-  Input,
   Fab,
   TextField,
 } from "@material-ui/core";
@@ -17,6 +15,8 @@ import clsx from "clsx";
 import transfer from "../../assets/transfer.svg";
 import AlertDialog from "../dialog";
 import composeRefs from "../helpers/composeRefs";
+import EFieldForm from "../../Enums/EFieldForm";
+import useForm from "../helpers/Hooks/useForm";
 
 const useStyles = makeStyles((thee) => ({
   root: {
@@ -75,15 +75,25 @@ const Transfer = () => {
   const [checked, setChecked] = useState(false);
   const [transferValue, setInputTransfer] = useState();
   const container = React.useRef();
+  const text = useForm(EFieldForm.text);
 
   const handleExpandClick = () => {
     setChecked((prev) => !prev);
   };
 
-  const handleDialog = (param: any) => console.log(param);
+  const handleDialog = (param: any) => {
+    if (param === "Sim") {
+      //faz a chamada a api
+      //pega o retorno e mostra alert
+    }
 
-  const handleTransfer = (event: any) => {
-    console.log(event.target.value);
+    return null;
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    handleDialog("vaii porra");
   };
 
   return (
@@ -102,39 +112,48 @@ const Transfer = () => {
           <AddIcon />
         </Fab>
       </Box>
-      <Collapse in={checked} className={classes.collapsedInput}>
-        <TextField
-          label="Chave"
-          className={clsx([classes.inputMargin, classes.inputWidth])}
-        />
-        <Input
-          className={classes.inputMargin}
-          startAdornment={<InputAdornment position="start">R$</InputAdornment>}
-          onChange={handleTransfer}
-        />
+      <form onSubmit={handleSubmit}>
+        <Collapse in={checked} className={classes.collapsedInput}>
+          <TextField
+            label="Chave"
+            required
+            className={clsx([classes.inputMargin, classes.inputWidth])}
+          />
+          <TextField
+            margin="normal"
+            required
+            name="transferValue"
+            label="R$"
+            type="text"
+            className={classes.inputMargin}
+            id="trasferValue"
+            {...text}
+          />
 
-        <AlertDialog
-          title="Transferir"
-          titleId="transfer-op"
-          content="A transferência você confirma?"
-          contentId="transfer-cont"
-          ButtonTextFirst="Não"
-          ButtonTextSecond="Sim"
-          handleAgree={handleDialog}
-        >
-          {({ isOpen, triggerRef, toggle }) => (
-            <>
-              <Button
-                className={classes.button}
-                ref={composeRefs(triggerRef, container)}
-                onClick={toggle}
-              >
-                Transferir
-              </Button>
-            </>
-          )}
-        </AlertDialog>
-      </Collapse>
+          <AlertDialog
+            title="Transferir"
+            titleId="transfer-op"
+            content="A transferência você confirma?"
+            contentId="transfer-cont"
+            ButtonTextFirst="Não"
+            ButtonTextSecond="Sim"
+            handleAgree={handleDialog}
+          >
+            {({ isOpen, triggerRef, toggle }) => (
+              <>
+                <Button
+                  className={classes.button}
+                  ref={composeRefs(triggerRef, container)}
+                  onClick={toggle}
+                  type="submit"
+                >
+                  Transferir
+                </Button>
+              </>
+            )}
+          </AlertDialog>
+        </Collapse>
+      </form>
     </Grid>
   );
 };

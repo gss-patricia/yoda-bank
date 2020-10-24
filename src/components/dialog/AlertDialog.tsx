@@ -1,4 +1,4 @@
-import React, { ReactNode, RefObject, useRef } from "react";
+import React, { ReactNode, RefObject, useRef, MouseEvent } from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -37,9 +37,9 @@ const AlertDialog = ({
   const isOpen: boolean = open;
   const triggerRef: RefObject<any> = useRef();
 
-  const handleClose = () => {
+  const handleClose = (event: MouseEvent, param: string) => {
     setOpen(false);
-    handleAgree("Agreee");
+    handleAgree(param);
   };
 
   return (
@@ -62,10 +62,21 @@ const AlertDialog = ({
           <DialogContentText id={contentId}>{content}</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button
+            onClick={(event: MouseEvent) => {
+              handleClose(event, ButtonTextFirst);
+            }}
+            color="primary"
+          >
             {ButtonTextFirst}
           </Button>
-          <Button onClick={handleClose} color="primary" autoFocus>
+          <Button
+            onClick={(event: MouseEvent) => {
+              handleClose(event, ButtonTextSecond!);
+            }}
+            color="primary"
+            autoFocus
+          >
             {ButtonTextSecond}
           </Button>
         </DialogActions>
