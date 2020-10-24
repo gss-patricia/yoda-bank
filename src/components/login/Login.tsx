@@ -1,92 +1,91 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import LocalStorageActions from "../../store/actions/LocalStorageActions";
-import { StorageState } from "../../store/reducers/localStorageReducers";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import Paper from "@material-ui/core/Paper";
-import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import LoginBackground from "../../assets/login-background.svg";
-import Logo from "../../assets/logo.svg";
-import EFieldForm from "../../Enums/EFieldForm";
-import useFetch from "../helpers/Hooks/useFetch";
-import { AUTHENTICATE } from "../../APIs/APIAuth";
-import { useHistory, Link } from "react-router-dom";
-import useForm from "../helpers/Hooks/useForm";
-import Error from "../../components/error/Error";
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import jwt_decode from 'jwt-decode';
+import LocalStorageActions from '../../store/actions/LocalStorageActions';
+import UserActions from '../../store/actions/UserActions';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import LoginBackground from '../../assets/login-background.svg';
+import Logo from '../../assets/logo.svg';
+import EFieldForm from '../../Enums/EFieldForm';
+import useFetch from '../../helpers/Hooks/useFetch';
+import { AUTHENTICATE } from '../../APIs/APIAuth';
+import { useHistory, Link } from 'react-router-dom';
+import useForm from '../../helpers/Hooks/useForm';
+import Error from '../../components/error/Error';
+import IUser from '../../Interfaces/IUser';
 
 export const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100vh",
-    backgroundColor: "#F3EFF5",
+    height: '100vh',
+    backgroundColor: '#F3EFF5',
   },
   imageLogin: {
     backgroundColor: theme.palette.primary.light,
     backgroundImage: `url(${LoginBackground})`,
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "cover",
-    position: "relative",
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    position: 'relative',
   },
   overlay: {
-    width: "100%",
-    height: "100%",
-    backgroundColor: "rgba(148, 236, 190, 0.80)",
-    color: "#FFFFFF",
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(148, 236, 190, 0.80)',
+    color: '#FFFFFF',
   },
   main: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   paper: {
     margin: theme.spacing(2, 2),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
     padding: theme.spacing(4, 2, 4, 2),
   },
   form: {
-    width: "100%",
+    width: '100%',
     marginTop: theme.spacing(1),
   },
   submit: {
     margin: theme.spacing(2, 0),
   },
   link: {
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   title: {
     margin: theme.spacing(2, 0),
   },
   boxPhrase: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    minHeight: "100vh",
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    minHeight: '100vh',
     margin: theme.spacing(0, 10),
-    textShadow: "0.5px 0.5px 1px #000",
-    "@media (max-width: 955px)": {
-      display: "none",
+    textShadow: '0.5px 0.5px 1px #000',
+    '@media (max-width: 955px)': {
+      display: 'none',
     },
   },
   mainPhrase: {
     fontWeight: 500,
-    textAlign: "center",
+    textAlign: 'center',
   },
   secundaryPhrase: { fontWeight: 700 },
 }));
 
 export default function Login() {
+  const [errorLogin, setErrorLogin] = useState('');
   const dispatch = useDispatch();
-
-  const { localStorageReducers }: any = useSelector(
-    (state: StorageState) => state
-  );
 
   useEffect(() => {
     dispatch({
@@ -97,12 +96,13 @@ export default function Login() {
   const classes = useStyles();
   const history = useHistory();
 
-  const { loading, error, request, data } = useFetch();
+  const { loading, request } = useFetch();
   const email = useForm(EFieldForm.email);
   const password = useForm(EFieldForm.text);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (loading) return null;
 
     if ((email.validate(), password.validate())) {
       const { url, options } = AUTHENTICATE({
@@ -110,17 +110,21 @@ export default function Login() {
         password: password.value,
       });
 
-      if (!localStorageReducers?.yoToken) {
-        const { response, json } = await request(url, options);
-        if (response?.ok) {
-          dispatch({
-            type: LocalStorageActions.SAVE_LOCAL_STORAGE,
-            state: json.token,
-          });
-          history.push("/");
-        }
+      const { response, json } = await request(url, options);
+      if (response?.ok) {
+        dispatch({
+          type: LocalStorageActions.SAVE_LOCAL_STORAGE,
+          state: json.token,
+        });
+        const user: IUser = jwt_decode(json.token);
+
+        dispatch({
+          type: UserActions.SET_USER,
+          payload: { user: user },
+        });
+        history.push('/');
       } else {
-        history.push("/");
+        setErrorLogin('Usuário ou senha inválido');
       }
     }
   }
@@ -190,23 +194,24 @@ export default function Login() {
               {loading ? (
                 <CircularProgress size={24} color="secondary" />
               ) : (
-                "ENTRAR"
+                'ENTRAR'
               )}
             </Button>
-            <Error error={error} />
+            <Error error={errorLogin} />
             <Grid container className={classes.link}>
               <Grid item>
                 <Link to="/register">
-                  {"Não tem um conta, entrar para força"}
+                  {'Não tem um conta, entrar para força'}
                 </Link>
               </Grid>
             </Grid>
             <Box mt={3}>
               <Typography variant="body2" color="textSecondary" align="center">
-                {"Desenvolvido para estudo no BeerTechTalents(2020) - "}
+                {'Desenvolvido para estudo no BeerTechTalents(2020) - '}
                 <a
                   href="https://github.com/gss-patricia/yoda-coins-beertech"
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Github
                 </a>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from 'react';
 import {
   makeStyles,
   Grid,
@@ -7,73 +7,68 @@ import {
   Typography,
   Box,
   Button,
-} from "@material-ui/core";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import LocalStorageActions from "../../store/actions/LocalStorageActions";
+} from '@material-ui/core';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import LocalStorageActions from '../../store/actions/LocalStorageActions';
 
-import Logo from "../../assets/logo-white.svg";
-import ToggleDrawer from "../toggleDrawer";
-import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import Logo from '../../assets/logo-white.svg';
+import ToggleDrawer from '../toggleDrawer';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "70px",
+    height: '70px',
   },
   headerWrapper: {
     backgroundColor: theme.palette.primary.main,
-    display: "flex",
+    display: 'flex',
   },
   paper: {
-    display: "flex",
-    color: "white",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    height: "70px",
+    display: 'flex',
+    color: 'white',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    height: '70px',
     padding: theme.spacing(1),
-    width: "30%",
+    width: '30%',
   },
   paperSecond: {
-    display: "flex",
-    flexDirection: "row",
-    color: "white",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    height: "70px",
+    display: 'flex',
+    flexDirection: 'row',
+    color: 'white',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    height: '70px',
     padding: theme.spacing(2),
-    width: "70%",
+    width: '70%',
   },
   logout: {
-    width: "50px",
-    marginLeft: "10px",
-    backgroundColor: "#4C2A85",
+    width: '50px',
+    marginLeft: '10px',
+    backgroundColor: '#4C2A85',
   },
   logo: {
-    marginRight: "20px",
+    marginRight: '20px',
   },
 }));
 
 const Header = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-
-  const matches = useMediaQuery("(min-width:1000px)");
-
-  useEffect(() => {
-    dispatch({
-      type: LocalStorageActions.GET,
-    });
-  }, [dispatch]);
-
+  const matches = useMediaQuery('(min-width:1000px)');
   const history = useHistory();
+
+  const { userReducers }: any = useSelector((state) => state);
 
   async function remove() {
     dispatch({
       type: LocalStorageActions.REMOVE_LOCAL_STORAGE,
       state: '',
     });
-    history.push("/login");
+    history.push('/login');
   }
 
   return (
@@ -83,7 +78,7 @@ const Header = () => {
         <div className={classes.headerWrapper}>
           <Box className={classes.paper} width="50%">
             <ToggleDrawer />
-            <img src={Logo} alt="Logo" />
+            <img src={Logo} alt="Logo" width="45" />
             {matches && (
               <Typography component="h1" variant="h5">
                 Yoda Coins Beer
@@ -91,7 +86,9 @@ const Header = () => {
             )}
           </Box>
           <Box className={classes.paperSecond} width="50%">
-            <span>Fakewilson Silva</span>
+            <p>
+              Olá, <strong>{userReducers.nome}</strong>
+            </p>
             <Button
               fullWidth
               variant="contained"
