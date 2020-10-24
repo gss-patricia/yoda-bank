@@ -32,8 +32,10 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'flex-start',
     height: '70px',
-    padding: theme.spacing(1),
     width: '30%',
+    "& h1": {
+      marginLeft: '5%',
+    },
   },
   paperSecond: {
     display: 'flex',
@@ -53,6 +55,9 @@ const useStyles = makeStyles((theme) => ({
   logo: {
     marginRight: '20px',
   },
+  width: {
+    minWidth: '100%',
+  }
 }));
 
 const Header = () => {
@@ -74,7 +79,7 @@ const Header = () => {
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={12} sm={8} md={12} component={Paper} elevation={6} square>
+      <Grid item xs={12} sm={8} md={12} component={Paper} elevation={6} square className={classes.width}>
         <div className={classes.headerWrapper}>
           <Box className={classes.paper} width="50%">
             <ToggleDrawer />

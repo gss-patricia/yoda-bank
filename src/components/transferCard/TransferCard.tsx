@@ -4,13 +4,10 @@ import {
   Box,
   Typography,
   Button,
-  Collapse,
-  Fab,
   TextField,
   CircularProgress,
 } from "@material-ui/core";
 
-import AddIcon from "@material-ui/icons/Add";
 import CurrencyTextField from "@unicef/material-ui-currency-textfield";
 import { useSelector, useDispatch } from "react-redux";
 import clsx from "clsx";
@@ -19,7 +16,7 @@ import useStyles from "./TransferCard.style";
 import transfer from "../../assets/transfer.svg";
 import AlertDialog from "../dialog";
 import composeRefs from "../../helpers/composeRefs";
-import EFieldForm from "../../Enums/EFieldForm";
+
 import TransitionsModal from "../modal";
 import { GET_SALDO } from "../../APIs/APIConta";
 import { PRODUCER_OPERATION } from "../../APIs/APITransfer";
@@ -49,10 +46,6 @@ const Transfer = () => {
 
   const { yoToken } = localStorageReducers;
   const { uuid, saldo } = userReducers;
-
-  const handleExpandClick = () => {
-    setChecked((prev: any) => !prev);
-  };
 
   const handleDialog = async (param: string) => {
     if (param === "Sim") {
@@ -117,70 +110,67 @@ const Transfer = () => {
 
   return (
     <Grid
+      md={5}
+      sm={5}
       xs={12}
-      sm={9}
-      md={3}
       className={clsx([classes.marginBottom, classes.transferGrid])}
     >
-      <Box onClick={handleExpandClick} className={classes.box}>
+      <Box className={classes.box}>
         <img className={classes.image} alt="transfer" src={transfer} />
         <Typography component="h3" variant="h5" className={classes.typography}>
-          Transferir
+          Transferência
         </Typography>
-        <Fab className={classes.addIcon} color="primary" aria-label="add">
-          <AddIcon />
-        </Fab>
       </Box>
       <form onSubmit={handleSubmit} id="transferForm">
-        <Collapse in={checked} className={classes.collapsedInput}>
-          <TextField
-            label="Chave"
-            required
-            value={receiver}
-            name="receiver"
-            id="receiver"
-            type="text"
-            className={clsx([classes.inputMargin, classes.inputWidth])}
-            onChange={changeReceiver}
-          />
+        <TextField
+          label="Chave"
+          required
+          value={receiver}
+          name="receiver"
+          id="receiver"
+          type="text"
+          className={clsx([classes.inputMargin, classes.inputWidth])}
+          onChange={changeReceiver}
+        />
 
-          <CurrencyTextField
-            variant="standard"
-            value={valueMoney}
-            currencySymbol="R$"
-            required
-            outputFormat="string"
-            decimalCharacter="."
-            digitGroupSeparator=","
-            onChange={changeCurrency}
-          />
-
-          <AlertDialog
-            title="Transferir"
-            titleId="transfer-op"
-            content="A transferência você confirma?"
-            contentId="transfer-cont"
-            ButtonTextFirst="Não"
-            ButtonTextSecond="Sim"
-            handleAgree={handleDialog}
-          >
-            {({ isOpen, triggerRef, toggle }) => (
-              <>
-                <Button
-                  className={classes.button}
-                  ref={composeRefs(triggerRef, container)}
-                  onClick={toggle}
-                >
-                  {isOpen ? (
-                    <CircularProgress size={24} color="secondary" />
-                  ) : (
-                    "Transferir"
-                  )}
-                </Button>
-              </>
-            )}
-          </AlertDialog>
-        </Collapse>
+        <CurrencyTextField
+          variant="standard"
+          value={valueMoney}
+          label="R$"
+          outputFormat="string"
+          text
+          required
+          decimalCharacter=","
+          digitGroupSeparator="."
+          textAlign="left"
+          className={clsx([classes.inputMargin, classes.inputWidth])}
+          onChange={(event: any, value: any) => setCurrency(value)}
+        />
+        <AlertDialog
+          title="Transferir"
+          titleId="transfer-op"
+          content="A transferência você confirma?"
+          contentId="transfer-cont"
+          ButtonTextFirst="Não"
+          ButtonTextSecond="Sim"
+          handleAgree={handleDialog}
+        >
+          {({ isOpen, triggerRef, toggle }) => (
+            <>
+              <Button
+                className={classes.button}
+                ref={composeRefs(triggerRef, container)}
+                onClick={toggle}
+              >
+                {isOpen ? (
+                  <CircularProgress size={24} color="secondary" />
+                ) : (
+                  "Transferir"
+                )}
+              </Button>
+            </>
+          )}
+        </AlertDialog>
       </form>
 
       {openModal && (
