@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from "react";
 import {
   makeStyles,
   Grid,
@@ -7,85 +7,68 @@ import {
   Typography,
   Box,
   Button,
-} from '@material-ui/core';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import LocalStorageActions from '../../store/actions/LocalStorageActions';
+} from "@material-ui/core";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import LocalStorageActions from "../../store/actions/LocalStorageActions";
 
-import Logo from '../../assets/logo-white.svg';
-import ToggleDrawer from '../toggleDrawer';
-import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { UserState } from '../../store/reducers/userReducers';
-import UserAction from '../../store/actions/UserActions';
-import IUser from '../../Interfaces/IUser';
-import jwt_decode from 'jwt-decode';
-import { StorageState } from '../../store/reducers/localStorageReducers';
+import Logo from "../../assets/logo-white.svg";
+import ToggleDrawer from "../toggleDrawer";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: '70px',
+    height: "70px",
   },
   headerWrapper: {
     backgroundColor: theme.palette.primary.main,
-    display: 'flex',
+    display: "flex",
   },
   paper: {
-    display: 'flex',
-    color: 'white',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    height: '70px',
+    display: "flex",
+    color: "white",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    height: "70px",
     padding: theme.spacing(1),
-    width: '30%',
+    width: "30%",
   },
   paperSecond: {
-    display: 'flex',
-    flexDirection: 'row',
-    color: 'white',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    height: '70px',
+    display: "flex",
+    flexDirection: "row",
+    color: "white",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    height: "70px",
     padding: theme.spacing(2),
-    width: '70%',
+    width: "70%",
   },
   logout: {
-    width: '50px',
-    marginLeft: '10px',
-    backgroundColor: '#4C2A85',
+    width: "50px",
+    marginLeft: "10px",
+    backgroundColor: "#4C2A85",
   },
   logo: {
-    marginRight: '20px',
+    marginRight: "20px",
   },
 }));
 
 const Header = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const matches = useMediaQuery('(min-width:1000px)');
+  const matches = useMediaQuery("(min-width:1000px)");
   const history = useHistory();
 
-  const { localStorageReducers }: any = useSelector(
-    (state: StorageState) => state,
-  );
-
-  const user: IUser = jwt_decode(localStorageReducers.yoToken);
-
-  useEffect(() => {
-    dispatch({
-      type: UserAction.SET_USER,
-      payload: { user: user },
-    });
-  }, [dispatch]);
-  const { userReducers }: any = useSelector((state: UserState) => state);
+  const { userReducers }: any = useSelector((state) => state);
 
   async function remove() {
     dispatch({
       type: LocalStorageActions.REMOVE_LOCAL_STORAGE,
-      state: '',
+      state: "",
     });
-    history.push('/login');
+    history.push("/login");
   }
 
   return (
