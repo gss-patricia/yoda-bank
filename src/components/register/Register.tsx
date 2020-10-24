@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Button,
   CssBaseline,
@@ -7,72 +7,72 @@ import {
   Grid,
   Typography,
   CircularProgress,
-} from "@material-ui/core/";
-import { useHistory, Link } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
-import { CREATE_CONTA } from "../../APIs/APIConta";
-import Logo from "../../assets/logo.svg";
-import RegisterBackground from "../../assets/background.svg";
-import useForm from "../helpers/Hooks/useForm";
-import EFieldForm from "../../Enums/EFieldForm";
-import useFetch from "../helpers/Hooks/useFetch";
-import Error from "../../components/error/Error";
-import { EPerfil } from "../../Interfaces/IUser";
+} from '@material-ui/core/';
+import { useHistory, Link } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import { CREATE_CONTA } from '../../APIs/APIConta';
+import Logo from '../../assets/logo.svg';
+import RegisterBackground from '../../assets/background.svg';
+import useForm from '../helpers/Hooks/useForm';
+import EFieldForm from '../../Enums/EFieldForm';
+import useFetch from '../helpers/Hooks/useFetch';
+import Error from '../../components/error/Error';
+import { EPerfil } from '../../Interfaces/IUser';
 
 export const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100vh",
-    backgroundColor: "#F3EFF5",
+    height: '100vh',
+    backgroundColor: '#F3EFF5',
   },
   imageRegister: {
     backgroundColor: theme.palette.primary.light,
     backgroundImage: `url(${RegisterBackground})`,
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "cover",
-    position: "relative",
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    position: 'relative',
   },
   overlay: {
-    width: "100%",
-    height: "100%",
-    backgroundColor: "rgba(148, 236, 190, 0.80)",
-    color: "#FFFFFF",
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(148, 236, 190, 0.80)',
+    color: '#FFFFFF',
   },
   main: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   paper: {
     margin: theme.spacing(2, 2),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
     padding: theme.spacing(4, 2, 4, 2),
   },
   form: {
-    width: "100%",
+    width: '100%',
     marginTop: theme.spacing(1),
   },
   submit: {
     margin: theme.spacing(2, 0),
   },
   link: {
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   boxPhrase: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    minHeight: "100vh",
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    minHeight: '100vh',
     margin: theme.spacing(0, 10),
-    textShadow: "0.5px 0.5px 1px #000",
-    "@media (max-width: 955px)": {
-      display: "none",
+    textShadow: '0.5px 0.5px 1px #000',
+    '@media (max-width: 955px)': {
+      display: 'none',
     },
   },
   mainPhrase: {
     fontWeight: 500,
-    textAlign: "center",
+    textAlign: 'center',
   },
   secundaryPhrase: { fontWeight: 700 },
 }));
@@ -84,17 +84,17 @@ export default function SignInSide() {
   const { loading, error, request } = useFetch();
   const name = useForm(EFieldForm.text);
   const email = useForm(EFieldForm.email);
-  const cpfCNPJ = useForm(EFieldForm.text);
+  const cpfCNPJ = useForm(EFieldForm.cnpj);
   const password = useForm(EFieldForm.password);
   const confirmPassword = useForm(EFieldForm.password);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (loading) return null;
 
     if (
       (name.validate(),
       email.validate(),
-      cpfCNPJ.validate(),
       cpfCNPJ.validate(),
       password.validate(),
       password.value === confirmPassword.value)
@@ -106,11 +106,11 @@ export default function SignInSide() {
         email: email.value,
         cnpj: cpfCNPJ.value,
         senha: password.value,
-        perfil: EPerfil.USER ? "USER" : "ADMIN",
+        perfil: EPerfil.USER ? 'USER' : 'ADMIN',
       });
 
       const { response } = await request(url, options);
-      if (response?.ok) return history.push("/login");
+      if (response?.ok) return history.push('/login');
     }
   }
 
@@ -189,13 +189,13 @@ export default function SignInSide() {
               {loading ? (
                 <CircularProgress size={24} color="secondary" />
               ) : (
-                "CADASTRAR"
+                'CADASTRAR'
               )}
             </Button>
             <Error error={error} />
             <Grid container className={classes.link}>
               <Grid item>
-                <Link to="/login">{"Já sou da força"}</Link>
+                <Link to="/login">{'Já sou da força'}</Link>
               </Grid>
             </Grid>
           </form>

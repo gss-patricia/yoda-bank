@@ -5,7 +5,8 @@ const errorMessages: string[] = [
   "Informe um email válido. Ex: yoda@yoda.com",
   "A senha precisa ter no mínimo 8 caracteres, sendo 1 maíusculo, 1 minúsculo e 1 digito.",
   "Informe apenas números.",
-  "Informação obrigatória, por favor realize o preenchimento",
+  "Informação obrigatória, por favor realize o preenchimento.",
+  "O CNPJ deve ser numérico e conter exatamente 14 dígitos. Ex : 03162704000159"
 ];
 
 const types = {
@@ -20,6 +21,10 @@ const types = {
   number: {
     regex: /^\d+$/,
     message: errorMessages[2],
+  },
+  cnpj: {
+    regex: /^\d{14,14}$/,
+    message: errorMessages[4],
   },
 };
 
@@ -55,6 +60,12 @@ const useForm = (type?: EFieldForm) => {
           return false;
         }
         break;
+      case EFieldForm.cnpj:
+          if (!types.cnpj.regex.test(value)) {
+            setHelperText(types.cnpj.message);
+            return false;
+          }
+          break;
       default:
         break;
     }
