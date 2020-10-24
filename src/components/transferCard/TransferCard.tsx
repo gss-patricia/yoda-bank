@@ -137,6 +137,7 @@ const Transfer = () => {
           variant="standard"
           value={valueMoney}
           label="R$"
+          currencySymbol=""
           outputFormat="string"
           text
           required
