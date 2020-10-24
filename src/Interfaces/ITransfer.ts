@@ -1,5 +1,5 @@
 export default interface ITransfer {
   destino: string;
-  origim: string;
+  origem: string;
   valor: number;
 }

@@ -1,5 +1,5 @@
-import baseURL from "./baseURL";
 import ITransfer from "../Interfaces/ITransfer";
+export const baseURL = "https://beertech-banco-lupulo.herokuapp.com";
 
 export const PRODUCER_OPERATION = (body: ITransfer, yoToken: string) => {
   return {
