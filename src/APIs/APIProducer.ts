@@ -1,4 +1,4 @@
-export const baseURL = "https://beertech-banco-lupulo.herokuapp.com";
+import baseURL from "./baseURL";
 import IOperation from "../Interfaces/IOperation";
 
 export const PRODUCER_OPERATION = (body: IOperation, yoToken: string) => {
