@@ -9,11 +9,6 @@ import PageRegister from './pages/PageRegister';
 import PageDeposit from './pages/PageDeposit';
 import PageHome from './pages/PageHome';
 import PageLogin from './pages/PageLogin';
-import UserAction from './store/actions/UserActions';
-import { useSelector } from 'react-redux';
-import { StorageState } from './store/reducers/localStorageReducers';
-import IUser from './Interfaces/IUser';
-import jwt_decode from 'jwt-decode';
 
 store.dispatch({
   type: LocalStorageActions.LOAD_LOCAL_STORAGE,
