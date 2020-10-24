@@ -33,10 +33,6 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     margin: "15px 0 15px 7%",
   },
-  image: {
-    width: "50%",
-    marginLeft: "-18px",
-  },
   box: {
     color: "#275F40",
     display: "flex",
@@ -55,9 +51,10 @@ const useStyles = makeStyles((theme) => ({
   },
   pigBank: {
     display: "flex",
-    maxHeight: "155px",
     color: "#275F40",
-    marginLeft: "5%",
+    maxHeight: "155px",
+    minHeight: "155px",
+    margin: "10% 5%",
   },
   depositTitle: {
     textAlign: "center",
@@ -131,7 +128,7 @@ const Launch: React.FC = () => {
           square
           className={clsx([classes.pigBank, classes.transferGrid])}
         >
-          <img className={classes.image} alt="trasnfer" src={pigbank} />
+          <img alt="trasnfer" src={pigbank} />
           <Box>
             <Typography component="h3" variant="h5" className={classes.saldo}>
               Meu Saldo
