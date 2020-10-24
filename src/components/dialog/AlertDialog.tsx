@@ -37,9 +37,11 @@ const AlertDialog = ({
   const isOpen: boolean = open;
   const triggerRef: RefObject<any> = useRef();
 
-  const handleClose = (event: MouseEvent, param: string) => {
+  const handleClose = (event: MouseEvent<HTMLElement>) => {
+    const input = event.target as HTMLElement;
+    const text = input.textContent;
     setOpen(false);
-    handleAgree(param);
+    handleAgree(text);
   };
 
   return (
@@ -62,21 +64,10 @@ const AlertDialog = ({
           <DialogContentText id={contentId}>{content}</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button
-            onClick={(event: MouseEvent) => {
-              handleClose(event, ButtonTextFirst);
-            }}
-            color="primary"
-          >
+          <Button onClick={handleClose} color="primary">
             {ButtonTextFirst}
           </Button>
-          <Button
-            onClick={(event: MouseEvent) => {
-              handleClose(event, ButtonTextSecond!);
-            }}
-            color="primary"
-            autoFocus
-          >
+          <Button onClick={handleClose} color="primary" autoFocus>
             {ButtonTextSecond}
           </Button>
         </DialogActions>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Grid,
   Box,
@@ -7,16 +7,23 @@ import {
   Collapse,
   Fab,
   TextField,
+  CircularProgress,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import clsx from "clsx";
+import { useSelector, useDispatch } from "react-redux";
 
 import transfer from "../../assets/transfer.svg";
 import AlertDialog from "../dialog";
 import composeRefs from "../../helpers/composeRefs";
 import useForm from "../../helpers/Hooks/useForm";
 import EFieldForm from "../../Enums/EFieldForm";
+import TransitionsModal from "../modal";
+import { GET_SALDO } from "../../APIs/APIConta";
+import useFetch from "../../helpers/Hooks/useFetch";
+import UserAction from "../../store/actions/UserActions";
+import cheers from "../../assets/hacker.svg";
 
 const useStyles = makeStyles((thee) => ({
   root: {
@@ -68,14 +75,27 @@ const useStyles = makeStyles((thee) => ({
     marginTop: "113px",
     right: "35px",
   },
+  cheers: {
+    width: "100px",
+  },
 }));
 
 const Transfer = () => {
   const classes = useStyles();
   const [checked, setChecked] = useState(false);
-  const [transferValue, setInputTransfer] = useState();
+  const [openModal, setModal] = useState(false);
+
   const container = React.useRef();
   const text = useForm(EFieldForm.text);
+  const { userReducers }: any = useSelector((state) => state);
+  const { localStorageReducers }: any = useSelector((state) => state);
+  const { loading, error, request } = useFetch();
+  const dispatch = useDispatch();
+  const receiver = useForm(EFieldForm.text);
+  const transferValue = useForm(EFieldForm.text);
+
+  const { yoToken } = localStorageReducers;
+  const { uuid, saldo } = userReducers;
 
   const handleExpandClick = () => {
     setChecked((prev) => !prev);
@@ -85,15 +105,34 @@ const Transfer = () => {
     if (param === "Sim") {
       //faz a chamada a api
       //pega o retorno e mostra alert
+      setTimeout(() => {
+        setModal(true);
+      }, 1000);
     }
 
-    return null;
+    setModal(false);
   };
+
+  useEffect(() => {
+    const getSaldo = async () => {
+      if (!uuid) return null;
+      const { url, options } = GET_SALDO(uuid, yoToken);
+      const { response, json } = await request(url, options);
+      if (response?.ok) {
+        dispatch({
+          type: UserAction.SET_SALDO,
+          payload: {
+            saldo: json.saldo,
+          },
+        });
+      }
+    };
+
+    getSaldo();
+  }, [userReducers, openModal]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    handleDialog("vaii porra");
   };
 
   return (
@@ -117,6 +156,9 @@ const Transfer = () => {
           <TextField
             label="Chave"
             required
+            name="receiver"
+            id="receiver"
+            type="text"
             className={clsx([classes.inputMargin, classes.inputWidth])}
           />
           <TextField
@@ -147,13 +189,23 @@ const Transfer = () => {
                   onClick={toggle}
                   type="submit"
                 >
-                  Transferir
+                  {isOpen ? (
+                    <CircularProgress size={24} color="secondary" />
+                  ) : (
+                    "Transferir"
+                  )}
                 </Button>
               </>
             )}
           </AlertDialog>
         </Collapse>
       </form>
+
+      {openModal && (
+        <TransitionsModal title="Com sucesso transferido foi!">
+          <img className={classes.cheers} src={cheers} />
+        </TransitionsModal>
+      )}
     </Grid>
   );
 };
