@@ -6,7 +6,8 @@ const errorMessages: string[] = [
   "A senha precisa ter no mínimo 8 caracteres, sendo 1 maíusculo, 1 minúsculo e 1 digito.",
   "Informe apenas números.",
   "Informação obrigatória, por favor realize o preenchimento.",
-  "O CNPJ deve ser numérico e conter exatamente 14 dígitos. Ex : 03162704000159"
+  "O CNPJ deve ser numérico e conter exatamente 14 dígitos. Ex : 03162704000159",
+  "Formato dinheiro deve informar **** rever mensagem ****",
 ];
 
 const types = {
@@ -26,6 +27,10 @@ const types = {
     regex: /^\d{14,14}$/,
     message: errorMessages[4],
   },
+  money: {
+    regex: /^[1-9]\d{0,2}(\.\d{3})*,\d{2}$/,
+    message: errorMessages[5],
+  },
 };
 
 const useForm = (type?: EFieldForm) => {
@@ -36,7 +41,7 @@ const useForm = (type?: EFieldForm) => {
     if (!type) return true;
 
     if (value.length === 0) {
-      setHelperText(errorMessages[3]);
+      setHelperText("");
       return false;
     }
 
@@ -61,11 +66,16 @@ const useForm = (type?: EFieldForm) => {
         }
         break;
       case EFieldForm.cnpj:
-          if (!types.cnpj.regex.test(value)) {
-            setHelperText(types.cnpj.message);
-            return false;
-          }
-          break;
+        if (!types.cnpj.regex.test(value)) {
+          setHelperText(types.cnpj.message);
+          return false;
+        }
+      case EFieldForm.money:
+        if (!types.money.regex.test(value)) {
+          setHelperText(types.money.message);
+          return false;
+        }
+        break;
       default:
         break;
     }

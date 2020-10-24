@@ -3,7 +3,8 @@ enum EFieldForm {
   email = 2,
   password = 3,
   number = 4,
-  cnpj = 5
+  cnpj = 5,
+  money = 6,
 }
 
 export default EFieldForm;

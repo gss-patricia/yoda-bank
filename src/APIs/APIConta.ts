@@ -1,3 +1,4 @@
+import IOperation from "../Interfaces/IOperation";
 import IUser from "../Interfaces/IUser";
 import baseURL from "./baseURL";
 
@@ -64,15 +65,16 @@ export const GET_EXTRATO = (
   };
 };
 
-export const GET_OPERACAO = (uuid: string, yoToken: string) => {
+export const POST_OPERACAO = (body: IOperation, yoToken: string) => {
   return {
-    url: baseURL + `/conta/${uuid}/operacao`,
+    url: baseURL + `/operacao`,
     options: {
-      method: "GET",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + yoToken,
       },
+      body: JSON.stringify(body),
     },
   };
 };
