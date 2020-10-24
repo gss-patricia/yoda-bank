@@ -59,7 +59,7 @@ const userReducers = (state: UserState = initialState, action: AnyAction) => {
       state = { ...state, ...action.payload?.user };
       return state;
     case UserActions.SET_SALDO:
-      state = { ...state, ...action.payload?.saldo };
+      state = { ...state, saldo: action.payload?.saldo  };
       return state;
     case UserActions.SET_EXTRATO:
       state = { ...state, ...action.payload?.extrato };
