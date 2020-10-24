@@ -3,6 +3,7 @@ export enum EPerfil {
   USER,
 }
 export default interface IUser {
+  uuid?: string;
   cnpj: string;
   email: string;
   nome: string;

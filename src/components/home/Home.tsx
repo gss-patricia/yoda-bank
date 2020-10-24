@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import {
   Grid,
   CssBaseline,
@@ -7,99 +7,99 @@ import {
   Paper,
   Divider,
   CircularProgress,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { useDispatch, useSelector } from 'react-redux';
-import pigbank from '../../assets/pigbank.svg';
-import LayoutBase from '../../components/layout';
-import clsx from 'clsx';
-import TransferCard from '../transferCard';
-import DepositCard from '../depositCard';
-import Extract from '../extract';
-import UserAction from '../../store/actions/UserActions';
-import useFetch from '../../helpers/Hooks/useFetch';
-import { GET_EXTRATO, GET_SALDO } from '../../APIs/APIConta';
-import IUser from '../../Interfaces/IUser';
-import jwt_decode from 'jwt-decode';
-import { ExtratoConta } from '../../store/reducers/userReducers';
+} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { useDispatch, useSelector } from "react-redux";
+import pigbank from "../../assets/pigbank.svg";
+import LayoutBase from "../../components/layout";
+import clsx from "clsx";
+import TransferCard from "../transferCard";
+import DepositCard from "../depositCard";
+import Extract from "../extract";
+import UserAction from "../../store/actions/UserActions";
+import useFetch from "../../helpers/Hooks/useFetch";
+import { GET_EXTRATO, GET_SALDO } from "../../APIs/APIConta";
+import IUser from "../../Interfaces/IUser";
+import jwt_decode from "jwt-decode";
+import { ExtratoConta } from "../../store/reducers/userReducers";
 
 const useStyles = makeStyles((theme) => ({
   box: {
-    color: '#275F40',
-    display: 'flex',
-    minHeight: '90px',
-    position: 'relative',
-    cursor: 'pointer',
+    color: "#275F40",
+    display: "flex",
+    minHeight: "90px",
+    position: "relative",
+    cursor: "pointer",
   },
   marginBottom: {
-    marginBottom: '30px',
+    marginBottom: "30px",
   },
   transferGrid: {
-    backgroundColor: '#FAFAFA',
+    backgroundColor: "#FAFAFA",
   },
   pigBank: {
-    display: 'flex',
-    color: '#275F40',
-    maxHeight: '155px',
-    minHeight: '155px',
-    margin: '5% 0 10%',
+    display: "flex",
+    color: "#275F40",
+    maxHeight: "155px",
+    minHeight: "155px",
+    margin: "5% 0 10%",
     [theme.breakpoints.up(600)]: {
-      marginLeft: '5%',
+      marginLeft: "5%",
     },
-    '& img': {
-      margin: '0 5% 0 0',
+    "& img": {
+      margin: "0 5% 0 0",
     },
-    '& h3': {
+    "& h3": {
       [theme.breakpoints.down(800)]: {
-        fontSize: '1.3rem',
+        fontSize: "1.3rem",
       },
     },
-    '& h2': {
+    "& h2": {
       [theme.breakpoints.down(800)]: {
-        fontSize: '1.1rem',
+        fontSize: "1.1rem",
       },
     },
   },
   depositTitle: {
-    textAlign: 'center',
-    fontWeight: 'bold',
+    textAlign: "center",
+    fontWeight: "bold",
   },
   collapsedInput: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   inputMargin: {
-    margin: '15px 15px',
+    margin: "15px 15px",
   },
   inputWidth: {
-    width: '90%',
+    width: "90%",
   },
   gridHeigh: {
-    maxHeight: '30%',
-    justifyContent: 'center',
-    borderBottom: '1px solid #D2CDD1',
-    margin: '25px 5%',
+    maxHeight: "30%",
+    justifyContent: "center",
+    borderBottom: "1px solid #D2CDD1",
+    margin: "25px 5%",
   },
   typography: {
-    fontWeight: 'bold',
-    marginTop: '20px',
+    fontWeight: "bold",
+    marginTop: "20px",
   },
   saldo: {
-    fontWeight: 'bold',
-    fontSize: '1.5rem',
-    marginTop: '15px',
+    fontWeight: "bold",
+    fontSize: "1.5rem",
+    marginTop: "15px",
   },
   saldoInfo: {
-    fontSize: '1.2rem',
-    marginTop: '5px',
+    fontSize: "1.2rem",
+    marginTop: "5px",
   },
   date: {
-    color: '#9C9696',
-    marginTop: '30%',
+    color: "#9C9696",
+    marginTop: "30%",
   },
   centered: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
 }));
 
@@ -116,16 +116,16 @@ const Launch = () => {
       type: UserAction.SET_USER,
       payload: { user: user },
     });
-  });
+  }, []);
 
   const { userReducers }: any = useSelector((state) => state);
-  const { yoToken } = localStorageReducers;
-  const { uuid, saldo, extrato } = userReducers;
+  const { yoToken, yoUuid } = localStorageReducers;
+  const { saldo, extrato } = userReducers;
   const date = new Date().toLocaleDateString();
 
   const getSaldo = async () => {
-    if (!uuid) return null;
-    const { url, options } = GET_SALDO(uuid, yoToken);
+    if (!yoUuid) return null;
+    const { url, options } = GET_SALDO(yoUuid, yoToken);
     const { response, json } = await request(url, options);
     if (response?.ok) {
       dispatch({
@@ -143,17 +143,17 @@ const Launch = () => {
 
   useEffect(() => {
     async function getExtrato() {
-      if (!uuid) return null;
+      if (!yoUuid) return null;
 
       const startDate = new Date();
       let endDate = new Date();
       endDate.setDate(endDate.getDate() - 15);
 
       const { url, options } = GET_EXTRATO(
-        uuid,
+        yoUuid,
         yoToken,
-        startDate.toISOString().split('T')[0],
-        endDate.toISOString().split('T')[0],
+        startDate.toISOString().split("T")[0],
+        endDate.toISOString().split("T")[0]
       );
       //const { response, json } = await request(url, options);
       if (true) {
@@ -164,9 +164,9 @@ const Launch = () => {
             //json.content.map((extrato: ExtratoConta) => extrato),
             extrato: [
               {
-                descricaoOperacao: 'DEPOSITO',
+                descricaoOperacao: "DEPOSITO",
                 id: 0,
-                tipo: 'DEPOSITO',
+                tipo: "DEPOSITO",
                 valor: 500,
                 timestamp: {
                   day: 24,
@@ -178,9 +178,9 @@ const Launch = () => {
                 },
               },
               {
-                descricaoOperacao: 'TRANSFERENCIA_DESTINO',
+                descricaoOperacao: "TRANSFERENCIA_DESTINO",
                 id: 1,
-                tipo: 'DEPOSITO',
+                tipo: "DEPOSITO",
                 valor: 700,
                 timestamp: {
                   day: 24,
@@ -192,9 +192,9 @@ const Launch = () => {
                 },
               },
               {
-                descricaoOperacao: 'TRANSFERENCIA_ORIGEM',
+                descricaoOperacao: "TRANSFERENCIA_ORIGEM",
                 id: 2,
-                tipo: 'SAQUE',
+                tipo: "SAQUE",
                 valor: 500,
                 timestamp: {
                   day: 24,
@@ -206,9 +206,9 @@ const Launch = () => {
                 },
               },
               {
-                descricaoOperacao: 'SAQUE',
+                descricaoOperacao: "SAQUE",
                 id: 3,
-                tipo: 'SAQUE',
+                tipo: "SAQUE",
                 valor: -300,
                 timestamp: {
                   day: 24,
@@ -267,9 +267,9 @@ const Launch = () => {
                   {loading || error ? (
                     <CircularProgress size={24} color="secondary" />
                   ) : (
-                    saldo.toLocaleString('pt-br', {
-                      style: 'currency',
-                      currency: 'BRL',
+                    saldo.toLocaleString("pt-br", {
+                      style: "currency",
+                      currency: "BRL",
                     })
                   )}
                 </Typography>

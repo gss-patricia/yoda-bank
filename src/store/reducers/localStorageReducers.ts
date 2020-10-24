@@ -1,12 +1,16 @@
+import jwt_decode from "jwt-decode";
 import { AnyAction } from "redux";
+import IUser from "../../Interfaces/IUser";
 import LocalStorageActions from "../actions/LocalStorageActions";
 
 const initalState = {
   yoToken: "",
+  yoUuid: "",
 };
 
 export interface StorageState {
   yoToken: string;
+  yoUuid: string;
 }
 
 const localStorageReducers = (
@@ -19,10 +23,15 @@ const localStorageReducers = (
     case LocalStorageActions.LOAD_LOCAL_STORAGE:
       try {
         const yoToken = localStorage.getItem("yoToken");
-        if (yoToken === null) {
+        const yoUuid = localStorage.getItem("yoUuid");
+        if (yoToken === null || yoUuid === null) {
           return null;
         }
-        state = { ...state, yoToken: JSON.parse(yoToken) };
+        state = {
+          ...state,
+          yoToken: JSON.parse(yoToken),
+          yoUuid: JSON.parse(yoUuid),
+        };
         return state;
       } catch (error) {
         return null;
@@ -32,6 +41,9 @@ const localStorageReducers = (
         if (action.state) {
           const serializedState = JSON.stringify(action.state);
           localStorage.setItem("yoToken", serializedState);
+          const { uuid }: IUser = jwt_decode(serializedState);
+          const yoUuid = JSON.stringify(uuid);
+          localStorage.setItem("yoUuid", yoUuid);
           state = { ...state, yoToken: action.state };
         }
         return state;
@@ -43,6 +55,7 @@ const localStorageReducers = (
     case LocalStorageActions.REMOVE_LOCAL_STORAGE:
       try {
         localStorage.removeItem("yoToken");
+        localStorage.removeItem("yoUuid");
         state = initalState;
       } catch (error) {
         return null;
