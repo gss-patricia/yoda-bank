@@ -18,9 +18,10 @@ import DepositCard from '../depositCard';
 import Extract from '../extract';
 import UserAction from '../../store/actions/UserActions';
 import useFetch from '../../helpers/Hooks/useFetch';
-import { GET_SALDO } from '../../APIs/APIConta';
+import { GET_EXTRATO, GET_SALDO } from '../../APIs/APIConta';
 import IUser from '../../Interfaces/IUser';
 import jwt_decode from 'jwt-decode';
+import { ExtratoConta } from '../../store/reducers/userReducers';
 
 const useStyles = makeStyles((theme) => ({
   box: {
@@ -37,26 +38,26 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#FAFAFA',
   },
   pigBank: {
-    display: "flex",
-    color: "#275F40",
-    maxHeight: "155px",
-    minHeight: "155px",
-    margin: "5% 0 10%",
+    display: 'flex',
+    color: '#275F40',
+    maxHeight: '155px',
+    minHeight: '155px',
+    margin: '5% 0 10%',
     [theme.breakpoints.up(600)]: {
       marginLeft: '5%',
     },
-    "& img": {
+    '& img': {
       margin: '0 5% 0 0',
     },
-    "& h3": {
+    '& h3': {
       [theme.breakpoints.down(800)]: {
         fontSize: '1.3rem',
-      }
+      },
     },
-    "& h2": {
+    '& h2': {
       [theme.breakpoints.down(800)]: {
         fontSize: '1.1rem',
-      }
+      },
     },
   },
   depositTitle: {
@@ -115,37 +116,119 @@ const Launch = () => {
       type: UserAction.SET_USER,
       payload: { user: user },
     });
-  }, []);
-  const { userReducers }: any = useSelector((state) => state);
+  });
 
+  const { userReducers }: any = useSelector((state) => state);
   const { yoToken } = localStorageReducers;
-  const { uuid, saldo } = userReducers;
+  const { uuid, saldo, extrato } = userReducers;
   const date = new Date().toLocaleDateString();
 
+  const getSaldo = async () => {
+    if (!uuid) return null;
+    const { url, options } = GET_SALDO(uuid, yoToken);
+    const { response, json } = await request(url, options);
+    if (response?.ok) {
+      dispatch({
+        type: UserAction.SET_SALDO,
+        payload: {
+          saldo: json.saldo,
+        },
+      });
+    }
+  };
+
   useEffect(() => {
-    async function getSaldo() {
+    getSaldo();
+  }, [saldo]);
+
+  useEffect(() => {
+    async function getExtrato() {
       if (!uuid) return null;
-      const { url, options } = GET_SALDO(uuid, yoToken);
-      const { response, json } = await request(url, options);
-      if (response?.ok) {
+
+      const startDate = new Date();
+      let endDate = new Date();
+      endDate.setDate(endDate.getDate() - 15);
+
+      const { url, options } = GET_EXTRATO(
+        uuid,
+        yoToken,
+        startDate.toISOString().split('T')[0],
+        endDate.toISOString().split('T')[0],
+      );
+      //const { response, json } = await request(url, options);
+      if (true) {
+        //response?.ok
         dispatch({
-          type: UserAction.SET_SALDO,
+          type: UserAction.SET_EXTRATO,
           payload: {
-            saldo: json.saldo,
+            //json.content.map((extrato: ExtratoConta) => extrato),
+            extrato: [
+              {
+                descricaoOperacao: 'DEPOSITO',
+                id: 0,
+                tipo: 'DEPOSITO',
+                valor: 500,
+                timestamp: {
+                  day: 24,
+                  month: 10,
+                  year: 2020,
+                  hours: 12,
+                  minutes: 13,
+                  seconds: 45,
+                },
+              },
+              {
+                descricaoOperacao: 'TRANSFERENCIA_DESTINO',
+                id: 1,
+                tipo: 'DEPOSITO',
+                valor: 700,
+                timestamp: {
+                  day: 24,
+                  month: 10,
+                  year: 2020,
+                  hours: 12,
+                  minutes: 13,
+                  seconds: 45,
+                },
+              },
+              {
+                descricaoOperacao: 'TRANSFERENCIA_ORIGEM',
+                id: 2,
+                tipo: 'SAQUE',
+                valor: 500,
+                timestamp: {
+                  day: 24,
+                  month: 10,
+                  year: 2020,
+                  hours: 12,
+                  minutes: 13,
+                  seconds: 45,
+                },
+              },
+              {
+                descricaoOperacao: 'SAQUE',
+                id: 3,
+                tipo: 'SAQUE',
+                valor: -300,
+                timestamp: {
+                  day: 24,
+                  month: 10,
+                  year: 2020,
+                  hours: 12,
+                  minutes: 13,
+                  seconds: 45,
+                },
+              },
+            ],
           },
         });
       }
     }
-
-    getSaldo();
-  }, [userReducers]);
+    getExtrato();
+  }, []);
 
   return (
-    <Grid
-      container
-      component="main"
-      alignContent="flex-start"
-    >
+    <Grid container component="main" alignContent="flex-start">
       <CssBaseline />
       <LayoutBase>
         <>
@@ -158,7 +241,6 @@ const Launch = () => {
             md={12}
             className={classes.gridHeigh}
           >
-            
             <Grid
               md={9}
               sm={9}
@@ -207,13 +289,10 @@ const Launch = () => {
             xs={12}
             sm={12}
             md={12}
-            className={clsx([
-              classes.gridHeigh,
-              classes.centered,
-            ])}
+            className={clsx([classes.gridHeigh, classes.centered])}
           >
-            <Grid xs={12} sm={8} md={7} elevation={6} component={Paper} square>
-              <Extract />
+            <Grid xs={12} sm={4} md={7} elevation={6} component={Paper} square>
+              <Extract extrato={extrato} />
             </Grid>
           </Grid>
         </>

@@ -1,20 +1,21 @@
-import React from "react";
+import React from 'react';
 import {
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
   Divider,
-} from "@material-ui/core";
+} from '@material-ui/core';
 
-import { makeStyles } from "@material-ui/core/styles";
-import transfer from "../../assets/transfer.svg";
-import wallet from "../../assets/wallet.svg";
-import cheers from "../../assets/hacker.svg";
+import { makeStyles } from '@material-ui/core/styles';
+import transfer from '../../assets/transfer.svg';
+import wallet from '../../assets/wallet.svg';
+import cheers from '../../assets/hacker.svg';
+import { ExtratoConta } from '../../store/reducers/userReducers';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: "#F3EFF5",
+    backgroundColor: '#F3EFF5',
   },
   image: {
     [theme.breakpoints.down(400)]: {
@@ -23,56 +24,97 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   list: {
-    backgroundColor: "white",
-    width: "100%",
+    backgroundColor: 'white',
+    width: '100%',
   },
   listItem: {
-    textAlign: "right",
+    textAlign: 'right',
   },
   thumbnail: {
-    width: "100px",
+    width: '100px',
   },
 }));
 
-const Extract = () => {
+interface IProps {
+  extrato: ExtratoConta[];
+}
+
+const Extract = (props: IProps) => {
   const classes = useStyles();
+
+  function renderAvatar(descricaoOperacao: string) {
+    switch (descricaoOperacao) {
+      case 'DEPOSITO':
+        return [
+          <img className={classes.thumbnail} alt="Depósito" src={cheers} />,
+          <ListItemText primary="Depósito recebido" />,
+        ];
+      case 'SAQUE':
+        return [
+          <img className={classes.thumbnail} alt="Saque" src={wallet} />,
+          <ListItemText primary="Saque realizado" />,
+        ];
+      case 'TRANSFERENCIA_ORIGEM':
+        return [
+          <img className={classes.thumbnail} alt="Saque" src={transfer} />,
+          <ListItemText primary="Transferência realizada" />,
+        ];
+      case 'TRANSFERENCIA_DESTINO':
+        return [
+          <img className={classes.thumbnail} alt="Saque" src={wallet} />,
+          <ListItemText primary="Transferência recebida" />,
+        ];
+      default:
+        return [];
+    }
+  }
+
+  function formatDate(
+    year: number,
+    month: number,
+    day: number,
+    hours: number,
+    minutes: number,
+    seconds: number,
+  ) {
+    if (day !== 0)
+      return new Date(
+        year,
+        month,
+        day,
+        hours,
+        minutes,
+        seconds,
+      ).toLocaleString();
+  }
+
   return (
     <List className={classes.list}>
-      <ListItem>
-        <ListItemAvatar className={classes.image}>
-          <img className={classes.thumbnail} alt="transfer" src={transfer} />
-        </ListItemAvatar>
-        <ListItemText primary="Transferido foi" />
-        <ListItemText
-          className={classes.listItem}
-          primary=" - $ 10,00"
-          secondary="Jan 9, 2020 - 09:40"
-        />
-      </ListItem>
-      <Divider />
-      <ListItem>
-        <ListItemAvatar className={classes.image}>
-          <img className={classes.thumbnail} alt="received" src={cheers} />
-        </ListItemAvatar>
-        <ListItemText primary="Recebido" />
-        <ListItemText
-          className={classes.listItem}
-          primary="$ 100,00"
-          secondary="Jan 9, 2020 - 10:06"
-        />
-      </ListItem>
-      <Divider />
-      <ListItem>
-        <ListItemAvatar className={classes.image}>
-          <img className={classes.thumbnail} alt="transfer" src={wallet} />
-        </ListItemAvatar>
-        <ListItemText primary="Estornado" />
-        <ListItemText
-          className={classes.listItem}
-          primary="$5,00"
-          secondary="Jan 9, 2020 - 15:00"
-        />
-      </ListItem>
+      {props.extrato.map((extratoResult) => {
+        return (
+          <>
+            <ListItem key={extratoResult.id}>
+              <ListItemAvatar>
+                {renderAvatar(extratoResult.descricaoOperacao)[0]}
+              </ListItemAvatar>
+              {renderAvatar(extratoResult.descricaoOperacao)[1]}
+              <ListItemText
+                className={classes.listItem}
+                primary={` - ${extratoResult.valor}`}
+                secondary={formatDate(
+                  extratoResult.timestamp.year,
+                  extratoResult.timestamp.month,
+                  extratoResult.timestamp.day,
+                  extratoResult.timestamp.hours,
+                  extratoResult.timestamp.minutes,
+                  extratoResult.timestamp.seconds,
+                )}
+              />
+            </ListItem>
+            <Divider />
+          </>
+        );
+      })}
     </List>
   );
 };
