@@ -44,8 +44,8 @@ const Transfer = () => {
     error: "Com erro, o fracasso é.",
   };
 
-  const { yoToken } = localStorageReducers;
-  const { uuid, saldo } = userReducers;
+  const { yoToken, yoUuid } = localStorageReducers;
+  const { saldo } = userReducers;
 
   const handleDialog = async (param: string) => {
     if (param === "Sim") {
@@ -58,7 +58,7 @@ const Transfer = () => {
 
   useEffect(() => {
     const getSaldo = async () => {
-      const { url, options } = GET_SALDO(uuid, yoToken);
+      const { url, options } = GET_SALDO(yoUuid, yoToken);
       const { response, json } = await request(url, options);
       if (response?.ok) {
         dispatch({
@@ -77,7 +77,7 @@ const Transfer = () => {
     const { url, options } = PRODUCER_OPERATION(
       {
         destino: receiver,
-        origem: uuid,
+        origem: yoUuid,
         valor: parseInt(valueMoney),
       },
       yoToken
