@@ -1,5 +1,5 @@
 import React from "react";
-import EFieldForm from "../../../Enums/EFieldForm";
+import EFieldForm from "../../Enums/EFieldForm";
 
 const errorMessages: string[] = [
   "Informe um email válido. Ex: yoda@yoda.com",

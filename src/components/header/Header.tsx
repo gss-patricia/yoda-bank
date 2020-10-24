@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   makeStyles,
   Grid,
@@ -16,11 +16,6 @@ import ToggleDrawer from '../toggleDrawer';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { UserState } from '../../store/reducers/userReducers';
-import UserAction from '../../store/actions/UserActions';
-import IUser from '../../Interfaces/IUser';
-import jwt_decode from 'jwt-decode';
-import { StorageState } from '../../store/reducers/localStorageReducers';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,19 +61,7 @@ const Header = () => {
   const matches = useMediaQuery('(min-width:1000px)');
   const history = useHistory();
 
-  const { localStorageReducers }: any = useSelector(
-    (state: StorageState) => state,
-  );
-
-  const user: IUser = jwt_decode(localStorageReducers.yoToken);
-
-  useEffect(() => {
-    dispatch({
-      type: UserAction.SET_USER,
-      payload: { user: user },
-    });
-  }, [dispatch]);
-  const { userReducers }: any = useSelector((state: UserState) => state);
+  const { userReducers }: any = useSelector((state) => state);
 
   async function remove() {
     dispatch({
@@ -95,7 +78,7 @@ const Header = () => {
         <div className={classes.headerWrapper}>
           <Box className={classes.paper} width="50%">
             <ToggleDrawer />
-            <img src={Logo} alt="Logo" />
+            <img src={Logo} alt="Logo" width="45" />
             {matches && (
               <Typography component="h1" variant="h5">
                 Yoda Coins Beer

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Grid,
   Box,
@@ -9,64 +9,64 @@ import {
   Input,
   Fab,
   TextField,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import AddIcon from "@material-ui/icons/Add";
-import clsx from "clsx";
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import AddIcon from '@material-ui/icons/Add';
+import clsx from 'clsx';
 
-import transfer from "../../assets/transfer.svg";
-import AlertDialog from "../dialog";
-import composeRefs from "../helpers/composeRefs";
+import transfer from '../../assets/transfer.svg';
+import AlertDialog from '../dialog';
+import composeRefs from '../../helpers/composeRefs';
 
 const useStyles = makeStyles((thee) => ({
   root: {
-    backgroundColor: "#F3EFF5",
+    backgroundColor: '#F3EFF5',
   },
   button: {
-    color: "#275F40",
-    fontSize: "1rem",
-    padding: "5px 15px",
-    fontWeight: "bold",
-    margin: "15px 0 15px 7%",
+    color: '#275F40',
+    fontSize: '1rem',
+    padding: '5px 15px',
+    fontWeight: 'bold',
+    margin: '15px 0 15px 7%',
   },
   image: {
-    width: "50%",
-    marginLeft: "-18px",
+    width: '50%',
+    marginLeft: '-18px',
   },
   box: {
-    color: "#275F40",
-    display: "flex",
-    minHeight: "90px",
-    position: "relative",
-    cursor: "pointer",
+    color: '#275F40',
+    display: 'flex',
+    minHeight: '90px',
+    position: 'relative',
+    cursor: 'pointer',
   },
   marginBottom: {
-    marginBottom: "30px",
+    marginBottom: '30px',
   },
   collapsedInput: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
   inputMargin: {
-    margin: "15px 15px",
+    margin: '15px 15px',
   },
   inputWidth: {
-    width: "90%",
+    width: '90%',
   },
   gridHeigh: {
-    maxHeight: "30%",
-    justifyContent: "center",
+    maxHeight: '30%',
+    justifyContent: 'center',
   },
   transferGrid: {
-    backgroundColor: "#FAFAFA",
+    backgroundColor: '#FAFAFA',
   },
   typography: {
-    fontWeight: "bold",
-    marginTop: "20px",
+    fontWeight: 'bold',
+    marginTop: '20px',
   },
   addIcon: {
-    position: "absolute",
-    marginTop: "113px",
-    right: "35px",
+    position: 'absolute',
+    marginTop: '113px',
+    right: '35px',
   },
 }));
 

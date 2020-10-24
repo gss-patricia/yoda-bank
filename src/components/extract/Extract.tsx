@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   List,
   ListItem,
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Extract = ({}) => {
+const Extract = () => {
   const classes = useStyles();
   return (
     <List className={classes.list}>

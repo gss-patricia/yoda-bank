@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import jwt_decode from 'jwt-decode';
 import LocalStorageActions from '../../store/actions/LocalStorageActions';
 import UserActions from '../../store/actions/UserActions';
-
-import { StorageState } from '../../store/reducers/localStorageReducers';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -17,10 +15,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import LoginBackground from '../../assets/login-background.svg';
 import Logo from '../../assets/logo.svg';
 import EFieldForm from '../../Enums/EFieldForm';
-import useFetch from '../helpers/Hooks/useFetch';
+import useFetch from '../../helpers/Hooks/useFetch';
 import { AUTHENTICATE } from '../../APIs/APIAuth';
 import { useHistory, Link } from 'react-router-dom';
-import useForm from '../helpers/Hooks/useForm';
+import useForm from '../../helpers/Hooks/useForm';
 import Error from '../../components/error/Error';
 import IUser from '../../Interfaces/IUser';
 
@@ -89,10 +87,6 @@ export default function Login() {
   const [errorLogin, setErrorLogin] = useState('');
   const dispatch = useDispatch();
 
-  const { localStorageReducers }: any = useSelector(
-    (state: StorageState) => state,
-  );
-
   useEffect(() => {
     dispatch({
       type: LocalStorageActions.GET,
@@ -102,7 +96,7 @@ export default function Login() {
   const classes = useStyles();
   const history = useHistory();
 
-  const { loading, error, request, data } = useFetch();
+  const { loading, request } = useFetch();
   const email = useForm(EFieldForm.email);
   const password = useForm(EFieldForm.text);
 
@@ -217,6 +211,7 @@ export default function Login() {
                 <a
                   href="https://github.com/gss-patricia/yoda-coins-beertech"
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Github
                 </a>

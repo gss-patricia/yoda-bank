@@ -6,6 +6,7 @@ const initialState = {
   user: "",
   email: "",
   profile: "",
+  saldo: 0,
 };
 
 export interface UserState {
@@ -13,6 +14,7 @@ export interface UserState {
   user: string;
   email: string;
   profile: string;
+  saldo: number;
 }
 
 const userReducers = (state: UserState = initialState, action: AnyAction) => {
@@ -21,6 +23,9 @@ const userReducers = (state: UserState = initialState, action: AnyAction) => {
       return state;
     case UserActions.SET_USER:
       state = { ...state, ...action.payload?.user };
+      return state;
+    case UserActions.SET_SALDO:
+      state = { ...state, ...action.payload?.saldo };
       return state;
     default:
       break;
