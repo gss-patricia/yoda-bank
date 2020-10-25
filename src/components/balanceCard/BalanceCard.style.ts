@@ -3,7 +3,7 @@ import TransitionsModal from "../modal";
 const useStyles = makeStyles((theme) => ({
   // breakpoints: {
   //   values: {
-  //     firstCards: 
+  //     firstCards:
   //   }
   // },
   button: {
@@ -89,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: "155px",
     minHeight: "155px",
     margin: "5% 0 10%",
-    position: 'relative',
+    position: "relative",
     [theme.breakpoints.up(767)]: {
       marginBottom: "5%",
       marginTop: "2%",
@@ -102,10 +102,10 @@ const useStyles = makeStyles((theme) => ({
     },
     "& img": {
       margin: "0 5% 0 0",
-      [theme.breakpoints.between(600,768)]: {
-        opacity: '0',
-        position: 'absolute',
-      }
+      [theme.breakpoints.between(600, 768)]: {
+        opacity: "0",
+        position: "absolute",
+      },
     },
     "& h3": {
       [theme.breakpoints.down(800)]: {
@@ -118,7 +118,7 @@ const useStyles = makeStyles((theme) => ({
       },
     },
     "& div": {
-      marginLeft: '5%',
+      marginLeft: "5%",
     },
   },
   saldo: {

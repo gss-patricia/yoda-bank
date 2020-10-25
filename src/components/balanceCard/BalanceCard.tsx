@@ -37,12 +37,7 @@ const Balance = () => {
   }, [saldo]);
 
   return (
-    <Grid
-      md={5}
-      sm={5}
-      xs={12}
-      className={clsx([classes.marginBottom, classes.balanceGrid])}
-    >
+    <Grid md={5} sm={5} xs={12} className={clsx([classes.balanceGrid])}>
       <Grid
         md={9}
         sm={9}
