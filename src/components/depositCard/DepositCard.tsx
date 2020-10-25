@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, ChangeEvent, useRef } from "react";
 import {
   Grid,
   Box,
@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import UserAction from "../../store/actions/UserActions";
 import Error from "../../components/error/Error";
 import { ExtratoConta } from "../../store/reducers/userReducers";
+import CurrencyTextField from "@unicef/material-ui-currency-textfield";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -114,11 +115,13 @@ const useStyles = makeStyles((theme) => ({
 
 const Deposit = () => {
   const classes = useStyles();
+  const container = useRef();
+
   const [errorDeposit, setErrorDeposit] = useState("");
-  const transferValue = useForm(EFieldForm.money);
-  const container = React.useRef();
-  const { loading, request } = useFetch();
+  const [valueMoney, setCurrency] = useState(0);
+
   const dispatch = useDispatch();
+  const { loading, request } = useFetch();
 
   const { localStorageReducers }: any = useSelector((state) => state);
   const { yoToken, yoUuid } = localStorageReducers;
@@ -126,17 +129,20 @@ const Deposit = () => {
   const handleDialog = (param: any) => console.log(param);
 
   const handleTransfer = async (event: any) => {
-    if (
-      (!transferValue.validate() && parseInt(transferValue.value) <= 0) ||
-      loading
-    )
-      return null;
+    if (loading) return null;
+    if (valueMoney <= 0) {
+      setErrorDeposit("Informe um valor de depósito");
+      setTimeout(() => {
+        setErrorDeposit("");
+      }, 3000);
+      return;
+    }
 
     const { url, options } = POST_OPERACAO(
       {
         conta: localStorageReducers.yoUuid,
         tipo: ETypeOperation.DEPOSITO,
-        valor: parseInt(transferValue.value),
+        valor: valueMoney,
       },
       localStorageReducers.yoToken
     );
@@ -148,7 +154,7 @@ const Deposit = () => {
       const { url, options } = GET_SALDO(yoUuid, yoToken);
       const { response, json } = await request(url, options);
       if (response?.ok) {
-        transferValue.setValue("");
+        setCurrency(0);
         dispatch({
           type: UserAction.SET_SALDO,
           payload: {
@@ -202,47 +208,54 @@ const Deposit = () => {
         </Typography>
       </Box>
       <Box className={classes.collapsedInput}>
-        <TextField
-          className={classes.inputMargin}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">R$</InputAdornment>
-            ),
-          }}
-          prefix="R$"
-          placeholder="100,00"
-          {...transferValue}
+        <CurrencyTextField
+          variant="standard"
+          value={valueMoney}
+          label="R$"
+          currencySymbol=""
+          outputFormat="number"
+          text
+          required
+          decimalCharacter=","
+          digitGroupSeparator="."
+          textAlign="left"
+          className={clsx([classes.inputMargin, classes.inputWidth])}
+          onChange={(
+            event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+            value: number
+          ) => setCurrency(value)}
         />
-
-        <AlertDialog
-          title="Transferir"
-          titleId="transfer-op"
-          content="A transferência você confirma?"
-          contentId="transfer-cont"
-          ButtonTextFirst="Não"
-          ButtonTextSecond="Sim"
-          handleAgree={handleDialog}
-        >
-          {({ triggerRef }) => (
-            <>
-              <Button
-                className={classes.button}
-                ref={composeRefs(triggerRef, container)}
-                onClick={handleTransfer}
-              >
-                {loading ? (
-                  <>
-                    <CircularProgress size={24} color="secondary" />
-                    ATUALIZANDO SALDO
-                  </>
-                ) : (
-                  "DEPOSITAR"
-                )}
-              </Button>
-            </>
-          )}
-        </AlertDialog>
-        <Error error={errorDeposit} />
+        <div>
+          <AlertDialog
+            title="Transferir"
+            titleId="transfer-op"
+            content="A transferência você confirma?"
+            contentId="transfer-cont"
+            ButtonTextFirst="Não"
+            ButtonTextSecond="Sim"
+            handleAgree={handleDialog}
+          >
+            {({ triggerRef }) => (
+              <>
+                <Button
+                  className={classes.button}
+                  ref={composeRefs(triggerRef, container)}
+                  onClick={handleTransfer}
+                >
+                  {loading ? (
+                    <>
+                      <CircularProgress size={24} color="secondary" />
+                      AGUARDE
+                    </>
+                  ) : (
+                    "DEPOSITAR"
+                  )}
+                </Button>
+              </>
+            )}
+          </AlertDialog>
+          <Error error={errorDeposit} severity="warning" />
+        </div>
       </Box>
     </Grid>
   );
