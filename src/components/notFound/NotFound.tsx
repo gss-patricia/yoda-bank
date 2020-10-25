@@ -16,6 +16,9 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     textAlign: 'center',
   },
+  text: {
+    marginBottom: theme.spacing(2),
+  },
 }));
 
 const NotFound = () => {
@@ -32,7 +35,12 @@ const NotFound = () => {
     <Grid className={classes.notFound}>
       <CssBaseline />
       <Grid item>
-        <Typography component="h1" variant="h3">
+        <Typography
+          component="h1"
+          variant="h4"
+          color="primary"
+          className={classes.text}
+        >
           {message[Math.floor(Math.random() * 6) + 1]}
         </Typography>
       </Grid>
@@ -43,8 +51,9 @@ const NotFound = () => {
         height="75%"
       />
       <Grid item>
-        <Typography component="h1" variant="h5">
-          <Link to="/">Para a página inicial, voltar! </Link>
+        <Typography component="h1" variant="h6">
+          Em um lugar escuro nos encontramos, e um pouco mais de conhecimento
+          ilumina nosso caminho -<Link to="/"> Volte a página inicial! </Link>
         </Typography>
       </Grid>
       <CssBaseline />

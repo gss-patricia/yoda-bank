@@ -52,7 +52,7 @@ export default function ConfirmPassword() {
       <Grid xs={12} className={classes.main}>
         <Paper className={classes.paper} elevation={6} square>
           <Logo />
-          <br></br>
+          <br />
           <Typography component="h1" variant="h5">
             Defina sua nova senha
           </Typography>
