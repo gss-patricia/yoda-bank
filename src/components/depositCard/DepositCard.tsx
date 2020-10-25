@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useRef, useEffect } from "react";
+import React, { useState, ChangeEvent, useRef, memo, useEffect } from "react";
 import {
   Grid,
   Box,
@@ -20,6 +20,7 @@ import TransitionsModal from "../modal";
 import cheers from "../../assets/hacker.svg";
 import sad from "../../assets/sad.svg";
 import { actions } from "../../actions/globalActions";
+import messageCode from "../../Enums/MessageCode";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -285,4 +286,4 @@ const Deposit = () => {
   );
 };
 
-export default Deposit;
+export default memo(Deposit);
