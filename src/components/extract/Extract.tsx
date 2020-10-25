@@ -5,35 +5,14 @@ import {
   ListItemAvatar,
   ListItemText,
   Divider,
+  Grid,
+  Paper,
 } from "@material-ui/core";
-
-import { makeStyles } from "@material-ui/core/styles";
 import transfer from "../../assets/transfer.svg";
 import wallet from "../../assets/wallet.svg";
 import cheers from "../../assets/hacker.svg";
 import { ExtratoConta } from "../../store/reducers/userReducers";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: "#F3EFF5",
-  },
-  image: {
-    [theme.breakpoints.down(400)]: {
-      opacity: "0",
-      position: "absolute",
-    },
-  },
-  list: {
-    backgroundColor: "white",
-    width: "100%",
-  },
-  listItem: {
-    textAlign: "right",
-  },
-  thumbnail: {
-    width: "100px",
-  },
-}));
+import useStyles from "./Extract.style";
 
 interface IProps {
   extrato: ExtratoConta[];
@@ -78,31 +57,40 @@ const Extract = (props: IProps) => {
 
   return (
     <>
-      {props.extrato.length > 0 && (
-        <List className={classes.list}>
-          {props.extrato.map((extratoResult) => {
-            return (
-              <>
-                <ListItem key={extratoResult.id}>
-                  <ListItemAvatar>
-                    {renderAvatar(extratoResult.descricaoOperacao)[0]}
-                  </ListItemAvatar>
-                  {renderAvatar(extratoResult.descricaoOperacao)[1]}
-                  <ListItemText
-                    className={classes.listItem}
-                    primary={extratoResult.valor.toLocaleString("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    })}
-                    secondary={formatDate(extratoResult.timestamp)}
-                  />
-                </ListItem>
-                <Divider />
-              </>
-            );
-          })}
-        </List>
-      )}
+      <Grid
+        xs={12}
+        md={12}
+        elevation={6}
+        component={Paper}
+        square
+        className={classes.paper}
+      >
+        {props.extrato.length > 0 && (
+          <List className={`${classes.list} ${classes.paper}`}>
+            {props.extrato.map((extratoResult) => {
+              return (
+                <>
+                  <ListItem key={extratoResult.id}>
+                    <ListItemAvatar>
+                      {renderAvatar(extratoResult.descricaoOperacao)[0]}
+                    </ListItemAvatar>
+                    {renderAvatar(extratoResult.descricaoOperacao)[1]}
+                    <ListItemText
+                      className={classes.listItem}
+                      primary={extratoResult.valor.toLocaleString("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                      secondary={formatDate(extratoResult.timestamp)}
+                    />
+                  </ListItem>
+                  <Divider />
+                </>
+              );
+            })}
+          </List>
+        )}
+      </Grid>
     </>
   );
 };
