@@ -30,9 +30,6 @@ interface IModal {
 const TransitionsModal = ({ title, children }: IModal) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
-  const handleOpen = () => {
-    setOpen(true);
-  };
 
   const handleClose = () => {
     setOpen(false);
