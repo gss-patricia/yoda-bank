@@ -69,23 +69,11 @@ const Extract = (props: IProps) => {
     }
   }
 
-  function formatDate(
-    year: number,
-    month: number,
-    day: number,
-    hours: number,
-    minutes: number,
-    seconds: number
-  ) {
-    if (day !== 0)
-      return new Date(
-        year,
-        month,
-        day,
-        hours,
-        minutes,
-        seconds
-      ).toLocaleString();
+  function formatDate(timestamp: any) {
+    if (timestamp) {
+      const date = new Date(timestamp).toLocaleString();
+      return date;
+    }
   }
 
   return (
@@ -102,15 +90,11 @@ const Extract = (props: IProps) => {
                   {renderAvatar(extratoResult.descricaoOperacao)[1]}
                   <ListItemText
                     className={classes.listItem}
-                    primary={` - ${extratoResult.valor}`}
-                    secondary={formatDate(
-                      extratoResult.timestamp.year,
-                      extratoResult.timestamp.month,
-                      extratoResult.timestamp.day,
-                      extratoResult.timestamp.hours,
-                      extratoResult.timestamp.minutes,
-                      extratoResult.timestamp.seconds
-                    )}
+                    primary={extratoResult.valor.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
+                    secondary={formatDate(extratoResult.timestamp)}
                   />
                 </ListItem>
                 <Divider />
