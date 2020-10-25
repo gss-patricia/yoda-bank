@@ -1,6 +1,14 @@
 import { makeStyles } from "@material-ui/core/styles";
 import TransitionsModal from "../modal";
 const useStyles = makeStyles((theme) => ({
+<<<<<<< HEAD
+=======
+  // breakpoints: {
+  //   values: {
+  //     firstCards:
+  //   }
+  // },
+>>>>>>> 8701bd1c301f3ab0339cfba1a239b9aa3707e9bb
   button: {
     color: "#275F40",
     fontSize: "1rem",
@@ -90,10 +98,10 @@ const useStyles = makeStyles((theme) => ({
     },
     "& img": {
       margin: "0 5% 0 0",
-      [theme.breakpoints.between(600,768)]: {
-        opacity: '0',
-        position: 'absolute',
-      }
+      [theme.breakpoints.between(600, 768)]: {
+        opacity: "0",
+        position: "absolute",
+      },
     },
     "& h3": {
       [theme.breakpoints.down(800)]: {
@@ -106,7 +114,7 @@ const useStyles = makeStyles((theme) => ({
       },
     },
     "& div": {
-      marginLeft: '5%',
+      marginLeft: "5%",
     },
   },
   saldo: {
