@@ -41,45 +41,9 @@ const Launch = () => {
   }, []);
 
   const { userReducers }: any = useSelector((state) => state);
-  const { yoToken, yoUuid } = localStorageReducers;
+  const { yoUuid } = localStorageReducers;
   const { extrato, saldo } = userReducers;
   const date = new Date().toLocaleDateString();
-
-  const handleSaldo = async () => {
-    return actions.getSaldo(yoUuid, yoToken);
-  };
-
-  useEffect(() => {
-    handleSaldo().then((saldoAction) => dispatch(saldoAction));
-  }, []);
-
-  const getExtrato = async () => {
-    if (!yoUuid) return null;
-
-    const startDate = new Date();
-    let endDate = new Date();
-    endDate.setDate(endDate.getDate() - 15);
-
-    const { url, options } = GET_EXTRATO(
-      yoUuid,
-      yoToken,
-      startDate.toISOString().split("T")[0],
-      endDate.toISOString().split("T")[0]
-    );
-    const { response, json } = await request(url, options);
-    if (response?.ok) {
-      dispatch({
-        type: UserAction.SET_EXTRATO,
-        payload: {
-          extrato: json.content.map((extrato: ExtratoConta) => extrato),
-        },
-      });
-    }
-  };
-
-  useEffect(() => {
-    getExtrato();
-  }, []);
 
   return (
     <Grid container component="main" alignContent="flex-start">
@@ -149,9 +113,7 @@ const Launch = () => {
             md={12}
             className={clsx([classes.gridHeigh, classes.centered])}
           >
-            <Grid xs={12} sm={4} md={7} elevation={6} component={Paper} square>
-              <Extract extrato={extrato} />
-            </Grid>
+            <Extract extrato={extrato} />
           </Grid>
         </>
       </LayoutBase>
