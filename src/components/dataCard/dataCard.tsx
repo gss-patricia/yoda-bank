@@ -1,17 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, memo } from "react";
 import { Grid, Box, Typography, Paper, Avatar } from "@material-ui/core";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import clsx from "clsx";
 import useStyles from "./dataCard.style";
 
 const DataCard = () => {
   const classes = useStyles();
-
-  const dispatch = useDispatch();
   const { userReducers, localStorageReducers }: any = useSelector(
     (state) => state
   );
-  const { yoToken, yoUuid } = localStorageReducers;
+  const { yoUuid } = localStorageReducers;
   const { cnpj, email } = userReducers;
 
   useEffect(() => {}, []);
@@ -65,4 +63,4 @@ const DataCard = () => {
   );
 };
 
-export default DataCard;
+export default memo(DataCard);

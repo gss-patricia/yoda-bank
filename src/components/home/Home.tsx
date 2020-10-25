@@ -1,12 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  Grid,
-  CssBaseline,
-  Box,
-  Typography,
-  Paper,
-  Divider,
-} from "@material-ui/core";
+import { Grid, CssBaseline, Divider } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import LayoutBase from "../../components/layout";
 import clsx from "clsx";
@@ -20,8 +13,6 @@ import IUser from "../../Interfaces/IUser";
 import jwt_decode from "jwt-decode";
 import useStyles from "./Home.style";
 
-import { actions } from "../../actions/globalActions";
-
 const Launch = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -34,8 +25,6 @@ const Launch = () => {
       payload: { user: user },
     });
   }, []);
-
-  const { yoUuid } = localStorageReducers;
 
   return (
     <Grid container component="main" alignContent="flex-start">
