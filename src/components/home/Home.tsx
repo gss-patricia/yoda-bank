@@ -45,6 +45,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up(600)]: {
       marginLeft: '5%',
     },
+    [theme.breakpoints.up(1020)]: {
+      marginBottom: '5%',
+    },
     "& img": {
       margin: '0 5% 0 0',
     },

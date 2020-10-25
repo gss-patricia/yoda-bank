@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import LoginBackground from '../../assets/login-background.svg';
 import Logo from '../../assets/logo.svg';
+import LogoLetters from '../../assets/logo-letters.svg';
 import EFieldForm from '../../Enums/EFieldForm';
 import useFetch from '../../helpers/Hooks/useFetch';
 import { AUTHENTICATE } from '../../APIs/APIAuth';
@@ -44,6 +45,7 @@ export const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'relative',
   },
   paper: {
     margin: theme.spacing(2, 2),
@@ -80,7 +82,15 @@ export const useStyles = makeStyles((theme) => ({
     fontWeight: 500,
     textAlign: 'center',
   },
-  secundaryPhrase: { fontWeight: 700 },
+  secundaryPhrase: { 
+    fontWeight: 700 
+  },
+  logoLetters: {
+    width: '50%',
+    top: '4%',
+    right: '25%',
+    position: 'absolute',
+  }
 }));
 
 export default function Login() {
@@ -132,7 +142,7 @@ export default function Login() {
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={false} sm={4} md={7} className={classes.imageLogin}>
+      <Grid item xs={false} sm={false} md={7} className={classes.imageLogin}>
         <div className={classes.overlay}>
           <div className={classes.boxPhrase}>
             <Typography
@@ -153,7 +163,9 @@ export default function Login() {
           </div>
         </div>
       </Grid>
-      <Grid item xs={12} sm={8} md={5} className={classes.main}>
+      <Grid item xs={12} sm={12} md={5} className={classes.main}>
+        <img src={LogoLetters} className={classes.logoLetters} alt="Logo Yoda - Coins Letters" />
+
         <Paper className={classes.paper} elevation={6} square>
           <img src={Logo} alt="Logo Yoda - Bank" width="58" height="60" />
           <Typography component="h1" variant="h5">

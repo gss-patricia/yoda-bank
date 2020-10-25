@@ -12,6 +12,7 @@ import { useHistory, Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { CREATE_CONTA } from '../../APIs/APIConta';
 import Logo from '../../assets/logo.svg';
+import LogoLetters from '../../assets/logo-letters.svg';
 import RegisterBackground from '../../assets/background.svg';
 import useForm from '../../helpers/Hooks/useForm';
 import EFieldForm from '../../Enums/EFieldForm';
@@ -30,6 +31,9 @@ export const useStyles = makeStyles((theme) => ({
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     position: 'relative',
+    '@media (max-width: 955px)': {
+      display: 'none',
+    },
   },
   overlay: {
     width: '100%',
@@ -43,6 +47,7 @@ export const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
   },
   paper: {
+    position: 'relative',
     margin: theme.spacing(2, 2),
     display: 'flex',
     flexDirection: 'column',
@@ -74,7 +79,15 @@ export const useStyles = makeStyles((theme) => ({
     fontWeight: 500,
     textAlign: 'center',
   },
-  secundaryPhrase: { fontWeight: 700 },
+  secundaryPhrase: { 
+    fontWeight: 700
+  },
+  logoLetters: {
+    width: '40%',
+    top: '0',
+    right: '25%',
+    position: 'absolute',
+  }
 }));
 
 export default function SignInSide() {
@@ -117,8 +130,10 @@ export default function SignInSide() {
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+      <Grid item xs={12} sm={12} md={5} component={Paper} elevation={6} square>
+
         <div className={classes.paper}>
+        <img src={LogoLetters} className={classes.logoLetters} alt="Logo Yoda - Coins Letters" />
           <img src={Logo} alt="Logo Yoda - Bank" width="58" height="60" />
           <Typography component="h1" variant="h5">
             Você para a força, deve entrar
@@ -204,7 +219,7 @@ export default function SignInSide() {
       <Grid
         item
         xs={false}
-        sm={4}
+        sm={false}
         md={7}
         className={`${classes.imageRegister}`}
       >
