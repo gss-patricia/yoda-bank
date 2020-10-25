@@ -1,7 +1,3 @@
-export enum EPerfil {
-  ADMIN,
-  USER,
-}
 export default interface IUser {
   uuid?: string;
   cnpj: string;

@@ -9,14 +9,11 @@ import {
   CircularProgress,
 } from '@material-ui/core/';
 import { useHistory, Link } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
 import { CREATE_CONTA } from '../../APIs/APIConta';
-import RegisterBackground from '../../assets/background.svg';
 import useForm from '../../helpers/Hooks/useForm';
 import EFieldForm from '../../Enums/EFieldForm';
 import useFetch from '../../helpers/Hooks/useFetch';
 import Error from '../../components/error/Error';
-import { EPerfil } from '../../Interfaces/IUser';
 import Logo from '../logo/Logo';
 import useStyles from './Register.style';
 
@@ -43,13 +40,12 @@ export default function SignInSide() {
       password.value === confirmPassword.value)
     ) {
       //TODO: Solicitar ao backend a validação de senha/confirmar senha
-      //TODO: Será possivel qualquer um adicionar perfil adm ?
       const { url, options } = CREATE_CONTA({
         nome: name.value,
         email: email.value,
         cnpj: cpfCNPJ.value,
         senha: password.value,
-        perfil: EPerfil.USER ? 'USER' : 'ADMIN',
+        perfil: 'USER' ? 'USER' : 'ADMIN',
       });
 
       const { response } = await request(url, options);

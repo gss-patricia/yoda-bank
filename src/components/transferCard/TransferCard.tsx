@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, ChangeEvent } from "react";
+import React, { useState, useEffect, useRef, ChangeEvent, memo } from "react";
 import {
   Grid,
   Box,
@@ -22,17 +22,12 @@ import { PRODUCER_OPERATION } from "../../APIs/APITransfer";
 import useFetch from "../../helpers/Hooks/useFetch";
 import cheers from "../../assets/partty.svg";
 import sad from "../../assets/sad.svg";
-
+import messageCode from "../../Enums/MessageCode";
 import { actions } from "../../actions/globalActions";
 
 const STATUS_CODE_SUCCESS = [200, 201, 204];
 
 const Transfer = () => {
-  enum messageCode {
-    SUCCESS = "success",
-    ERROR = "error",
-    NOMONEY = "nomoney",
-  }
   const dispatch = useDispatch();
   const classes = useStyles();
   const [openModal, setModal] = useState(false);
@@ -51,16 +46,17 @@ const Transfer = () => {
 
   const handleDialog = async (param: string) => {
     if (param === "Sim") {
+      setModal(false);
       if (saldo < valueMoney) {
-        setModal(true);
-        setStatusCode(messageCode.NOMONEY);
+        setTimeout(() => {
+          setStatusCode(messageCode.NOMONEY);
+          setModal(true);
+        }, 1000);
       }
 
       if (!isEmptyFields() && saldo > valueMoney) {
         handleSubmit();
       }
-    } else {
-      setModal(false);
     }
   };
 
@@ -68,9 +64,7 @@ const Transfer = () => {
     return actions.getSaldo(yoUuid, yoToken);
   };
 
-  useEffect(() => {
-    handleSaldo().then((saldoAction) => dispatch(saldoAction));
-  }, [statusCode]);
+  useEffect(() => {}, [statusCode, openModal]);
 
   const handleSubmit = async () => {
     const { url, options } = PRODUCER_OPERATION(
@@ -85,11 +79,13 @@ const Transfer = () => {
     const { response } = await request(url, options);
 
     if (STATUS_CODE_SUCCESS.includes(response?.status!)) {
+      setModal(true);
       setStatusCode(messageCode.SUCCESS);
+      handleSaldo().then((saldoAction) => dispatch(saldoAction));
     } else {
+      setModal(true);
       setStatusCode(messageCode.ERROR);
     }
-    setModal(true);
   };
 
   const isEmptyFields = () => {
@@ -198,4 +194,4 @@ const Transfer = () => {
   );
 };
 
-export default Transfer;
+export default memo(Transfer);

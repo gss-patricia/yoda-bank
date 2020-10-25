@@ -12,27 +12,11 @@ import clsx from "clsx";
 import useStyles from "./BalanceCard.style";
 import pigbank from "../../assets/pigbank.svg";
 
-import TransitionsModal from "../modal";
-import { GET_SALDO } from "../../APIs/APIConta";
-import { PRODUCER_OPERATION } from "../../APIs/APITransfer";
 import useFetch from "../../helpers/Hooks/useFetch";
-import UserAction from "../../store/actions/UserActions";
-import cheers from "../../assets/hacker.svg";
-import sad from "../../assets/sad.svg";
+import { actions } from "../../actions/globalActions";
 
 const Balance = () => {
-  enum messageCode {
-    SUCCESS = "success",
-    ERROR = "error",
-    NOMONEY = "nomoney",
-  }
   const classes = useStyles();
-  const [openModal, setModal] = useState(false);
-  const [valueMoney, setCurrency] = useState(0);
-  const [receiver, setReceiver] = useState("");
-  const [statusCode, setStatusCode] = useState(messageCode.ERROR);
-
-  const container = useRef();
 
   const dispatch = useDispatch();
   const { loading, error, request } = useFetch();
@@ -44,82 +28,13 @@ const Balance = () => {
 
   const date = new Date().toLocaleDateString();
 
-  const handleDialog = async (param: string) => {
-    if (param === "Sim") {
-      if (saldo < valueMoney) {
-        setModal(true);
-        setStatusCode(messageCode.NOMONEY);
-      }
-
-      if (isEmptyFields() && saldo > valueMoney) {
-        handleSubmit();
-      }
-    } else {
-      setModal(false);
-    }
+  const handleSaldo = async () => {
+    return actions.getSaldo(yoUuid, yoToken);
   };
 
   useEffect(() => {
-    const getSaldo = async () => {
-      const { url, options } = GET_SALDO(yoUuid, yoToken);
-      const { response, json } = await request(url, options);
-      if (response?.ok) {
-        dispatch({
-          type: UserAction.SET_SALDO,
-          payload: {
-            saldo: json.saldo,
-          },
-        });
-      }
-    };
-
-    getSaldo();
-  }, [saldo, openModal]);
-
-  const handleSubmit = async () => {
-    const { url, options } = PRODUCER_OPERATION(
-      {
-        destino: receiver,
-        origem: yoUuid,
-        valor: valueMoney,
-      },
-      yoToken
-    );
-
-    const { response } = await request(url, options);
-
-    if (response?.status === 200) {
-      setModal(true);
-      setStatusCode(messageCode.SUCCESS);
-    } else {
-      setModal(true);
-      setStatusCode(messageCode.ERROR);
-    }
-  };
-
-  const isEmptyFields = () => {
-    if (receiver?.length > 0 && valueMoney > 0) {
-      return false;
-    }
-    return true;
-  };
-
-  const changeReceiver = (
-    event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => {
-    const value = event.target.value;
-    setReceiver(value);
-  };
-
-  const getMessage = (status: messageCode) => {
-    const options = {
-      success: "Com sucesso transferido foi!",
-      error: "Com erro, o fracasso é.",
-      nomoney: "Dinheiro suficiente deve você ter!!!",
-    };
-
-    return options[status];
-  };
+    handleSaldo().then((saldoAction) => dispatch(saldoAction));
+  }, [saldo]);
 
   return (
       <Grid
@@ -164,7 +79,6 @@ const Balance = () => {
           </TransitionsModal>
         )}
       </Grid>
-
   );
 };
 

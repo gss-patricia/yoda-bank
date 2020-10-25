@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import { useDispatch } from "react-redux";
 import jwt_decode from "jwt-decode";
 import LocalStorageActions from "../../store/actions/LocalStorageActions";
@@ -21,7 +21,7 @@ import IUser from "../../Interfaces/IUser";
 import Logo from "../logo/Logo";
 import useStyles from "./Login.style";
 
-export default function Login() {
+const Login = () => {
   const [errorLogin, setErrorLogin] = useState("");
   const dispatch = useDispatch();
 
@@ -161,4 +161,6 @@ export default function Login() {
       </Grid>
     </Grid>
   );
-}
+};
+
+export default memo(Login);

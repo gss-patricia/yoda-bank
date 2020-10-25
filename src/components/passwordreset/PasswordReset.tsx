@@ -1,8 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import jwt_decode from 'jwt-decode';
-import LocalStorageActions from '../../store/actions/LocalStorageActions';
-import UserActions from '../../store/actions/UserActions';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -11,32 +7,54 @@ import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import useFetch from '../../helpers/Hooks/useFetch';
-import { useHistory, Link } from 'react-router-dom';
 import useForm from '../../helpers/Hooks/useForm';
 import Error from '../error/Error';
 import Logo from '../logo/Logo';
 import useStyles from './PasswordReset.style';
+import EFieldForm from '../../Enums/EFieldForm';
+import { useHistory } from 'react-router-dom';
+import { RESET_PASSWORD } from '../../APIs/APIAuth';
 
-export default function ResetPassword() {
+export default function ConfirmPassword() {
   const classes = useStyles();
-  const { loading, request } = useFetch();
+  const history = useHistory();
+
+  const { loading, error, request } = useFetch();
+  const password = useForm(EFieldForm.password);
+  const confirmPassword = useForm(EFieldForm.password);
+  const token = useForm(EFieldForm.text);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (loading) return null;
+
+    if (
+      (password.validate(),
+      password.value === confirmPassword.value,
+      token.validate())
+    ) {
+      //const { url, options } = RESET_PASSWORD(
+      //  {
+      //    password: password.value,
+      //    token: token.value,
+      //  },
+      //  'uid',
+      //  token.value,
+      //);
+      //const { response } = await request(url, options);
+      //if (response?.ok) return history.push('/login');
+    }
   }
 
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={12} sm={8} md={5} className={classes.main}>
+      <Grid xs={12} className={classes.main}>
         <Paper className={classes.paper} elevation={6} square>
           <Logo />
+          <br></br>
           <Typography component="h1" variant="h5">
-            Problemas para entrar?
-          </Typography>
-          <Typography component="h1" variant="body2">
-            Insira seu e-mail e enviaremos um link para você voltar a acessar a
-            conta.
+            Defina sua nova senha
           </Typography>
           <form className={classes.form} onSubmit={handleSubmit}>
             <TextField
@@ -44,23 +62,34 @@ export default function ResetPassword() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email"
-              name="email"
-              autoComplete="email"
+              name="senha"
+              label="Senha"
+              type="password"
+              id="senha"
+              {...password}
             />
             <TextField
               variant="outlined"
               margin="normal"
               required
               fullWidth
-              name="password"
-              label="Senha"
+              name="confirmarSenha"
+              label="Confirmar Senha"
               type="password"
-              id="password"
-              autoComplete="current-password"
+              id="confirmarSenha"
+              {...confirmPassword}
             />
-            <Link to="#">Esqueceu a senha?</Link>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="token"
+              label="Token"
+              type="text"
+              id="token"
+              {...token}
+            />
             <Button
               type="submit"
               fullWidth
@@ -71,15 +100,10 @@ export default function ResetPassword() {
               {loading ? (
                 <CircularProgress size={24} color="secondary" />
               ) : (
-                'ENVIAR LINK PARA LOGIN'
+                'CADASTRAR NOVA SENHA'
               )}
             </Button>
-            <Error error={''} />
-            <Grid container className={classes.link}>
-              <Grid item>
-                <Link to="/login">{'Já sou da força'}</Link>
-              </Grid>
-            </Grid>
+            <Error error={error} />
           </form>
         </Paper>
       </Grid>

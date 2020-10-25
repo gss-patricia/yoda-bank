@@ -48,14 +48,10 @@ export const GET_CONTA = (uuid: string, yoToken: string) => {
 export const GET_EXTRATO = (
   uuid: string,
   yoToken: string,
-  startDate: string,
-  endDate: string,
   page: number = 0
 ) => {
   return {
-    url:
-      baseURL +
-      `/conta/${uuid}/extrato?inicio=${endDate}%2000%3A00%3A00&fim=${startDate}%2023%3A00%3A00&page=${page}&size=10`,
+    url: baseURL + `/conta/${uuid}/extrato?${page}&size=10`,
     options: {
       method: "GET",
       headers: {

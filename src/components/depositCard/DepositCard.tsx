@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useRef } from "react";
+import React, { useState, ChangeEvent, useRef, memo, useEffect } from "react";
 import {
   Grid,
   Box,
@@ -8,23 +8,26 @@ import {
 } from "@material-ui/core";
 import clsx from "clsx";
 import useFetch from "../../helpers/Hooks/useFetch";
-import { GET_EXTRATO, GET_SALDO, POST_OPERACAO } from "../../APIs/APIConta";
+import { POST_OPERACAO } from "../../APIs/APIConta";
 import wallet from "../../assets/wallet.svg";
 import AlertDialog from "../dialog";
 import composeRefs from "../../helpers/composeRefs";
 import { ETypeOperation } from "../../Interfaces/IOperation";
 import { useDispatch, useSelector } from "react-redux";
-import UserAction from "../../store/actions/UserActions";
-import { ExtratoConta } from "../../store/reducers/userReducers";
 import CurrencyTextField from "@unicef/material-ui-currency-textfield";
 import TransitionsModal from "../modal";
 import cheers from "../../assets/hacker.svg";
 import sad from "../../assets/sad.svg";
 import useStyles from "./DepositCard.style";
+import { actions } from "../../actions/globalActions";
+import messageCode from "../../Enums/MessageCode";
 
+
+const STATUS_CODE_SUCCESS = [200, 201, 204];
 
 const Deposit = () => {
   enum messageCode {
+    NONE = "none",
     SUCCESS = "success",
     ERROR = "error",
     NOMONEY = "nomoney",
@@ -57,6 +60,7 @@ const Deposit = () => {
       success: "Com sucesso transferido foi!",
       error: "Com erro, o fracasso é.",
       nomoney: "Dinheiro suficiente deve você ter!!!",
+      none: "Com sucesso transferido foi!",
     };
 
     return options[status];
@@ -77,16 +81,24 @@ const Deposit = () => {
     }
   };
 
-  const handleSubmit = async () => {
-    console.log("TESTE");
-    if (loading) return null;
-    if (valueMoney <= 0) {
-      setErrorDeposit("Informe um valor de depósito");
-      setTimeout(() => {
-        setErrorDeposit("");
-      }, 3000);
-      return;
+  const handleExtrato = async () => {
+    return actions.getExtrato(yoUuid, yoToken, 0);
+  };
+
+  const handleSaldo = async () => {
+    return actions.getSaldo(yoUuid, yoToken);
+  };
+
+  useEffect(() => {
+    if (statusCode !== messageCode.NONE) {
+      handleSaldo().then((saldoAction) => dispatch(saldoAction));
+      handleExtrato().then((state) => dispatch(state));
     }
+    setStatusCode(messageCode.NONE);
+  }, [statusCode]);
+
+  const handleSubmit = async () => {
+    if (loading) return null;
 
     const { url, options } = POST_OPERACAO(
       {
@@ -97,51 +109,14 @@ const Deposit = () => {
       localStorageReducers.yoToken
     );
 
-    //TODO: TORNAR A FUNÇÃO  GET_SALDO GLOBAL
-    //TODO: VERIFICAR VALIDAÇÕES
-    const { response, json } = await request(url, options);
-    if (response?.ok) {
-      const { url, options } = GET_SALDO(yoUuid, yoToken);
-      const { response, json } = await request(url, options);
-      if (response?.ok) {
-        setCurrency(0);
-        dispatch({
-          type: UserAction.SET_SALDO,
-          payload: {
-            saldo: json.saldo,
-          },
-        });
-        getExtrato();
-      } else {
-        //TODO: REVER MENSSAGEM
-        setErrorDeposit("Houve um erro, tente mais tarde!");
-      }
+    const { response } = await request(url, options);
+
+    if (STATUS_CODE_SUCCESS.includes(response?.status!)) {
+      setStatusCode(messageCode.SUCCESS);
+    } else {
+      setStatusCode(messageCode.ERROR);
     }
-  };
-
-  //TODO: TORNAR A FUNÇÃO  GET_SALDO GLOBAL
-  const getExtrato = async () => {
-    if (!yoUuid) return null;
-
-    const startDate = new Date();
-    let endDate = new Date();
-    endDate.setDate(endDate.getDate() - 15);
-
-    const { url, options } = GET_EXTRATO(
-      yoUuid,
-      yoToken,
-      startDate.toISOString().split("T")[0],
-      endDate.toISOString().split("T")[0]
-    );
-    const { response, json } = await request(url, options);
-    if (response?.ok) {
-      dispatch({
-        type: UserAction.SET_EXTRATO,
-        payload: {
-          extrato: json.content.map((extrato: ExtratoConta) => extrato),
-        },
-      });
-    }
+    setModal(true);
   };
 
   return (
@@ -207,7 +182,12 @@ const Deposit = () => {
         <TransitionsModal title={getMessage(statusCode)}>
           <img
             className={classes.cheers}
-            src={statusCode === messageCode.SUCCESS ? cheers : sad}
+            src={
+              statusCode === messageCode.SUCCESS ||
+              statusCode === messageCode.NONE
+                ? cheers
+                : sad
+            }
           />
         </TransitionsModal>
       )}
@@ -215,4 +195,4 @@ const Deposit = () => {
   );
 };
 
-export default Deposit;
+export default memo(Deposit);
