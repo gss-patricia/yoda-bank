@@ -1,5 +1,4 @@
 import { makeStyles } from "@material-ui/core/styles";
-import LoginBackground from '../../assets/login-background.svg';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -10,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'column',
   },
   paper: {
     margin: theme.spacing(2, 2),

@@ -70,6 +70,7 @@ const useForm = (type?: EFieldForm) => {
           setHelperText(types.cnpj.message);
           return false;
         }
+        break;
       case EFieldForm.money:
         if (!types.money.regex.test(value)) {
           setHelperText(types.money.message);

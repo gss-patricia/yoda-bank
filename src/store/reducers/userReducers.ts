@@ -7,22 +7,7 @@ const initialState = {
   email: "",
   profile: "",
   saldo: 0,
-  extrato: [
-    {
-      descricaoOperacao: "DEPOSITO",
-      id: 0,
-      tipo: "DEPOSITO",
-      valor: 0,
-      timestamp: {
-        day: 0,
-        month: 0,
-        year: 0,
-        hours: 0,
-        minutes: 0,
-        seconds: 0,
-      },
-    },
-  ],
+  extrato: [],
 };
 
 export interface UserState {
