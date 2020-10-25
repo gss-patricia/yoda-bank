@@ -1,112 +1,128 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, ChangeEvent } from "react";
 import {
   Grid,
   Box,
   Typography,
   Button,
-  Collapse,
-  InputAdornment,
-  Input,
-  Fab,
   TextField,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import AddIcon from '@material-ui/icons/Add';
-import clsx from 'clsx';
+  CircularProgress,
+} from "@material-ui/core";
 
-import transfer from '../../assets/transfer.svg';
-import AlertDialog from '../dialog';
-import composeRefs from '../../helpers/composeRefs';
+import CurrencyTextField from "@unicef/material-ui-currency-textfield";
+import { useSelector, useDispatch } from "react-redux";
+import clsx from "clsx";
 
-const useStyles = makeStyles((theme) => ({
-  button: {
-    color: '#275F40',
-    fontSize: '1rem',
-    padding: '5px 15px',
-    fontWeight: 'bold',
-  },
-  image: {
-    minWidth: '191px',
-    [theme.breakpoints.down(400)]: {
-      opacity: '0',
-      position: 'absolute',
-    },
-  },
-  box: {
-    color: '#275F40',
-    display: 'flex',
-    cursor: 'pointer',
-    justifyContent:'start',
-    minHeight: '155px',
-    backgroundColor: '#FAFAFA',
-    [theme.breakpoints.down(400)]: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      minHeight: '50px',
-    },
-    [theme.breakpoints.up(400)]: {
-      position: 'relative',
-    },
-    "& h3": {
-      [theme.breakpoints.up(400)]: {
-        position: 'absolute',
-        right: '10px',
-      },
-    }
-  },
-  marginBottom: {
-    marginBottom: '30px',
-  },
-  collapsedInput: {
-    padding: '5% 0',
-  },
-  inputMargin: {
-    margin: '15px 15px',
-    [theme.breakpoints.down(410)]: {
-      width: '90%',
-    },
-    [theme.breakpoints.between(445,600)]: {
-      width: "57%",
-    },
-    [theme.breakpoints.between(601,958)]: {
-      width: "43%",
-    },
-    [theme.breakpoints.up(1024)]: {
-      width: "48%",
-    },
-  },
-  inputWidth: {
-    width: '90%',
-  },
-  transferGrid: {
-    backgroundColor: '#fff',
-    [theme.breakpoints.up(600)]: {
-      margin: "0 0 5%",
-    },
-  },
-  typography: {
-    fontWeight: 'bold',
-    marginTop: '20px',
-    [theme.breakpoints.down(800)]: {
-      fontSize: '1.3rem',
-    }
-  },
-  addIcon: {
-    position: 'absolute',
-    marginTop: '113px',
-    right: '35px',
-  },
-}));
+import useStyles from "./TransferCard.style";
+import transfer from "../../assets/transfer.svg";
+import AlertDialog from "../dialog";
+import composeRefs from "../../helpers/composeRefs";
+
+import TransitionsModal from "../modal";
+import { GET_SALDO } from "../../APIs/APIConta";
+import { PRODUCER_OPERATION } from "../../APIs/APITransfer";
+import useFetch from "../../helpers/Hooks/useFetch";
+import UserAction from "../../store/actions/UserActions";
+import cheers from "../../assets/hacker.svg";
+import sad from "../../assets/sad.svg";
 
 const Transfer = () => {
+  enum messageCode {
+    SUCCESS = "success",
+    ERROR = "error",
+    NOMONEY = "nomoney",
+  }
   const classes = useStyles();
-  const [transferValue, setInputTransfer] = useState();
-  const container = React.useRef();
+  const [checked, setChecked] = useState(false);
+  const [openModal, setModal] = useState(false);
+  const [valueMoney, setCurrency] = useState(0);
+  const [receiver, setReceiver] = useState("");
+  const [statusCode, setStatusCode] = useState(messageCode.ERROR);
 
-  const handleDialog = (param: any) => console.log(param);
+  const container = useRef();
 
-  const handleTransfer = (event: any) => {
-    console.log(event.target.value);
+  const dispatch = useDispatch();
+  const { request } = useFetch();
+  const { userReducers }: any = useSelector((state) => state);
+  const { localStorageReducers }: any = useSelector((state) => state);
+
+  const { yoToken, yoUuid } = localStorageReducers;
+  const { saldo } = userReducers;
+
+  const handleDialog = async (param: string) => {
+    if (param === "Sim") {
+      if (saldo < valueMoney) {
+        setModal(true);
+        setStatusCode(messageCode.NOMONEY);
+      }
+
+      if (isEmptyFields() && saldo > valueMoney) {
+        handleSubmit();
+      }
+    } else {
+      setModal(false);
+    }
+  };
+
+  useEffect(() => {
+    const getSaldo = async () => {
+      const { url, options } = GET_SALDO(yoUuid, yoToken);
+      const { response, json } = await request(url, options);
+      if (response?.ok) {
+        dispatch({
+          type: UserAction.SET_SALDO,
+          payload: {
+            saldo: json.saldo,
+          },
+        });
+      }
+    };
+
+    getSaldo();
+  }, [saldo, openModal]);
+
+  const handleSubmit = async () => {
+    const { url, options } = PRODUCER_OPERATION(
+      {
+        destino: receiver,
+        origem: yoUuid,
+        valor: valueMoney,
+      },
+      yoToken
+    );
+
+    const { response } = await request(url, options);
+
+    if (response?.status === 200) {
+      setModal(true);
+      setStatusCode(messageCode.SUCCESS);
+    } else {
+      setModal(true);
+      setStatusCode(messageCode.ERROR);
+    }
+  };
+
+  const isEmptyFields = () => {
+    if (receiver?.length > 0 && valueMoney > 0) {
+      return false;
+    }
+    return true;
+  };
+
+  const changeReceiver = (
+    event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    const value = event.target.value;
+    setReceiver(value);
+  };
+
+  const getMessage = (status: messageCode) => {
+    const options = {
+      success: "Com sucesso transferido foi!",
+      error: "Com erro, o fracasso é.",
+      nomoney: "Dinheiro suficiente deve você ter!!!",
+    };
+
+    return options[status];
   };
 
   return (
@@ -122,17 +138,35 @@ const Transfer = () => {
           Transferência
         </Typography>
       </Box>
-      <Box className={classes.collapsedInput}>
+      <form onSubmit={handleSubmit} id="transferForm">
         <TextField
           label="Chave"
+          required
+          value={receiver}
+          name="receiver"
+          id="receiver"
+          type="text"
           className={clsx([classes.inputMargin, classes.inputWidth])}
-        />
-        <Input
-          className={classes.inputMargin}
-          startAdornment={<InputAdornment position="start">R$</InputAdornment>}
-          onChange={handleTransfer}
+          onChange={changeReceiver}
         />
 
+        <CurrencyTextField
+          variant="standard"
+          value={valueMoney}
+          label="R$"
+          currencySymbol=""
+          outputFormat="number"
+          text
+          required
+          decimalCharacter=","
+          digitGroupSeparator="."
+          textAlign="left"
+          className={clsx([classes.inputMargin, classes.inputWidth])}
+          onChange={(
+            event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+            value: number
+          ) => setCurrency(value)}
+        />
         <AlertDialog
           title="Transferir"
           titleId="transfer-op"
@@ -148,13 +182,27 @@ const Transfer = () => {
                 className={classes.button}
                 ref={composeRefs(triggerRef, container)}
                 onClick={toggle}
+                disabled={isEmptyFields()}
               >
-                Transferir
+                {isOpen ? (
+                  <CircularProgress size={24} color="secondary" />
+                ) : (
+                  "Transferir"
+                )}
               </Button>
             </>
           )}
         </AlertDialog>
-      </Box>
+      </form>
+
+      {openModal && (
+        <TransitionsModal title={getMessage(statusCode)}>
+          <img
+            className={classes.cheers}
+            src={statusCode === messageCode.SUCCESS ? cheers : sad}
+          />
+        </TransitionsModal>
+      )}
     </Grid>
   );
 };

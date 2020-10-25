@@ -13,16 +13,16 @@ const initialState = {
       id: 0,
       tipo: "DEPOSITO",
       valor: 0,
-      timestamp : {
+      timestamp: {
         day: 0,
         month: 0,
         year: 0,
         hours: 0,
         minutes: 0,
         seconds: 0,
-      }
-    }
-  ]
+      },
+    },
+  ],
 };
 
 export interface UserState {
@@ -53,16 +53,19 @@ export interface ExtratoDate {
 
 const userReducers = (state: UserState = initialState, action: AnyAction) => {
   switch (action.type) {
+    case UserActions.SET_INITIAL:
+      state = { ...initialState };
+      return state;
     case UserActions.GET_USER:
       return state;
     case UserActions.SET_USER:
       state = { ...state, ...action.payload?.user };
       return state;
     case UserActions.SET_SALDO:
-      state = { ...state, ...action.payload?.saldo };
+      state = { ...state, saldo: action.payload?.saldo };
       return state;
     case UserActions.SET_EXTRATO:
-      state = { ...state, ...action.payload?.extrato };
+      state = { ...state, extrato: action.payload?.extrato };
       return state;
     default:
       break;

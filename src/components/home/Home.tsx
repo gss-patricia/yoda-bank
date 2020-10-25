@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import {
   Grid,
   CssBaseline,
@@ -7,34 +7,35 @@ import {
   Paper,
   Divider,
   CircularProgress,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { useDispatch, useSelector } from 'react-redux';
-import pigbank from '../../assets/pigbank.svg';
-import LayoutBase from '../../components/layout';
-import clsx from 'clsx';
-import TransferCard from '../transferCard';
-import DepositCard from '../depositCard';
-import Extract from '../extract';
-import UserAction from '../../store/actions/UserActions';
-import useFetch from '../../helpers/Hooks/useFetch';
-import { GET_SALDO } from '../../APIs/APIConta';
-import IUser from '../../Interfaces/IUser';
-import jwt_decode from 'jwt-decode';
+} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { useDispatch, useSelector } from "react-redux";
+import pigbank from "../../assets/pigbank.svg";
+import LayoutBase from "../../components/layout";
+import clsx from "clsx";
+import TransferCard from "../transferCard";
+import DepositCard from "../depositCard";
+import Extract from "../extract";
+import UserAction from "../../store/actions/UserActions";
+import useFetch from "../../helpers/Hooks/useFetch";
+import { GET_EXTRATO, GET_SALDO } from "../../APIs/APIConta";
+import IUser from "../../Interfaces/IUser";
+import jwt_decode from "jwt-decode";
+import { ExtratoConta } from "../../store/reducers/userReducers";
 
 const useStyles = makeStyles((theme) => ({
   box: {
-    color: '#275F40',
-    display: 'flex',
-    minHeight: '90px',
-    position: 'relative',
-    cursor: 'pointer',
+    color: "#275F40",
+    display: "flex",
+    minHeight: "90px",
+    position: "relative",
+    cursor: "pointer",
   },
   marginBottom: {
-    marginBottom: '30px',
+    marginBottom: "30px",
   },
   transferGrid: {
-    backgroundColor: '#FAFAFA',
+    backgroundColor: "#FAFAFA",
   },
   pigBank: {
     display: "flex",
@@ -43,65 +44,65 @@ const useStyles = makeStyles((theme) => ({
     minHeight: "155px",
     margin: "5% 0 10%",
     [theme.breakpoints.up(600)]: {
-      marginLeft: '5%',
+      marginLeft: "5%",
     },
     [theme.breakpoints.up(1020)]: {
       marginBottom: '5%',
     },
     "& img": {
-      margin: '0 5% 0 0',
+      margin: "0 5% 0 0",
     },
     "& h3": {
       [theme.breakpoints.down(800)]: {
-        fontSize: '1.3rem',
-      }
+        fontSize: "1.3rem",
+      },
     },
     "& h2": {
       [theme.breakpoints.down(800)]: {
-        fontSize: '1.1rem',
-      }
+        fontSize: "1.1rem",
+      },
     },
   },
   depositTitle: {
-    textAlign: 'center',
-    fontWeight: 'bold',
+    textAlign: "center",
+    fontWeight: "bold",
   },
   collapsedInput: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   inputMargin: {
-    margin: '15px 15px',
+    margin: "15px 15px",
   },
   inputWidth: {
-    width: '90%',
+    width: "90%",
   },
   gridHeigh: {
-    maxHeight: '30%',
-    justifyContent: 'center',
-    borderBottom: '1px solid #D2CDD1',
-    margin: '25px 5%',
+    maxHeight: "30%",
+    justifyContent: "center",
+    borderBottom: "1px solid #D2CDD1",
+    margin: "25px 5%",
   },
   typography: {
-    fontWeight: 'bold',
-    marginTop: '20px',
+    fontWeight: "bold",
+    marginTop: "20px",
   },
   saldo: {
-    fontWeight: 'bold',
-    fontSize: '1.5rem',
-    marginTop: '15px',
+    fontWeight: "bold",
+    fontSize: "1.5rem",
+    marginTop: "15px",
   },
   saldoInfo: {
-    fontSize: '1.2rem',
-    marginTop: '5px',
+    fontSize: "1.2rem",
+    marginTop: "5px",
   },
   date: {
-    color: '#9C9696',
-    marginTop: '30%',
+    color: "#9C9696",
+    marginTop: "30%",
   },
   centered: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
 }));
 
@@ -119,39 +120,66 @@ const Launch = () => {
       payload: { user: user },
     });
   }, []);
-  const { userReducers }: any = useSelector((state) => state);
 
-  const { yoToken } = localStorageReducers;
-  const { uuid, saldo } = userReducers;
+  const { userReducers }: any = useSelector((state) => state);
+  const { yoToken, yoUuid } = localStorageReducers;
+  const { saldo, extrato } = userReducers;
   const date = new Date().toLocaleDateString();
 
-  useEffect(() => {
-    async function getSaldo() {
-      if (!uuid) return null;
-      const { url, options } = GET_SALDO(uuid, yoToken);
-      const { response, json } = await request(url, options);
-      if (response?.ok) {
-        dispatch({
-          type: UserAction.SET_SALDO,
-          payload: {
-            saldo: json.saldo,
-          },
-        });
-      }
+  const getSaldo = async () => {
+    if (!user.uuid) return null;
+    const { url, options } = GET_SALDO(user.uuid, yoToken);
+    const { response, json } = await request(url, options);
+    if (response?.ok) {
+      dispatch({
+        type: UserAction.SET_SALDO,
+        payload: {
+          saldo: json.saldo,
+        },
+      });
     }
+  };
 
+  useEffect(() => {
     getSaldo();
-  }, [userReducers]);
+  }, [saldo]);
+
+  const getExtrato = async () => {
+    if (!yoUuid) return null;
+
+    const startDate = new Date();
+    let endDate = new Date();
+    endDate.setDate(endDate.getDate() - 15);
+
+    const { url, options } = GET_EXTRATO(
+      yoUuid,
+      yoToken,
+      startDate.toISOString().split("T")[0],
+      endDate.toISOString().split("T")[0]
+    );
+    const { response, json } = await request(url, options);
+    if (response?.ok) {
+      dispatch({
+        type: UserAction.SET_EXTRATO,
+        payload: {
+          extrato: json.content.map((extrato: ExtratoConta) => extrato),
+        },
+      });
+    }
+  };
+
+  useEffect(() => {
+    getExtrato();
+  }, []);
 
   return (
-    <Grid
-      container
-      component="main"
-      alignContent="flex-start"
-    >
+    <Grid container component="main" alignContent="flex-start">
       <CssBaseline />
       <LayoutBase>
         <>
+          <Typography component="h3" variant="h5" className={classes.saldo}>
+            {`Yox: ${yoUuid} *** COlocar css`}
+          </Typography>
           <Grid
             container
             alignContent="flex-start"
@@ -161,7 +189,6 @@ const Launch = () => {
             md={12}
             className={classes.gridHeigh}
           >
-            
             <Grid
               md={9}
               sm={9}
@@ -180,6 +207,7 @@ const Launch = () => {
                 >
                   Meu Saldo
                 </Typography>
+
                 <Typography
                   component="h2"
                   variant="h5"
@@ -188,9 +216,9 @@ const Launch = () => {
                   {loading || error ? (
                     <CircularProgress size={24} color="secondary" />
                   ) : (
-                    saldo.toLocaleString('pt-br', {
-                      style: 'currency',
-                      currency: 'BRL',
+                    saldo.toLocaleString("pt-br", {
+                      style: "currency",
+                      currency: "BRL",
                     })
                   )}
                 </Typography>
@@ -210,13 +238,10 @@ const Launch = () => {
             xs={12}
             sm={12}
             md={12}
-            className={clsx([
-              classes.gridHeigh,
-              classes.centered,
-            ])}
+            className={clsx([classes.gridHeigh, classes.centered])}
           >
-            <Grid xs={12} sm={8} md={7} elevation={6} component={Paper} square>
-              <Extract />
+            <Grid xs={12} sm={4} md={7} elevation={6} component={Paper} square>
+              <Extract extrato={extrato} />
             </Grid>
           </Grid>
         </>

@@ -1,5 +1,5 @@
-import baseURL from "./baseURL";
 import ITransfer from "../Interfaces/ITransfer";
+import baseURL from "./baseURL";
 
 export const PRODUCER_OPERATION = (body: ITransfer, yoToken: string) => {
   return {

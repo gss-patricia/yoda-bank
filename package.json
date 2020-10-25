@@ -16,6 +16,7 @@
     "@types/react-dom": "^16.9.0",
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.6",
+    "@unicef/material-ui-currency-textfield": "^0.8.6",
     "jwt-decode": "^3.0.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
@@ -26,10 +27,12 @@
     "typescript": "~3.7.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start-client": "react-scripts start",
+    "build": "react-scripts build && (cd server && yarn install)",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "start": "cd server && yarn start",
+    "dev": "react-scripts start"
   },
   "eslintConfig": {
     "extends": [

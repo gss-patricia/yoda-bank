@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   makeStyles,
   Grid,
@@ -7,63 +7,63 @@ import {
   Typography,
   Box,
   Button,
-} from '@material-ui/core';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import LocalStorageActions from '../../store/actions/LocalStorageActions';
-
-import Logo from '../../assets/logo-white.svg';
-import ToggleDrawer from '../toggleDrawer';
-import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+} from "@material-ui/core";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import LocalStorageActions from "../../store/actions/LocalStorageActions";
+import UserAction from "../../store/actions/UserActions";
+import Logo from "../../assets/logo-white.svg";
+import ToggleDrawer from "../toggleDrawer";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: '70px',
+    height: "70px",
   },
   headerWrapper: {
     backgroundColor: theme.palette.primary.main,
-    display: 'flex',
+    display: "flex",
   },
   paper: {
-    display: 'flex',
-    color: 'white',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    height: '70px',
-    width: '30%',
+    display: "flex",
+    color: "white",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    height: "70px",
+    width: "30%",
     "& h1": {
-      marginLeft: '5%',
+      marginLeft: "5%",
     },
   },
   paperSecond: {
-    display: 'flex',
-    flexDirection: 'row',
-    color: 'white',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    height: '70px',
+    display: "flex",
+    flexDirection: "row",
+    color: "white",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    height: "70px",
     padding: theme.spacing(2),
-    width: '70%',
+    width: "70%",
   },
   logout: {
-    width: '50px',
-    marginLeft: '10px',
-    backgroundColor: '#4C2A85',
+    width: "50px",
+    marginLeft: "10px",
+    backgroundColor: "#4C2A85",
   },
   logo: {
-    marginRight: '20px',
+    marginRight: "20px",
   },
   width: {
-    minWidth: '100%',
-  }
+    minWidth: "100%",
+  },
 }));
 
 const Header = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const matches = useMediaQuery('(min-width:1000px)');
+  const matches = useMediaQuery("(min-width:1000px)");
   const history = useHistory();
 
   const { userReducers }: any = useSelector((state) => state);
@@ -71,15 +71,27 @@ const Header = () => {
   async function remove() {
     dispatch({
       type: LocalStorageActions.REMOVE_LOCAL_STORAGE,
-      state: '',
+      state: "",
     });
-    history.push('/login');
+    dispatch({
+      type: UserAction.SET_INITIAL,
+    });
+    history.push("/login");
   }
 
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={12} sm={8} md={12} component={Paper} elevation={6} square className={classes.width}>
+      <Grid
+        item
+        xs={12}
+        sm={8}
+        md={12}
+        component={Paper}
+        elevation={6}
+        square
+        className={classes.width}
+      >
         <div className={classes.headerWrapper}>
           <Box className={classes.paper} width="50%">
             <ToggleDrawer />

@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface IProps {
   error: string;
+  severity?: any;
 }
 
 const Error = (props: IProps) => {
@@ -24,7 +25,10 @@ const Error = (props: IProps) => {
   if (!props.error) return null;
   return (
     <div className={classes.root}>
-      <Alert variant="filled" severity="error">
+      <Alert
+        variant="filled"
+        severity={props.severity ? props.severity : "error"}
+      >
         {props.error}
       </Alert>
     </div>
