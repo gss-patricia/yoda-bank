@@ -26,8 +26,6 @@ const Launch = () => {
     });
   }, []);
 
-  const { yoUuid } = localStorageReducers;
-
   return (
     <Grid container component="main" alignContent="flex-start">
       <CssBaseline />
