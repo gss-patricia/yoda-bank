@@ -20,7 +20,7 @@ import composeRefs from "../../helpers/composeRefs";
 import TransitionsModal from "../modal";
 import { PRODUCER_OPERATION } from "../../APIs/APITransfer";
 import useFetch from "../../helpers/Hooks/useFetch";
-import cheers from "../../assets/hacker.svg";
+import cheers from "../../assets/partty.svg";
 import sad from "../../assets/sad.svg";
 
 import { actions } from "../../actions/globalActions";
