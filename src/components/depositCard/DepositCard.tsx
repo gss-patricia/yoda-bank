@@ -1,26 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, ChangeEvent, useRef } from "react";
 import {
   Grid,
   Box,
   Typography,
   Button,
-  InputAdornment,
-  TextField,
   CircularProgress,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import useFetch from "../../helpers/Hooks/useFetch";
-import { GET_SALDO, POST_OPERACAO } from "../../APIs/APIConta";
+import { GET_EXTRATO, GET_SALDO, POST_OPERACAO } from "../../APIs/APIConta";
 import wallet from "../../assets/wallet.svg";
 import AlertDialog from "../dialog";
 import composeRefs from "../../helpers/composeRefs";
-import useForm from "../../helpers/Hooks/useForm";
-import EFieldForm from "../../Enums/EFieldForm";
 import { ETypeOperation } from "../../Interfaces/IOperation";
 import { useDispatch, useSelector } from "react-redux";
 import UserAction from "../../store/actions/UserActions";
-import Error from "../../components/error/Error";
+import { ExtratoConta } from "../../store/reducers/userReducers";
+import CurrencyTextField from "@unicef/material-ui-currency-textfield";
+import TransitionsModal from "../modal";
+import cheers from "../../assets/hacker.svg";
+import sad from "../../assets/sad.svg";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -109,32 +109,81 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "113px",
     right: "35px",
   },
+  cheers: {
+    width: "100px",
+  },
 }));
 
 const Deposit = () => {
+  enum messageCode {
+    SUCCESS = "success",
+    ERROR = "error",
+    NOMONEY = "nomoney",
+  }
   const classes = useStyles();
+  const container = useRef();
+
   const [errorDeposit, setErrorDeposit] = useState("");
-  const transferValue = useForm(EFieldForm.money);
-  const container = React.useRef();
-  const { loading, request } = useFetch();
+  const [openModal, setModal] = useState(false);
+  const [statusCode, setStatusCode] = useState(messageCode.ERROR);
+  const [valueMoney, setCurrency] = useState(0);
+
   const dispatch = useDispatch();
+  const { loading, request } = useFetch();
 
+  const { userReducers }: any = useSelector((state) => state);
   const { localStorageReducers }: any = useSelector((state) => state);
+  const { yoToken, yoUuid } = localStorageReducers;
+  const { saldo } = userReducers;
 
-  const handleDialog = (param: any) => console.log(param);
+  const isEmptyFields = () => {
+    if (valueMoney > 0) {
+      return false;
+    }
+    return true;
+  };
 
-  const handleTransfer = async (event: any) => {
-    if (
-      (!transferValue.validate() && parseInt(transferValue.value) <= 0) ||
-      loading
-    )
-      return null;
+  const getMessage = (status: messageCode) => {
+    const options = {
+      success: "Com sucesso transferido foi!",
+      error: "Com erro, o fracasso é.",
+      nomoney: "Dinheiro suficiente deve você ter!!!",
+    };
+
+    return options[status];
+  };
+
+  const handleDialog = async (param: string) => {
+    if (param === "Sim") {
+      if (saldo < valueMoney) {
+        setModal(true);
+        setStatusCode(messageCode.NOMONEY);
+      }
+
+      if (!isEmptyFields()) {
+        handleSubmit();
+      }
+    } else {
+      setModal(false);
+    }
+  };
+
+  const handleSubmit = async () => {
+    console.log("TESTE");
+    if (loading) return null;
+    if (valueMoney <= 0) {
+      setErrorDeposit("Informe um valor de depósito");
+      setTimeout(() => {
+        setErrorDeposit("");
+      }, 3000);
+      return;
+    }
 
     const { url, options } = POST_OPERACAO(
       {
         conta: localStorageReducers.yoUuid,
         tipo: ETypeOperation.DEPOSITO,
-        valor: parseInt(transferValue.value),
+        valor: valueMoney,
       },
       localStorageReducers.yoToken
     );
@@ -143,21 +192,46 @@ const Deposit = () => {
     //TODO: VERIFICAR VALIDAÇÕES
     const { response, json } = await request(url, options);
     if (response?.ok) {
-      const { yoToken, yoUuid } = localStorageReducers;
       const { url, options } = GET_SALDO(yoUuid, yoToken);
       const { response, json } = await request(url, options);
       if (response?.ok) {
-        transferValue.setValue("");
+        setCurrency(0);
         dispatch({
           type: UserAction.SET_SALDO,
           payload: {
             saldo: json.saldo,
           },
         });
+        getExtrato();
       } else {
         //TODO: REVER MENSSAGEM
         setErrorDeposit("Houve um erro, tente mais tarde!");
       }
+    }
+  };
+
+  //TODO: TORNAR A FUNÇÃO  GET_SALDO GLOBAL
+  const getExtrato = async () => {
+    if (!yoUuid) return null;
+
+    const startDate = new Date();
+    let endDate = new Date();
+    endDate.setDate(endDate.getDate() - 15);
+
+    const { url, options } = GET_EXTRATO(
+      yoUuid,
+      yoToken,
+      startDate.toISOString().split("T")[0],
+      endDate.toISOString().split("T")[0]
+    );
+    const { response, json } = await request(url, options);
+    if (response?.ok) {
+      dispatch({
+        type: UserAction.SET_EXTRATO,
+        payload: {
+          extrato: json.content.map((extrato: ExtratoConta) => extrato),
+        },
+      });
     }
   };
 
@@ -174,49 +248,60 @@ const Deposit = () => {
           Depósito
         </Typography>
       </Box>
-      <Box className={classes.collapsedInput}>
-        <TextField
-          className={classes.inputMargin}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">R$</InputAdornment>
-            ),
-          }}
-          prefix="R$"
-          placeholder="100,00"
-          {...transferValue}
+      <form onSubmit={handleSubmit} id="depositForm">
+        <CurrencyTextField
+          variant="standard"
+          value={valueMoney}
+          label="R$"
+          currencySymbol=""
+          outputFormat="number"
+          text
+          required
+          decimalCharacter=","
+          digitGroupSeparator="."
+          textAlign="left"
+          className={clsx([classes.inputMargin, classes.inputWidth])}
+          onChange={(
+            event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+            value: number
+          ) => setCurrency(value)}
         />
-
         <AlertDialog
-          title="Transferir"
-          titleId="transfer-op"
-          content="A transferência você confirma?"
-          contentId="transfer-cont"
+          title="Depósito"
+          titleId="deposit-op"
+          content="O depósito você confirma?"
+          contentId="deposit-cont"
           ButtonTextFirst="Não"
           ButtonTextSecond="Sim"
           handleAgree={handleDialog}
         >
-          {({ triggerRef }) => (
+          {({ isOpen, triggerRef, toggle }) => (
             <>
               <Button
                 className={classes.button}
                 ref={composeRefs(triggerRef, container)}
-                onClick={handleTransfer}
+                onClick={toggle}
+                disabled={isEmptyFields()}
               >
-                {loading ? (
-                  <>
-                    <CircularProgress size={24} color="secondary" />
-                    ATUALIZANDO SALDO
-                  </>
+                {isOpen ? (
+                  <CircularProgress size={24} color="secondary" />
                 ) : (
-                  "DEPOSITAR"
+                  "Depósitar"
                 )}
               </Button>
             </>
           )}
         </AlertDialog>
-        <Error error={errorDeposit} />
-      </Box>
+      </form>
+
+      {openModal && (
+        <TransitionsModal title={getMessage(statusCode)}>
+          <img
+            className={classes.cheers}
+            src={statusCode === messageCode.SUCCESS ? cheers : sad}
+          />
+        </TransitionsModal>
+      )}
     </Grid>
   );
 };
