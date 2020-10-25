@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useRef } from "react";
+import React, { useState, ChangeEvent, useRef, memo } from "react";
 import {
   Grid,
   Box,
@@ -210,7 +210,7 @@ const Deposit = () => {
     }
   };
 
-  //TODO: TORNAR A FUNÇÃO  GET_SALDO GLOBAL
+  //TODO: TORNAR A FUNÇÃO  GET_EXTRATO GLOBAL
   const getExtrato = async () => {
     if (!yoUuid) return null;
 
@@ -306,4 +306,4 @@ const Deposit = () => {
   );
 };
 
-export default Deposit;
+export default memo(Deposit);
