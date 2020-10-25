@@ -1,28 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import jwt_decode from 'jwt-decode';
-import LocalStorageActions from '../../store/actions/LocalStorageActions';
-import UserActions from '../../store/actions/UserActions';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Typography from '@material-ui/core/Typography';
-import EFieldForm from '../../Enums/EFieldForm';
-import useFetch from '../../helpers/Hooks/useFetch';
-import { AUTHENTICATE } from '../../APIs/APIAuth';
-import { useHistory, Link } from 'react-router-dom';
-import useForm from '../../helpers/Hooks/useForm';
-import Error from '../../components/error/Error';
-import IUser from '../../Interfaces/IUser';
-import Logo from '../logo/Logo';
-import useStyles from './Login.style';
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import jwt_decode from "jwt-decode";
+import LocalStorageActions from "../../store/actions/LocalStorageActions";
+import UserActions from "../../store/actions/UserActions";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import Paper from "@material-ui/core/Paper";
+import Box from "@material-ui/core/Box";
+import Grid from "@material-ui/core/Grid";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Typography from "@material-ui/core/Typography";
+import EFieldForm from "../../Enums/EFieldForm";
+import useFetch from "../../helpers/Hooks/useFetch";
+import { AUTHENTICATE } from "../../APIs/APIAuth";
+import { useHistory, Link } from "react-router-dom";
+import useForm from "../../helpers/Hooks/useForm";
+import Error from "../../components/error/Error";
+import IUser from "../../Interfaces/IUser";
+import Logo from "../logo/Logo";
+import useStyles from "./Login.style";
 
 export default function Login() {
-  const [errorLogin, setErrorLogin] = useState('');
+  const [errorLogin, setErrorLogin] = useState("");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -60,9 +60,9 @@ export default function Login() {
           type: UserActions.SET_USER,
           payload: { user: user },
         });
-        history.push('/');
+        history.push("/");
       } else {
-        setErrorLogin('Usuário ou senha inválido');
+        setErrorLogin("Usuário ou senha inválido");
       }
     }
   }
@@ -132,20 +132,20 @@ export default function Login() {
               {loading ? (
                 <CircularProgress size={24} color="secondary" />
               ) : (
-                'ENTRAR'
+                "ENTRAR"
               )}
             </Button>
             <Error error={errorLogin} />
             <Grid container className={classes.link}>
               <Grid item>
                 <Link to="/register">
-                  {'Não tem um conta, entrar para força'}
+                  {"Não tem um conta, entrar para força"}
                 </Link>
               </Grid>
             </Grid>
             <Box mt={3}>
               <Typography variant="body2" color="textSecondary" align="center">
-                {'Desenvolvido para estudo no BeerTechTalents(2020) - '}
+                {"Desenvolvido para estudo no BeerTechTalents(2020) - "}
                 <a
                   href="https://github.com/gss-patricia/yoda-coins-beertech"
                   target="_blank"

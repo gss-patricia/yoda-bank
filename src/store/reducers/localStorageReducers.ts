@@ -30,7 +30,7 @@ const localStorageReducers = (
         state = {
           ...state,
           yoToken: JSON.parse(yoToken),
-          yoUuid: JSON.parse(yoUuid),
+          yoUuid: yoUuid,
         };
         return state;
       } catch (error) {
@@ -41,10 +41,13 @@ const localStorageReducers = (
         if (action.state) {
           const serializedState = JSON.stringify(action.state);
           localStorage.setItem("yoToken", serializedState);
+
           const { uuid }: IUser = jwt_decode(serializedState);
-          const yoUuid = JSON.stringify(uuid);
+
+          const yoUuid = String(uuid);
+
           localStorage.setItem("yoUuid", yoUuid);
-          state = { ...state, yoToken: action.state };
+          state = { ...state, yoToken: action.state, yoUuid: yoUuid };
         }
         return state;
       } catch (error) {

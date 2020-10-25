@@ -4,14 +4,11 @@ import {
   Box,
   Typography,
   Button,
-  Collapse,
   InputAdornment,
-  Input,
-  Fab,
   TextField,
+  CircularProgress,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import AddIcon from "@material-ui/icons/Add";
 import clsx from "clsx";
 import useFetch from "../../helpers/Hooks/useFetch";
 import { GET_SALDO, POST_OPERACAO } from "../../APIs/APIConta";
@@ -23,6 +20,7 @@ import EFieldForm from "../../Enums/EFieldForm";
 import { ETypeOperation } from "../../Interfaces/IOperation";
 import { useDispatch, useSelector } from "react-redux";
 import UserAction from "../../store/actions/UserActions";
+import Error from "../../components/error/Error";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -115,6 +113,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Deposit = () => {
   const classes = useStyles();
+  const [errorDeposit, setErrorDeposit] = useState("");
   const transferValue = useForm(EFieldForm.money);
   const container = React.useRef();
   const { loading, request } = useFetch();
@@ -123,8 +122,12 @@ const Deposit = () => {
   const { localStorageReducers }: any = useSelector((state) => state);
 
   const handleDialog = (param: any) => console.log(param);
+
   const handleTransfer = async (event: any) => {
-    if (!transferValue.validate() && parseInt(transferValue.value) <= 0)
+    if (
+      (!transferValue.validate() && parseInt(transferValue.value) <= 0) ||
+      loading
+    )
       return null;
 
     const { url, options } = POST_OPERACAO(
@@ -144,13 +147,16 @@ const Deposit = () => {
       const { url, options } = GET_SALDO(yoUuid, yoToken);
       const { response, json } = await request(url, options);
       if (response?.ok) {
-        transferValue.value = "";
+        transferValue.setValue("");
         dispatch({
           type: UserAction.SET_SALDO,
           payload: {
             saldo: json.saldo,
           },
         });
+      } else {
+        //TODO: REVER MENSSAGEM
+        setErrorDeposit("Houve um erro, tente mais tarde!");
       }
     }
   };
@@ -197,11 +203,19 @@ const Deposit = () => {
                 ref={composeRefs(triggerRef, container)}
                 onClick={handleTransfer}
               >
-                Depositar
+                {loading ? (
+                  <>
+                    <CircularProgress size={24} color="secondary" />
+                    ATUALIZANDO SALDO
+                  </>
+                ) : (
+                  "DEPOSITAR"
+                )}
               </Button>
             </>
           )}
         </AlertDialog>
+        <Error error={errorDeposit} />
       </Box>
     </Grid>
   );

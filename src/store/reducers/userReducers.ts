@@ -53,6 +53,9 @@ export interface ExtratoDate {
 
 const userReducers = (state: UserState = initialState, action: AnyAction) => {
   switch (action.type) {
+    case UserActions.SET_INITIAL:
+      state = { ...initialState };
+      return state;
     case UserActions.GET_USER:
       return state;
     case UserActions.SET_USER:

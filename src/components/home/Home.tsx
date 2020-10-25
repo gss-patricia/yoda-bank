@@ -124,8 +124,8 @@ const Launch = () => {
   const date = new Date().toLocaleDateString();
 
   const getSaldo = async () => {
-    if (!yoUuid) return null;
-    const { url, options } = GET_SALDO(yoUuid, yoToken);
+    if (!user.uuid) return null;
+    const { url, options } = GET_SALDO(user.uuid, yoToken);
     const { response, json } = await request(url, options);
     if (response?.ok) {
       dispatch({
