@@ -6,22 +6,19 @@ import {
   Typography,
   Paper,
   Divider,
-  CircularProgress,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
-import pigbank from "../../assets/pigbank.svg";
 import LayoutBase from "../../components/layout";
 import clsx from "clsx";
 import TransferCard from "../transferCard";
 import DepositCard from "../depositCard";
+import BalanceCard from "../balanceCard";
+import DataCard from "../dataCard";
 import Extract from "../extract";
 import UserAction from "../../store/actions/UserActions";
-import useFetch from "../../helpers/Hooks/useFetch";
-import { GET_EXTRATO, GET_SALDO } from "../../APIs/APIConta";
 import IUser from "../../Interfaces/IUser";
 import jwt_decode from "jwt-decode";
-import { ExtratoConta } from "../../store/reducers/userReducers";
 
 const useStyles = makeStyles((theme) => ({
   box: {
@@ -106,8 +103,6 @@ const useStyles = makeStyles((theme) => ({
 const Launch = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { loading, error, request } = useFetch();
-
   const { localStorageReducers }: any = useSelector((state) => state);
 
   const user: IUser = jwt_decode(localStorageReducers.yoToken);
@@ -118,33 +113,13 @@ const Launch = () => {
     });
   }, []);
 
-  const { userReducers }: any = useSelector((state) => state);
-  const { yoToken, yoUuid } = localStorageReducers;
-  const { saldo, extrato } = userReducers;
-  const date = new Date().toLocaleDateString();
-
-  const getSaldo = async () => {
-    if (!user.uuid) return null;
-    const { url, options } = GET_SALDO(user.uuid, yoToken);
-    const { response, json } = await request(url, options);
-    if (response?.ok) {
-      dispatch({
-        type: UserAction.SET_SALDO,
-        payload: {
-          saldo: json.saldo,
-        },
-      });
-    }
-  };
+  const { yoUuid } = localStorageReducers;
 
   return (
     <Grid container component="main" alignContent="flex-start">
       <CssBaseline />
       <LayoutBase>
         <>
-          <Typography component="h3" variant="h5" className={classes.saldo}>
-            {`Yox: ${yoUuid} *** COlocar css`}
-          </Typography>
           <Grid
             container
             alignContent="flex-start"
@@ -154,44 +129,8 @@ const Launch = () => {
             md={12}
             className={classes.gridHeigh}
           >
-            <Grid
-              md={9}
-              sm={9}
-              xs={12}
-              elevation={6}
-              component={Paper}
-              square
-              className={clsx([classes.pigBank, classes.transferGrid])}
-            >
-              <img alt="trasnfer" src={pigbank} />
-              <Box>
-                <Typography
-                  component="h3"
-                  variant="h5"
-                  className={classes.saldo}
-                >
-                  Meu Saldo
-                </Typography>
-
-                <Typography
-                  component="h2"
-                  variant="h5"
-                  className={clsx([classes.saldo, classes.saldoInfo])}
-                >
-                  {loading || error ? (
-                    <CircularProgress size={24} color="secondary" />
-                  ) : (
-                    saldo.toLocaleString("pt-br", {
-                      style: "currency",
-                      currency: "BRL",
-                    })
-                  )}
-                </Typography>
-                <Typography variant="subtitle1" className={classes.date}>
-                  {date}
-                </Typography>
-              </Box>
-            </Grid>
+            <DataCard />
+            <BalanceCard />
             <TransferCard />
             <DepositCard />
           </Grid>
@@ -205,7 +144,7 @@ const Launch = () => {
             md={12}
             className={clsx([classes.gridHeigh, classes.centered])}
           >
-            <Extract extrato={extrato} />
+            <Extract />
           </Grid>
         </>
       </LayoutBase>
