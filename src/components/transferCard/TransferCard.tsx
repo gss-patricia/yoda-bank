@@ -51,6 +51,7 @@ const Transfer = () => {
 
   const handleDialog = async (param: string) => {
     if (param === "Sim") {
+      setModal(false);
       if (saldo < valueMoney) {
         setModal(true);
         setStatusCode(messageCode.NOMONEY);
@@ -59,8 +60,6 @@ const Transfer = () => {
       if (!isEmptyFields() && saldo > valueMoney) {
         handleSubmit();
       }
-    } else {
-      setModal(false);
     }
   };
 
@@ -70,7 +69,7 @@ const Transfer = () => {
 
   useEffect(() => {
     handleSaldo().then((saldoAction) => dispatch(saldoAction));
-  }, [statusCode]);
+  }, [statusCode, openModal]);
 
   const handleSubmit = async () => {
     const { url, options } = PRODUCER_OPERATION(
@@ -85,11 +84,12 @@ const Transfer = () => {
     const { response } = await request(url, options);
 
     if (STATUS_CODE_SUCCESS.includes(response?.status!)) {
+      setModal(true);
       setStatusCode(messageCode.SUCCESS);
     } else {
+      setModal(true);
       setStatusCode(messageCode.ERROR);
     }
-    setModal(true);
   };
 
   const isEmptyFields = () => {
