@@ -21,6 +21,7 @@ import CurrencyTextField from "@unicef/material-ui-currency-textfield";
 import TransitionsModal from "../modal";
 import cheers from "../../assets/hacker.svg";
 import sad from "../../assets/sad.svg";
+import messageCode from "../../Enums/MessageCode";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -115,11 +116,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Deposit = () => {
-  enum messageCode {
-    SUCCESS = "success",
-    ERROR = "error",
-    NOMONEY = "nomoney",
-  }
   const classes = useStyles();
   const container = useRef();
 

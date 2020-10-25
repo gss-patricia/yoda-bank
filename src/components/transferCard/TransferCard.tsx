@@ -22,17 +22,12 @@ import { PRODUCER_OPERATION } from "../../APIs/APITransfer";
 import useFetch from "../../helpers/Hooks/useFetch";
 import cheers from "../../assets/partty.svg";
 import sad from "../../assets/sad.svg";
-
+import messageCode from "../../Enums/MessageCode";
 import { actions } from "../../actions/globalActions";
 
 const STATUS_CODE_SUCCESS = [200, 201, 204];
 
 const Transfer = () => {
-  enum messageCode {
-    SUCCESS = "success",
-    ERROR = "error",
-    NOMONEY = "nomoney",
-  }
   const dispatch = useDispatch();
   const classes = useStyles();
   const [openModal, setModal] = useState(false);
