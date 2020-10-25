@@ -17,15 +17,10 @@ const DataCard = () => {
   useEffect(() => {}, []);
 
   return (
-    <Grid
-      md={5}
-      sm={5}
-      xs={12}
-      className={clsx([classes.marginBottom, classes.dataGrid])}
-    >
+    
       <Grid
-        md={9}
-        sm={9}
+        md={5}
+        sm={5}
         xs={12}
         elevation={6}
         component={Paper}
@@ -33,7 +28,7 @@ const DataCard = () => {
         className={clsx([classes.personal_info, classes.dataGrid])}
       >
         <Avatar alt="Yodados" className={classes.avatar} />
-        <Box>
+        <Box className={classes.widthBox}>
           <Typography
             component="h3"
             variant="h5"
@@ -61,7 +56,6 @@ const DataCard = () => {
           ></Typography>
         </Box>
       </Grid>
-    </Grid>
   );
 };
 

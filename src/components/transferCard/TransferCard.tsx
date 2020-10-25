@@ -124,8 +124,8 @@ const Transfer = () => {
       className={clsx([classes.marginBottom, classes.transferGrid])}
     >
       <Box className={classes.box}>
-        <img className={classes.image} alt="transfer" src={transfer} />
-        <Typography component="h3" variant="h5" className={classes.typography}>
+        <img alt="transfer" src={transfer} />
+        <Typography component="h3" variant="h5">
           Transferência
         </Typography>
       </Box>

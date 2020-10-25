@@ -133,7 +133,7 @@ const Extract = () => {
               return (
                 <>
                   <ListItem key={extratoResult.id}>
-                    <ListItemAvatar>
+                    <ListItemAvatar className={classes.image}>
                       {renderAvatar(extratoResult.descricaoOperacao)[0]}
                     </ListItemAvatar>
                     {renderAvatar(extratoResult.descricaoOperacao)[1]}

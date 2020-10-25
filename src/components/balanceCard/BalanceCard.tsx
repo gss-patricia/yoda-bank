@@ -122,16 +122,10 @@ const Balance = () => {
   };
 
   return (
-    <Grid
+      <Grid
       md={5}
       sm={5}
       xs={12}
-      className={clsx([classes.marginBottom, classes.balanceGrid])}
-    >
-      <Grid
-        md={9}
-        sm={9}
-        xs={12}
         elevation={6}
         component={Paper}
         square
@@ -161,17 +155,16 @@ const Balance = () => {
             {date}
           </Typography>
         </Box>
+        {openModal && (
+          <TransitionsModal title={getMessage(statusCode)}>
+            <img
+              className={classes.cheers}
+              src={statusCode === messageCode.SUCCESS ? cheers : sad}
+            />
+          </TransitionsModal>
+        )}
       </Grid>
 
-      {openModal && (
-        <TransitionsModal title={getMessage(statusCode)}>
-          <img
-            className={classes.cheers}
-            src={statusCode === messageCode.SUCCESS ? cheers : sad}
-          />
-        </TransitionsModal>
-      )}
-    </Grid>
   );
 };
 

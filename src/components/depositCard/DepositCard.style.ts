@@ -5,6 +5,15 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1rem",
     padding: "5px 15px",
     fontWeight: "bold",
+    marginBottom: "10px",
+  },
+  image: {
+    minWidth: "191px",
+    width: "30%",
+    [theme.breakpoints.down(400)]: {
+      opacity: "0",
+      position: "absolute",
+    },
   },
   box: {
     color: "#275F40",
@@ -60,6 +69,13 @@ const useStyles = makeStyles((theme) => ({
   },
   collapsedInput: {
     padding: "5% 0",
+    display: "flex",
+    alignContent: "flex-end",
+    alignItems: "flex-end",
+    [theme.breakpoints.down(600)]: {
+      flexWrap: "wrap",
+      minHeight: "auto",
+    },
   },
   inputMargin: {
     margin: "15px 15px",
@@ -82,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
   transferGrid: {
     backgroundColor: "#fff",
     [theme.breakpoints.up(600)]: {
-      margin: "0 0 5%",
+      margin: "0 0 5% 5%",
     },
   },
   addIcon: {

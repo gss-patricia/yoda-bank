@@ -22,9 +22,6 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
-  marginBottom: {
-    marginBottom: "30px",
-  },
   inputMargin: {
     margin: "15px 15px",
     [theme.breakpoints.down(410)]: {
@@ -41,10 +38,9 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   dataGrid: {
-    display: "flex",
     justifyContent: "center",
-    [theme.breakpoints.up(600)]: {
-      margin: "0 0 0%",
+    [theme.breakpoints.up(880)]: {
+      justifyContent: "start",
     },
   },
   typography: {
@@ -67,21 +63,23 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: "155px",
     minHeight: "155px",
     margin: "5% 0 10%",
-    [theme.breakpoints.up(600)]: {
-      marginLeft: "5%",
-    },
+    alignItems: 'center',
     "& img": {
       margin: "0 5% 0 0",
     },
-    "& h3": {
-      [theme.breakpoints.down(800)]: {
-        fontSize: "0.6rem",
-      },
+    [theme.breakpoints.up(767)]: {
+        marginBottom: '5%',
+        marginTop: "2%",
     },
     "& h2": {
       [theme.breakpoints.down(800)]: {
         fontSize: "0.7rem",
       },
+    },
+    "& div": {
+      [theme.breakpoints.between(600,768)]: {
+        marginLeft: '5%',
+      }
     },
   },
   paragraph: {
@@ -103,7 +101,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "5px",
   },
   avatar: {
-    marginLeft: "10px",
+    marginLeft: "25px",
     marginRight: "35px",
     marginTop: "10px",
     width: theme.spacing(7),
@@ -114,6 +112,11 @@ const useStyles = makeStyles((theme) => ({
       position: "absolute",
     },
   },
+  widthBox: {
+    [theme.breakpoints.between(425,600)]: {
+      width: '80%',
+    }
+  }
 }));
 
 export default useStyles;
