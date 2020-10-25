@@ -19,11 +19,7 @@ import { GET_EXTRATO } from "../../APIs/APIConta";
 import useFetch from "../../helpers/Hooks/useFetch";
 import UserAction from "../../store/actions/UserActions";
 
-interface IProps {
-  extrato: ExtratoConta[];
-}
-
-const Extract = (props: IProps) => {
+const Extract = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -131,9 +127,9 @@ const Extract = (props: IProps) => {
         className={classes.paper}
       >
         {renderPagination()}
-        {props.extrato.length > 0 && (
+        {extrato.length > 0 && (
           <List className={`${classes.list} ${classes.paper}`}>
-            {props.extrato.map((extratoResult) => {
+            {extrato.map((extratoResult: any) => {
               return (
                 <>
                   <ListItem key={extratoResult.id}>

@@ -18,12 +18,14 @@ import AlertDialog from "../dialog";
 import composeRefs from "../../helpers/composeRefs";
 
 import TransitionsModal from "../modal";
-import { GET_SALDO } from "../../APIs/APIConta";
 import { PRODUCER_OPERATION } from "../../APIs/APITransfer";
 import useFetch from "../../helpers/Hooks/useFetch";
-import UserAction from "../../store/actions/UserActions";
-import cheers from "../../assets/hacker.svg";
+import cheers from "../../assets/partty.svg";
 import sad from "../../assets/sad.svg";
+
+import { actions } from "../../actions/globalActions";
+
+const STATUS_CODE_SUCCESS = [200, 201, 204];
 
 const Transfer = () => {
   enum messageCode {
@@ -31,8 +33,8 @@ const Transfer = () => {
     ERROR = "error",
     NOMONEY = "nomoney",
   }
+  const dispatch = useDispatch();
   const classes = useStyles();
-  const [checked, setChecked] = useState(false);
   const [openModal, setModal] = useState(false);
   const [valueMoney, setCurrency] = useState(0);
   const [receiver, setReceiver] = useState("");
@@ -40,7 +42,6 @@ const Transfer = () => {
 
   const container = useRef();
 
-  const dispatch = useDispatch();
   const { request } = useFetch();
   const { userReducers }: any = useSelector((state) => state);
   const { localStorageReducers }: any = useSelector((state) => state);
@@ -55,7 +56,7 @@ const Transfer = () => {
         setStatusCode(messageCode.NOMONEY);
       }
 
-      if (isEmptyFields() && saldo > valueMoney) {
+      if (!isEmptyFields() && saldo > valueMoney) {
         handleSubmit();
       }
     } else {
@@ -63,22 +64,13 @@ const Transfer = () => {
     }
   };
 
-  useEffect(() => {
-    const getSaldo = async () => {
-      const { url, options } = GET_SALDO(yoUuid, yoToken);
-      const { response, json } = await request(url, options);
-      if (response?.ok) {
-        dispatch({
-          type: UserAction.SET_SALDO,
-          payload: {
-            saldo: json.saldo,
-          },
-        });
-      }
-    };
+  const handleSaldo = async () => {
+    return actions.getSaldo(yoUuid, yoToken);
+  };
 
-    getSaldo();
-  }, [saldo, openModal]);
+  useEffect(() => {
+    handleSaldo().then((saldoAction) => dispatch(saldoAction));
+  }, [statusCode]);
 
   const handleSubmit = async () => {
     const { url, options } = PRODUCER_OPERATION(
@@ -92,13 +84,12 @@ const Transfer = () => {
 
     const { response } = await request(url, options);
 
-    if (response?.status === 200) {
-      setModal(true);
+    if (STATUS_CODE_SUCCESS.includes(response?.status!)) {
       setStatusCode(messageCode.SUCCESS);
     } else {
-      setModal(true);
       setStatusCode(messageCode.ERROR);
     }
+    setModal(true);
   };
 
   const isEmptyFields = () => {
