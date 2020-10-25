@@ -23,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     borderRadius: "10px",
   },
+  page: {
+    margin: "10px",
+  },
 }));
 
 export default useStyles;

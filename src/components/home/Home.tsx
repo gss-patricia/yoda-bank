@@ -140,38 +140,6 @@ const Launch = () => {
     }
   };
 
-  useEffect(() => {
-    getSaldo();
-  }, [saldo]);
-
-  const getExtrato = async () => {
-    if (!yoUuid) return null;
-
-    const startDate = new Date();
-    let endDate = new Date();
-    endDate.setDate(endDate.getDate() - 15);
-
-    const { url, options } = GET_EXTRATO(
-      yoUuid,
-      yoToken,
-      startDate.toISOString().split("T")[0],
-      endDate.toISOString().split("T")[0]
-    );
-    const { response, json } = await request(url, options);
-    if (response?.ok) {
-      dispatch({
-        type: UserAction.SET_EXTRATO,
-        payload: {
-          extrato: json.content.map((extrato: ExtratoConta) => extrato),
-        },
-      });
-    }
-  };
-
-  useEffect(() => {
-    getExtrato();
-  }, []);
-
   return (
     <Grid container component="main" alignContent="flex-start">
       <CssBaseline />
