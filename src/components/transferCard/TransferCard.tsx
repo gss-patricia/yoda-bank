@@ -64,9 +64,7 @@ const Transfer = () => {
     return actions.getSaldo(yoUuid, yoToken);
   };
 
-  useEffect(() => {
-    handleSaldo().then((saldoAction) => dispatch(saldoAction));
-  }, [statusCode, openModal]);
+  useEffect(() => {}, [statusCode, openModal]);
 
   const handleSubmit = async () => {
     const { url, options } = PRODUCER_OPERATION(
@@ -83,6 +81,7 @@ const Transfer = () => {
     if (STATUS_CODE_SUCCESS.includes(response?.status!)) {
       setModal(true);
       setStatusCode(messageCode.SUCCESS);
+      handleSaldo().then((saldoAction) => dispatch(saldoAction));
     } else {
       setModal(true);
       setStatusCode(messageCode.ERROR);
