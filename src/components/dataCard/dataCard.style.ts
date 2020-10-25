@@ -64,6 +64,7 @@ const useStyles = makeStyles((theme) => ({
     minHeight: "155px",
     margin: "5% 0 10%",
     alignItems: 'center',
+    borderRadius: '10px',
     "& img": {
       margin: "0 5% 0 0",
     },

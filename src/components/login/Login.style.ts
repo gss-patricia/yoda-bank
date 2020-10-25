@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     padding: theme.spacing(4, 2, 4, 2),
+    borderRadius: '10px',
   },
   form: {
     width: '100%',

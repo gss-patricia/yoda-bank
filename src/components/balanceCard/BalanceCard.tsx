@@ -1,19 +1,19 @@
-import React, { useState, useEffect, useRef, ChangeEvent } from "react";
+import React, { useState, useEffect, useRef, ChangeEvent } from 'react';
 import {
   Grid,
   Box,
   Typography,
   Paper,
   CircularProgress,
-} from "@material-ui/core";
-import { useSelector, useDispatch } from "react-redux";
-import clsx from "clsx";
+} from '@material-ui/core';
+import { useSelector, useDispatch } from 'react-redux';
+import clsx from 'clsx';
 
-import useStyles from "./BalanceCard.style";
-import pigbank from "../../assets/pigbank.svg";
+import useStyles from './BalanceCard.style';
+import pigbank from '../../assets/pigbank.svg';
 
-import useFetch from "../../helpers/Hooks/useFetch";
-import { actions } from "../../actions/globalActions";
+import useFetch from '../../helpers/Hooks/useFetch';
+import { actions } from '../../actions/globalActions';
 
 const Balance = () => {
   const classes = useStyles();
@@ -47,7 +47,7 @@ const Balance = () => {
         square
         className={clsx([classes.pigBank, classes.balanceGrid])}
       >
-        <img alt="trasnfer" src={pigbank} />
+        <img alt="transfer" src={pigbank} />
         <Box>
           <Typography component="h3" variant="h5" className={classes.saldo}>
             Meu Saldo
@@ -61,9 +61,9 @@ const Balance = () => {
             {loading || error ? (
               <CircularProgress size={24} color="secondary" />
             ) : (
-              saldo.toLocaleString("pt-br", {
-                style: "currency",
-                currency: "BRL",
+              saldo.toLocaleString('pt-br', {
+                style: 'currency',
+                currency: 'BRL',
               })
             )}
           </Typography>

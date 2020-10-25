@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, ChangeEvent, memo } from "react";
+import React, { useState, useEffect, useRef, ChangeEvent, memo } from 'react';
 import {
   Grid,
   Box,
@@ -6,24 +6,24 @@ import {
   Button,
   TextField,
   CircularProgress,
-} from "@material-ui/core";
+} from '@material-ui/core';
 
-import CurrencyTextField from "@unicef/material-ui-currency-textfield";
-import { useSelector, useDispatch } from "react-redux";
-import clsx from "clsx";
+import CurrencyTextField from '@unicef/material-ui-currency-textfield';
+import { useSelector, useDispatch } from 'react-redux';
+import clsx from 'clsx';
 
-import useStyles from "./TransferCard.style";
-import transfer from "../../assets/transfer.svg";
-import AlertDialog from "../dialog";
-import composeRefs from "../../helpers/composeRefs";
+import useStyles from './TransferCard.style';
+import transfer from '../../assets/transfer.svg';
+import AlertDialog from '../dialog';
+import composeRefs from '../../helpers/composeRefs';
 
-import TransitionsModal from "../modal";
-import { PRODUCER_OPERATION } from "../../APIs/APITransfer";
-import useFetch from "../../helpers/Hooks/useFetch";
-import cheers from "../../assets/partty.svg";
-import sad from "../../assets/sad.svg";
-import messageCode from "../../Enums/MessageCode";
-import { actions } from "../../actions/globalActions";
+import TransitionsModal from '../modal';
+import { PRODUCER_OPERATION } from '../../APIs/APITransfer';
+import useFetch from '../../helpers/Hooks/useFetch';
+import cheers from '../../assets/partty.svg';
+import sad from '../../assets/sad.svg';
+import messageCode from '../../Enums/MessageCode';
+import { actions } from '../../actions/globalActions';
 
 const STATUS_CODE_SUCCESS = [200, 201, 204];
 
@@ -32,7 +32,7 @@ const Transfer = () => {
   const classes = useStyles();
   const [openModal, setModal] = useState(false);
   const [valueMoney, setCurrency] = useState(0);
-  const [receiver, setReceiver] = useState("");
+  const [receiver, setReceiver] = useState('');
   const [statusCode, setStatusCode] = useState(messageCode.ERROR);
 
   const container = useRef();
@@ -45,7 +45,7 @@ const Transfer = () => {
   const { saldo } = userReducers;
 
   const handleDialog = async (param: string) => {
-    if (param === "Sim") {
+    if (param === 'Sim') {
       setModal(false);
       if (saldo < valueMoney) {
         setTimeout(() => {
@@ -73,7 +73,7 @@ const Transfer = () => {
         origem: yoUuid,
         valor: valueMoney,
       },
-      yoToken
+      yoToken,
     );
 
     const { response } = await request(url, options);
@@ -96,7 +96,7 @@ const Transfer = () => {
   };
 
   const changeReceiver = (
-    event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+    event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
   ) => {
     const value = event.target.value;
     setReceiver(value);
@@ -104,9 +104,9 @@ const Transfer = () => {
 
   const getMessage = (status: messageCode) => {
     const options = {
-      success: "Com sucesso transferido foi!",
-      error: "Com erro, o fracasso é.",
-      nomoney: "Dinheiro suficiente deve você ter!!!",
+      success: 'Com sucesso transferido foi!',
+      error: 'Com erro, o fracasso é.',
+      nomoney: 'Dinheiro suficiente deve você ter!!!',
     };
 
     return options[status];
@@ -127,7 +127,7 @@ const Transfer = () => {
       </Box>
       <form onSubmit={handleSubmit} id="transferForm">
         <TextField
-          label="Chave"
+          label="Yox"
           required
           value={receiver}
           name="receiver"
@@ -151,7 +151,7 @@ const Transfer = () => {
           className={clsx([classes.inputMargin, classes.inputWidth])}
           onChange={(
             event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
-            value: number
+            value: number,
           ) => setCurrency(value)}
         />
         <AlertDialog
@@ -174,7 +174,7 @@ const Transfer = () => {
                 {isOpen ? (
                   <CircularProgress size={24} color="secondary" />
                 ) : (
-                  "Transferir"
+                  'Transferir'
                 )}
               </Button>
             </>

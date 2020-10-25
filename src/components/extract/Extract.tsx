@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   List,
   ListItem,
@@ -7,17 +7,18 @@ import {
   Divider,
   Grid,
   Paper,
-} from "@material-ui/core";
-import Pagination from "@material-ui/lab/Pagination";
-import transfer from "../../assets/transfer.svg";
-import wallet from "../../assets/wallet.svg";
-import cheers from "../../assets/hacker.svg";
-import { ExtratoConta } from "../../store/reducers/userReducers";
-import useStyles from "./Extract.style";
-import { useDispatch, useSelector } from "react-redux";
-import { GET_EXTRATO } from "../../APIs/APIConta";
-import useFetch from "../../helpers/Hooks/useFetch";
-import UserAction from "../../store/actions/UserActions";
+  Typography,
+} from '@material-ui/core';
+import Pagination from '@material-ui/lab/Pagination';
+import transfer from '../../assets/transfer.svg';
+import wallet from '../../assets/wallet.svg';
+import cheers from '../../assets/hacker.svg';
+import { ExtratoConta } from '../../store/reducers/userReducers';
+import useStyles from './Extract.style';
+import { useDispatch, useSelector } from 'react-redux';
+import { GET_EXTRATO } from '../../APIs/APIConta';
+import useFetch from '../../helpers/Hooks/useFetch';
+import UserAction from '../../store/actions/UserActions';
 
 const Extract = () => {
   const classes = useStyles();
@@ -62,22 +63,22 @@ const Extract = () => {
 
   function renderAvatar(descricaoOperacao: string) {
     switch (descricaoOperacao) {
-      case "DEPOSITO":
+      case 'DEPOSITO':
         return [
           <img className={classes.thumbnail} alt="Depósito" src={cheers} />,
-          <ListItemText primary="Depósito recebido" />,
+          <ListItemText primary="Depósito realizado" />,
         ];
-      case "SAQUE":
+      case 'SAQUE':
         return [
           <img className={classes.thumbnail} alt="Saque" src={wallet} />,
           <ListItemText primary="Saque realizado" />,
         ];
-      case "TRANSFERENCIA_ORIGEM":
+      case 'TRANSFERENCIA_ORIGEM':
         return [
           <img className={classes.thumbnail} alt="Saque" src={transfer} />,
           <ListItemText primary="Transferência realizada" />,
         ];
-      case "TRANSFERENCIA_DESTINO":
+      case 'TRANSFERENCIA_DESTINO':
         return [
           <img className={classes.thumbnail} alt="Saque" src={wallet} />,
           <ListItemText primary="Transferência recebida" />,
@@ -109,9 +110,19 @@ const Extract = () => {
       />
     );
   }
-
+  if (extrato.length === 0)
+    return (
+      <>
+        <Typography variant="h5" color="primary" className={classes.text}>
+          Não há movimentações realizadas
+        </Typography>
+      </>
+    );
   return (
     <>
+      <Typography variant="h5" color="primary" className={classes.text}>
+        Meus lançamentos
+      </Typography>
       <Grid
         xs={12}
         md={12}
@@ -133,9 +144,9 @@ const Extract = () => {
                     {renderAvatar(extratoResult.descricaoOperacao)[1]}
                     <ListItemText
                       className={classes.listItem}
-                      primary={extratoResult.valor.toLocaleString("pt-BR", {
-                        style: "currency",
-                        currency: "BRL",
+                      primary={extratoResult.valor.toLocaleString('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL',
                       })}
                       secondary={formatDate(extratoResult.timestamp)}
                     />

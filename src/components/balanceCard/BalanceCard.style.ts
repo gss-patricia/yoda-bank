@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "start",
     minHeight: "155px",
     backgroundColor: "#FAFAFA",
+    borderRadius: '10px',
     [theme.breakpoints.down(400)]: {
       alignItems: "center",
       justifyContent: "center",
@@ -59,6 +60,7 @@ const useStyles = makeStyles((theme) => ({
   },
   balanceGrid: {
     justifyContent: "start",
+    borderRadius: '10px',
     [theme.breakpoints.up(600)]: {
       margin: "0 0 0 5%",
     },
@@ -90,6 +92,7 @@ const useStyles = makeStyles((theme) => ({
     },
     "& img": {
       margin: "0 5% 0 0",
+      borderRadius: '10px',
       [theme.breakpoints.between(600, 768)]: {
         opacity: "0",
         position: "absolute",

@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "start",
     minHeight: "155px",
     backgroundColor: "#FAFAFA",
+    borderRadius: '10px',
     [theme.breakpoints.down(400)]: {
       alignItems: "center",
       justifyContent: "center",
@@ -81,6 +82,7 @@ const useStyles = makeStyles((theme) => ({
   },
   transferGrid: {
     backgroundColor: "#fff",
+    borderRadius: '10px',
     [theme.breakpoints.up(600)]: {
       margin: "0 0 5%",
     },

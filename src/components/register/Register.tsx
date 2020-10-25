@@ -45,7 +45,6 @@ export default function SignInSide() {
         email: email.value,
         cnpj: cpfCNPJ.value,
         senha: password.value,
-        perfil: 'USER' ? 'USER' : 'ADMIN',
       });
 
       const { response } = await request(url, options);
@@ -57,7 +56,6 @@ export default function SignInSide() {
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
       <Grid item xs={12} sm={12} md={5} component={Paper} elevation={6} square>
-
         <div className={classes.paper}>
           <Logo />
           <Typography component="h1" variant="h5">
@@ -91,7 +89,7 @@ export default function SignInSide() {
               required
               fullWidth
               id="cpfCNPJ"
-              label="CPF/CNPJ"
+              label="CNPJ"
               name="cpfCNPJ"
               {...cpfCNPJ}
             />

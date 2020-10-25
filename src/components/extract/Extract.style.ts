@@ -26,6 +26,10 @@ const useStyles = makeStyles((theme) => ({
   page: {
     margin: "10px",
   },
+  text:{
+    marginBottom: theme.spacing(2),
+    fontWeight: 'bolder',
+  }
 }));
 
 export default useStyles;
