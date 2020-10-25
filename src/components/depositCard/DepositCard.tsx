@@ -156,7 +156,7 @@ const Deposit = () => {
                 {isOpen ? (
                   <CircularProgress size={24} color="secondary" />
                 ) : (
-                  "Depósitar"
+                  "Depositar"
                 )}
               </Button>
             </>

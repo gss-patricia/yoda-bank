@@ -1,11 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 import TransitionsModal from "../modal";
 const useStyles = makeStyles((theme) => ({
-  // breakpoints: {
-  //   values: {
-  //     firstCards: 
-  //   }
-  // },
   button: {
     color: "#275F40",
     fontSize: "1rem",
@@ -90,13 +85,6 @@ const useStyles = makeStyles((theme) => ({
     minHeight: "155px",
     margin: "5% 0 10%",
     position: 'relative',
-    [theme.breakpoints.up(767)]: {
-      marginBottom: "5%",
-      marginTop: "2%",
-    },
-    [theme.breakpoints.up(600)]: {
-      marginLeft: "5%",
-    },
     [theme.breakpoints.down(600)]: {
       marginTop: "0",
     },

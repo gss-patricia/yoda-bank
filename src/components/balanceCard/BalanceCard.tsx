@@ -41,11 +41,11 @@ const Balance = () => {
       md={5}
       sm={5}
       xs={12}
-      className={clsx([classes.marginBottom, classes.balanceGrid])}
+      className={classes.balanceGrid}
     >
       <Grid
-        md={9}
-        sm={9}
+        md={12}
+        sm={12}
         xs={12}
         elevation={6}
         component={Paper}
