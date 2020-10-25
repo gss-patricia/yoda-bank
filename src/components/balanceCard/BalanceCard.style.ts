@@ -1,10 +1,5 @@
 import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
-  // breakpoints: {
-  //   values: {
-  //     firstCards: 
-  //   }
-  // },
   button: {
     color: "#275F40",
     fontSize: "1rem",
@@ -40,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  marginBottom: {
+    marginBottom: "30px",
+  },
   collapsedInput: {
     padding: "5% 0",
   },
@@ -62,7 +60,8 @@ const useStyles = makeStyles((theme) => ({
     width: "90%",
   },
   balanceGrid: {
-    justifyContent: "start",
+    display: "flex",
+    justifyContent: "center",
     [theme.breakpoints.up(600)]: {
       margin: "0 0 0 5%",
     },
@@ -88,23 +87,11 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: "155px",
     minHeight: "155px",
     margin: "5% 0 10%",
-    position: 'relative',
-    [theme.breakpoints.up(767)]: {
-      marginBottom: "5%",
-      marginTop: "2%",
-    },
     [theme.breakpoints.up(600)]: {
       marginLeft: "5%",
     },
-    [theme.breakpoints.down(600)]: {
-      marginTop: "0",
-    },
     "& img": {
       margin: "0 5% 0 0",
-      [theme.breakpoints.between(600,768)]: {
-        opacity: '0',
-        position: 'absolute',
-      }
     },
     "& h3": {
       [theme.breakpoints.down(800)]: {
@@ -115,9 +102,6 @@ const useStyles = makeStyles((theme) => ({
       [theme.breakpoints.down(800)]: {
         fontSize: "1.1rem",
       },
-    },
-    "& div": {
-      marginLeft: '5%',
     },
   },
   saldo: {

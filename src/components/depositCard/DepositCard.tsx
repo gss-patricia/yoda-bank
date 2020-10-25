@@ -22,16 +22,9 @@ import useStyles from "./DepositCard.style";
 import { actions } from "../../actions/globalActions";
 import messageCode from "../../Enums/MessageCode";
 
-
 const STATUS_CODE_SUCCESS = [200, 201, 204];
 
 const Deposit = () => {
-  enum messageCode {
-    NONE = "none",
-    SUCCESS = "success",
-    ERROR = "error",
-    NOMONEY = "nomoney",
-  }
   const classes = useStyles();
   const container = useRef();
 
@@ -60,7 +53,6 @@ const Deposit = () => {
       success: "Com sucesso transferido foi!",
       error: "Com erro, o fracasso é.",
       nomoney: "Dinheiro suficiente deve você ter!!!",
-      none: "Com sucesso transferido foi!",
     };
 
     return options[status];
@@ -89,14 +81,6 @@ const Deposit = () => {
     return actions.getSaldo(yoUuid, yoToken);
   };
 
-  useEffect(() => {
-    if (statusCode !== messageCode.NONE) {
-      handleSaldo().then((saldoAction) => dispatch(saldoAction));
-      handleExtrato().then((state) => dispatch(state));
-    }
-    setStatusCode(messageCode.NONE);
-  }, [statusCode]);
-
   const handleSubmit = async () => {
     if (loading) return null;
 
@@ -113,6 +97,8 @@ const Deposit = () => {
 
     if (STATUS_CODE_SUCCESS.includes(response?.status!)) {
       setStatusCode(messageCode.SUCCESS);
+      handleSaldo().then((saldoAction) => dispatch(saldoAction));
+      handleExtrato().then((state) => dispatch(state));
     } else {
       setStatusCode(messageCode.ERROR);
     }
@@ -182,12 +168,7 @@ const Deposit = () => {
         <TransitionsModal title={getMessage(statusCode)}>
           <img
             className={classes.cheers}
-            src={
-              statusCode === messageCode.SUCCESS ||
-              statusCode === messageCode.NONE
-                ? cheers
-                : sad
-            }
+            src={statusCode === messageCode.SUCCESS ? cheers : sad}
           />
         </TransitionsModal>
       )}
