@@ -11,7 +11,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import useFetch from "../../helpers/Hooks/useFetch";
-import { GET_SALDO, POST_OPERACAO } from "../../APIs/APIConta";
+import { GET_EXTRATO, GET_SALDO, POST_OPERACAO } from "../../APIs/APIConta";
 import wallet from "../../assets/wallet.svg";
 import AlertDialog from "../dialog";
 import composeRefs from "../../helpers/composeRefs";
@@ -21,6 +21,7 @@ import { ETypeOperation } from "../../Interfaces/IOperation";
 import { useDispatch, useSelector } from "react-redux";
 import UserAction from "../../store/actions/UserActions";
 import Error from "../../components/error/Error";
+import { ExtratoConta } from "../../store/reducers/userReducers";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -120,6 +121,7 @@ const Deposit = () => {
   const dispatch = useDispatch();
 
   const { localStorageReducers }: any = useSelector((state) => state);
+  const { yoToken, yoUuid } = localStorageReducers;
 
   const handleDialog = (param: any) => console.log(param);
 
@@ -143,7 +145,6 @@ const Deposit = () => {
     //TODO: VERIFICAR VALIDAÇÕES
     const { response, json } = await request(url, options);
     if (response?.ok) {
-      const { yoToken, yoUuid } = localStorageReducers;
       const { url, options } = GET_SALDO(yoUuid, yoToken);
       const { response, json } = await request(url, options);
       if (response?.ok) {
@@ -154,10 +155,36 @@ const Deposit = () => {
             saldo: json.saldo,
           },
         });
+        getExtrato();
       } else {
         //TODO: REVER MENSSAGEM
         setErrorDeposit("Houve um erro, tente mais tarde!");
       }
+    }
+  };
+
+  //TODO: TORNAR A FUNÇÃO  GET_SALDO GLOBAL
+  const getExtrato = async () => {
+    if (!yoUuid) return null;
+
+    const startDate = new Date();
+    let endDate = new Date();
+    endDate.setDate(endDate.getDate() - 15);
+
+    const { url, options } = GET_EXTRATO(
+      yoUuid,
+      yoToken,
+      startDate.toISOString().split("T")[0],
+      endDate.toISOString().split("T")[0]
+    );
+    const { response, json } = await request(url, options);
+    if (response?.ok) {
+      dispatch({
+        type: UserAction.SET_EXTRATO,
+        payload: {
+          extrato: json.content.map((extrato: ExtratoConta) => extrato),
+        },
+      });
     }
   };
 

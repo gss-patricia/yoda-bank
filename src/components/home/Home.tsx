@@ -174,6 +174,9 @@ const Launch = () => {
       <CssBaseline />
       <LayoutBase>
         <>
+          <Typography component="h3" variant="h5" className={classes.saldo}>
+            {`Yox: ${yoUuid} *** COlocar css`}
+          </Typography>
           <Grid
             container
             alignContent="flex-start"
@@ -201,6 +204,7 @@ const Launch = () => {
                 >
                   Meu Saldo
                 </Typography>
+
                 <Typography
                   component="h2"
                   variant="h5"
