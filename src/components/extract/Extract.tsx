@@ -46,13 +46,7 @@ const Extract = () => {
     let endDate = new Date();
     endDate.setDate(endDate.getDate() - 15);
 
-    const { url, options } = GET_EXTRATO(
-      yoUuid,
-      yoToken,
-      startDate.toISOString().split("T")[0],
-      endDate.toISOString().split("T")[0],
-      page
-    );
+    const { url, options } = GET_EXTRATO(yoUuid, yoToken, page);
     const { response, json } = await request(url, options);
     if (response?.ok) {
       setCurrentPage(json.number); //TODO: Informar o backend para iniciar as pages com 1
