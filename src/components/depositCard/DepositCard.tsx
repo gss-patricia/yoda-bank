@@ -4,8 +4,6 @@ import {
   Box,
   Typography,
   Button,
-  InputAdornment,
-  TextField,
   CircularProgress,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -15,12 +13,9 @@ import { GET_EXTRATO, GET_SALDO, POST_OPERACAO } from "../../APIs/APIConta";
 import wallet from "../../assets/wallet.svg";
 import AlertDialog from "../dialog";
 import composeRefs from "../../helpers/composeRefs";
-import useForm from "../../helpers/Hooks/useForm";
-import EFieldForm from "../../Enums/EFieldForm";
 import { ETypeOperation } from "../../Interfaces/IOperation";
 import { useDispatch, useSelector } from "react-redux";
 import UserAction from "../../store/actions/UserActions";
-import Error from "../../components/error/Error";
 import { ExtratoConta } from "../../store/reducers/userReducers";
 import CurrencyTextField from "@unicef/material-ui-currency-textfield";
 import TransitionsModal from "../modal";
