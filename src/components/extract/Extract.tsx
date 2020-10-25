@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   List,
   ListItem,
@@ -8,11 +8,16 @@ import {
   Grid,
   Paper,
 } from "@material-ui/core";
+import Pagination from "@material-ui/lab/Pagination";
 import transfer from "../../assets/transfer.svg";
 import wallet from "../../assets/wallet.svg";
 import cheers from "../../assets/hacker.svg";
 import { ExtratoConta } from "../../store/reducers/userReducers";
 import useStyles from "./Extract.style";
+import { useDispatch, useSelector } from "react-redux";
+import { GET_EXTRATO } from "../../APIs/APIConta";
+import useFetch from "../../helpers/Hooks/useFetch";
+import UserAction from "../../store/actions/UserActions";
 
 interface IProps {
   extrato: ExtratoConta[];
@@ -20,6 +25,50 @@ interface IProps {
 
 const Extract = (props: IProps) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
+  const [currentPage, setCurrentPage] = useState(0);
+  const [prevPage, setPrevPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const { loading, error, request } = useFetch();
+
+  const { userReducers }: any = useSelector((state) => state);
+  const { localStorageReducers }: any = useSelector((state) => state);
+
+  const { yoToken, yoUuid } = localStorageReducers;
+  const { extrato } = userReducers;
+
+  useEffect(() => {
+    getExtrato();
+  }, []);
+
+  const getExtrato = async (page: number = 0) => {
+    if (!yoUuid) return null;
+
+    //TODO: Verificar com o backend para remover a query de data, poruqe a api ja está paginada
+    const startDate = new Date();
+    let endDate = new Date();
+    endDate.setDate(endDate.getDate() - 15);
+
+    const { url, options } = GET_EXTRATO(
+      yoUuid,
+      yoToken,
+      startDate.toISOString().split("T")[0],
+      endDate.toISOString().split("T")[0],
+      page
+    );
+    const { response, json } = await request(url, options);
+    if (response?.ok) {
+      setCurrentPage(json.number); //TODO: Informar o backend para iniciar as pages com 1
+      setTotalPages(json.totalPages);
+      dispatch({
+        type: UserAction.SET_EXTRATO,
+        payload: {
+          extrato: json.content.map((extrato: ExtratoConta) => extrato),
+        },
+      });
+    }
+  };
 
   function renderAvatar(descricaoOperacao: string) {
     switch (descricaoOperacao) {
@@ -55,6 +104,22 @@ const Extract = (props: IProps) => {
     }
   }
 
+  async function handlePage(event: React.ChangeEvent<any>, value: number) {
+    setPrevPage(value - 1);
+    await getExtrato(value - 1);
+  }
+
+  function renderPagination() {
+    return (
+      <Pagination
+        className={classes.page}
+        count={totalPages}
+        color="primary"
+        onChange={handlePage}
+      />
+    );
+  }
+
   return (
     <>
       <Grid
@@ -65,6 +130,7 @@ const Extract = (props: IProps) => {
         square
         className={classes.paper}
       >
+        {renderPagination()}
         {props.extrato.length > 0 && (
           <List className={`${classes.list} ${classes.paper}`}>
             {props.extrato.map((extratoResult) => {
@@ -90,6 +156,7 @@ const Extract = (props: IProps) => {
             })}
           </List>
         )}
+        {renderPagination()}
       </Grid>
     </>
   );
