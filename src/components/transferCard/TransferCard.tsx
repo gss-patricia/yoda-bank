@@ -26,12 +26,17 @@ import cheers from "../../assets/hacker.svg";
 import sad from "../../assets/sad.svg";
 
 const Transfer = () => {
+  enum messageCode {
+    SUCCESS = "success",
+    ERROR = "error",
+    NOMONEY = "nomoney",
+  }
   const classes = useStyles();
   const [checked, setChecked] = useState(false);
   const [openModal, setModal] = useState(false);
-  const [valueMoney, setCurrency] = useState("");
+  const [valueMoney, setCurrency] = useState(0);
   const [receiver, setReceiver] = useState("");
-  const [statusCode, setStatusCode] = useState(1);
+  const [statusCode, setStatusCode] = useState(messageCode.ERROR);
 
   const container = useRef();
 
@@ -39,21 +44,23 @@ const Transfer = () => {
   const { request } = useFetch();
   const { userReducers }: any = useSelector((state) => state);
   const { localStorageReducers }: any = useSelector((state) => state);
-  const message = {
-    success: "Com sucesso transferido foi!",
-    error: "Com erro, o fracasso é.",
-  };
 
   const { yoToken, yoUuid } = localStorageReducers;
   const { saldo } = userReducers;
 
   const handleDialog = async (param: string) => {
     if (param === "Sim") {
-      if (receiver.length > 0 && parseInt(valueMoney) > 0) {
+      if (saldo < valueMoney) {
+        setModal(true);
+        setStatusCode(messageCode.NOMONEY);
+      }
+
+      if (isEmptyFields() && saldo > valueMoney) {
         handleSubmit();
       }
+    } else {
+      setModal(false);
     }
-    setModal(false);
   };
 
   useEffect(() => {
@@ -78,7 +85,7 @@ const Transfer = () => {
       {
         destino: receiver,
         origem: yoUuid,
-        valor: parseInt(valueMoney),
+        valor: valueMoney,
       },
       yoToken
     );
@@ -87,11 +94,18 @@ const Transfer = () => {
 
     if (response?.status === 200) {
       setModal(true);
-      setStatusCode(200);
+      setStatusCode(messageCode.SUCCESS);
     } else {
       setModal(true);
-      setStatusCode(1);
+      setStatusCode(messageCode.ERROR);
     }
+  };
+
+  const isEmptyFields = () => {
+    if (receiver?.length > 0 && valueMoney > 0) {
+      return false;
+    }
+    return true;
   };
 
   const changeReceiver = (
@@ -101,11 +115,14 @@ const Transfer = () => {
     setReceiver(value);
   };
 
-  const changeCurrency = (
-    event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => {
-    const value = event.target.value;
-    setCurrency(value);
+  const getMessage = (status: messageCode) => {
+    const options = {
+      success: "Com sucesso transferido foi!",
+      error: "Com erro, o fracasso é.",
+      nomoney: "Dinheiro suficiente deve você ter!!!",
+    };
+
+    return options[status];
   };
 
   return (
@@ -138,14 +155,17 @@ const Transfer = () => {
           value={valueMoney}
           label="R$"
           currencySymbol=""
-          outputFormat="string"
+          outputFormat="number"
           text
           required
           decimalCharacter=","
           digitGroupSeparator="."
           textAlign="left"
           className={clsx([classes.inputMargin, classes.inputWidth])}
-          onChange={(event: any, value: any) => setCurrency(value)}
+          onChange={(
+            event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+            value: number
+          ) => setCurrency(value)}
         />
         <AlertDialog
           title="Transferir"
@@ -162,6 +182,7 @@ const Transfer = () => {
                 className={classes.button}
                 ref={composeRefs(triggerRef, container)}
                 onClick={toggle}
+                disabled={isEmptyFields()}
               >
                 {isOpen ? (
                   <CircularProgress size={24} color="secondary" />
@@ -175,12 +196,10 @@ const Transfer = () => {
       </form>
 
       {openModal && (
-        <TransitionsModal
-          title={statusCode === 200 ? message.success : message.error}
-        >
+        <TransitionsModal title={getMessage(statusCode)}>
           <img
             className={classes.cheers}
-            src={statusCode === 200 ? cheers : sad}
+            src={statusCode === messageCode.SUCCESS ? cheers : sad}
           />
         </TransitionsModal>
       )}
