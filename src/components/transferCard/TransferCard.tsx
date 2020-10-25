@@ -53,8 +53,10 @@ const Transfer = () => {
     if (param === "Sim") {
       setModal(false);
       if (saldo < valueMoney) {
-        setModal(true);
-        setStatusCode(messageCode.NOMONEY);
+        setTimeout(() => {
+          setStatusCode(messageCode.NOMONEY);
+          setModal(true);
+        }, 1000);
       }
 
       if (!isEmptyFields() && saldo > valueMoney) {
