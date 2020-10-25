@@ -8,7 +8,6 @@ import {
   Divider,
   CircularProgress,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 import pigbank from "../../assets/pigbank.svg";
 import LayoutBase from "../../components/layout";
@@ -18,90 +17,13 @@ import DepositCard from "../depositCard";
 import Extract from "../extract";
 import UserAction from "../../store/actions/UserActions";
 import useFetch from "../../helpers/Hooks/useFetch";
-import { GET_EXTRATO, GET_SALDO } from "../../APIs/APIConta";
+import { GET_EXTRATO } from "../../APIs/APIConta";
 import IUser from "../../Interfaces/IUser";
 import jwt_decode from "jwt-decode";
 import { ExtratoConta } from "../../store/reducers/userReducers";
+import useStyles from "./Home.style";
 
-const useStyles = makeStyles((theme) => ({
-  box: {
-    color: "#275F40",
-    display: "flex",
-    minHeight: "90px",
-    position: "relative",
-    cursor: "pointer",
-  },
-  marginBottom: {
-    marginBottom: "30px",
-  },
-  transferGrid: {
-    backgroundColor: "#FAFAFA",
-  },
-  pigBank: {
-    display: "flex",
-    color: "#275F40",
-    maxHeight: "155px",
-    minHeight: "155px",
-    margin: "5% 0 10%",
-    [theme.breakpoints.up(600)]: {
-      marginLeft: "5%",
-    },
-    "& img": {
-      margin: "0 5% 0 0",
-    },
-    "& h3": {
-      [theme.breakpoints.down(800)]: {
-        fontSize: "1.3rem",
-      },
-    },
-    "& h2": {
-      [theme.breakpoints.down(800)]: {
-        fontSize: "1.1rem",
-      },
-    },
-  },
-  depositTitle: {
-    textAlign: "center",
-    fontWeight: "bold",
-  },
-  collapsedInput: {
-    backgroundColor: "white",
-  },
-  inputMargin: {
-    margin: "15px 15px",
-  },
-  inputWidth: {
-    width: "90%",
-  },
-  gridHeigh: {
-    maxHeight: "30%",
-    justifyContent: "center",
-    borderBottom: "1px solid #D2CDD1",
-    margin: "25px 5%",
-  },
-  typography: {
-    fontWeight: "bold",
-    marginTop: "20px",
-  },
-  saldo: {
-    fontWeight: "bold",
-    fontSize: "1.5rem",
-    marginTop: "15px",
-  },
-  saldoInfo: {
-    fontSize: "1.2rem",
-    marginTop: "5px",
-  },
-  date: {
-    color: "#9C9696",
-    marginTop: "30%",
-  },
-  centered: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-}));
+import { actions } from "../../actions/globalActions";
 
 const Launch = () => {
   const classes = useStyles();
@@ -120,26 +42,16 @@ const Launch = () => {
 
   const { userReducers }: any = useSelector((state) => state);
   const { yoToken, yoUuid } = localStorageReducers;
-  const { saldo, extrato } = userReducers;
+  const { extrato, saldo } = userReducers;
   const date = new Date().toLocaleDateString();
 
-  const getSaldo = async () => {
-    if (!user.uuid) return null;
-    const { url, options } = GET_SALDO(user.uuid, yoToken);
-    const { response, json } = await request(url, options);
-    if (response?.ok) {
-      dispatch({
-        type: UserAction.SET_SALDO,
-        payload: {
-          saldo: json.saldo,
-        },
-      });
-    }
+  const handleSaldo = async () => {
+    return actions.getSaldo(yoUuid, yoToken);
   };
 
   useEffect(() => {
-    getSaldo();
-  }, [saldo]);
+    handleSaldo().then((saldoAction) => dispatch(saldoAction));
+  }, []);
 
   const getExtrato = async () => {
     if (!yoUuid) return null;

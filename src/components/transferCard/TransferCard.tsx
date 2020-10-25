@@ -23,7 +23,7 @@ import useFetch from "../../helpers/Hooks/useFetch";
 import cheers from "../../assets/hacker.svg";
 import sad from "../../assets/sad.svg";
 
-import { getSaldo } from "../../actions/globalActions";
+import { actions } from "../../actions/globalActions";
 
 const STATUS_CODE_SUCCESS = [200, 201, 204];
 
@@ -33,6 +33,7 @@ const Transfer = () => {
     ERROR = "error",
     NOMONEY = "nomoney",
   }
+  const dispatch = useDispatch();
   const classes = useStyles();
   const [openModal, setModal] = useState(false);
   const [valueMoney, setCurrency] = useState(0);
@@ -63,8 +64,12 @@ const Transfer = () => {
     }
   };
 
+  const handleSaldo = async () => {
+    return actions.getSaldo(yoUuid, yoToken);
+  };
+
   useEffect(() => {
-    getSaldo(yoUuid, yoToken);
+    handleSaldo().then((saldoAction) => dispatch(saldoAction));
   }, [statusCode]);
 
   const handleSubmit = async () => {
