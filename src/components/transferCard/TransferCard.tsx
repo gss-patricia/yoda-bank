@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, ChangeEvent } from "react";
+import React, { useState, useEffect, useRef, ChangeEvent, memo } from "react";
 import {
   Grid,
   Box,
@@ -200,4 +200,4 @@ const Transfer = () => {
   );
 };
 
-export default Transfer;
+export default memo(Transfer);
