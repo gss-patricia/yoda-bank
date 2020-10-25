@@ -15,7 +15,7 @@ import ToggleDrawer from "../toggleDrawer";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
-import useStyles from "./Header.styles";
+import useStyles from "./Header.style";
 
 const Header = () => {
   const classes = useStyles();
