@@ -23,6 +23,9 @@ import UserAction from "../../store/actions/UserActions";
 import Error from "../../components/error/Error";
 import { ExtratoConta } from "../../store/reducers/userReducers";
 import CurrencyTextField from "@unicef/material-ui-currency-textfield";
+import TransitionsModal from "../modal";
+import cheers from "../../assets/hacker.svg";
+import sad from "../../assets/sad.svg";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -111,24 +114,67 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "113px",
     right: "35px",
   },
+  cheers: {
+    width: "100px",
+  },
 }));
 
 const Deposit = () => {
+  enum messageCode {
+    SUCCESS = "success",
+    ERROR = "error",
+    NOMONEY = "nomoney",
+  }
   const classes = useStyles();
   const container = useRef();
 
   const [errorDeposit, setErrorDeposit] = useState("");
+  const [openModal, setModal] = useState(false);
+  const [statusCode, setStatusCode] = useState(messageCode.ERROR);
   const [valueMoney, setCurrency] = useState(0);
 
   const dispatch = useDispatch();
   const { loading, request } = useFetch();
 
+  const { userReducers }: any = useSelector((state) => state);
   const { localStorageReducers }: any = useSelector((state) => state);
   const { yoToken, yoUuid } = localStorageReducers;
+  const { saldo } = userReducers;
 
-  const handleDialog = (param: any) => console.log(param);
+  const isEmptyFields = () => {
+    if (valueMoney > 0) {
+      return false;
+    }
+    return true;
+  };
 
-  const handleTransfer = async (event: any) => {
+  const getMessage = (status: messageCode) => {
+    const options = {
+      success: "Com sucesso transferido foi!",
+      error: "Com erro, o fracasso é.",
+      nomoney: "Dinheiro suficiente deve você ter!!!",
+    };
+
+    return options[status];
+  };
+
+  const handleDialog = async (param: string) => {
+    if (param === "Sim") {
+      if (saldo < valueMoney) {
+        setModal(true);
+        setStatusCode(messageCode.NOMONEY);
+      }
+
+      if (!isEmptyFields()) {
+        handleSubmit();
+      }
+    } else {
+      setModal(false);
+    }
+  };
+
+  const handleSubmit = async () => {
+    console.log("TESTE");
     if (loading) return null;
     if (valueMoney <= 0) {
       setErrorDeposit("Informe um valor de depósito");
@@ -207,7 +253,7 @@ const Deposit = () => {
           Depósito
         </Typography>
       </Box>
-      <Box className={classes.collapsedInput}>
+      <form onSubmit={handleSubmit} id="depositForm">
         <CurrencyTextField
           variant="standard"
           value={valueMoney}
@@ -225,38 +271,42 @@ const Deposit = () => {
             value: number
           ) => setCurrency(value)}
         />
-        <div>
-          <AlertDialog
-            title="Transferir"
-            titleId="transfer-op"
-            content="A transferência você confirma?"
-            contentId="transfer-cont"
-            ButtonTextFirst="Não"
-            ButtonTextSecond="Sim"
-            handleAgree={handleDialog}
-          >
-            {({ triggerRef }) => (
-              <>
-                <Button
-                  className={classes.button}
-                  ref={composeRefs(triggerRef, container)}
-                  onClick={handleTransfer}
-                >
-                  {loading ? (
-                    <>
-                      <CircularProgress size={24} color="secondary" />
-                      AGUARDE
-                    </>
-                  ) : (
-                    "DEPOSITAR"
-                  )}
-                </Button>
-              </>
-            )}
-          </AlertDialog>
-          <Error error={errorDeposit} severity="warning" />
-        </div>
-      </Box>
+        <AlertDialog
+          title="Depósito"
+          titleId="deposit-op"
+          content="O depósito você confirma?"
+          contentId="deposit-cont"
+          ButtonTextFirst="Não"
+          ButtonTextSecond="Sim"
+          handleAgree={handleDialog}
+        >
+          {({ isOpen, triggerRef, toggle }) => (
+            <>
+              <Button
+                className={classes.button}
+                ref={composeRefs(triggerRef, container)}
+                onClick={toggle}
+                disabled={isEmptyFields()}
+              >
+                {isOpen ? (
+                  <CircularProgress size={24} color="secondary" />
+                ) : (
+                  "Depósitar"
+                )}
+              </Button>
+            </>
+          )}
+        </AlertDialog>
+      </form>
+
+      {openModal && (
+        <TransitionsModal title={getMessage(statusCode)}>
+          <img
+            className={classes.cheers}
+            src={statusCode === messageCode.SUCCESS ? cheers : sad}
+          />
+        </TransitionsModal>
+      )}
     </Grid>
   );
 };
