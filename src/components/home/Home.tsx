@@ -240,9 +240,7 @@ const Launch = () => {
             md={12}
             className={clsx([classes.gridHeigh, classes.centered])}
           >
-            <Grid xs={12} sm={4} md={7} elevation={6} component={Paper} square>
-              <Extract extrato={extrato} />
-            </Grid>
+            <Extract extrato={extrato} />
           </Grid>
         </>
       </LayoutBase>
