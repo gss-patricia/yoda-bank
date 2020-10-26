@@ -30,6 +30,11 @@ yarn start
 ```sh
 yarn build
 ```
+
+### Demo
+
+https://beertech-lupulo-yoda.herokuapp.com/login
+
 ### Wireframe
 
 Figma: https://www.figma.com/file/QGCwM3BJ5NlZwgMyB8h3Xl/Yoda-Coins-Beertech?node-id=0%3A1
