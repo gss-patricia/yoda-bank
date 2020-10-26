@@ -164,7 +164,7 @@ const Deposit = () => {
         </AlertDialog>
       </form>
 
-      {openModal && (
+      {!loading && openModal && (
         <TransitionsModal title={getMessage(statusCode)}>
           <img
             className={classes.cheers}

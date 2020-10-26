@@ -37,7 +37,7 @@ const Transfer = () => {
 
   const container = useRef();
 
-  const { request } = useFetch();
+  const { request, loading } = useFetch();
   const { userReducers }: any = useSelector((state) => state);
   const { localStorageReducers }: any = useSelector((state) => state);
 
@@ -187,7 +187,7 @@ const Transfer = () => {
         </AlertDialog>
       </form>
 
-      {openModal && (
+      {!loading && openModal && (
         <TransitionsModal title={getMessage(statusCode)}>
           <img
             className={classes.cheers}
