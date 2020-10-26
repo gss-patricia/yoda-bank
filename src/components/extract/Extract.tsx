@@ -27,7 +27,7 @@ const Extract = () => {
 
   const [currentPage, setCurrentPage] = useState(0);
   const [prevPage, setPrevPage] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
   const { loading, error, request } = useFetch();
 
   const { userReducers }: any = useSelector((state) => state);
@@ -105,7 +105,7 @@ const Extract = () => {
     return (
       <Pagination
         className={classes.page}
-        count={totalPages}
+        count={totalPages === 0 ? 1 : totalPages} //TODO
         color="primary"
         onChange={handlePage}
       />
