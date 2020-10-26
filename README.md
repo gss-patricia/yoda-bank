@@ -1,2 +1,2 @@
-# yoda-bank
+# yoda-coins
 Yoda bank project
