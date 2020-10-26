@@ -98,12 +98,12 @@ const Deposit = () => {
 
     if (STATUS_CODE_SUCCESS.includes(response?.status!)) {
       setStatusCode(messageCode.SUCCESS);
-      setCurrency(0);
       handleSaldo().then((saldoAction) => dispatch(saldoAction));
       handleExtrato().then((state) => dispatch(state));
     } else {
       setStatusCode(messageCode.ERROR);
     }
+    setCurrency(0);
     setModal(true);
   };
 
@@ -166,7 +166,7 @@ const Deposit = () => {
         </AlertDialog>
       </form>
 
-      {!loading && openModal && (
+      {!loading && statusCode && openModal && (
         <TransitionsModal title={getMessage(statusCode)}>
           <img
             className={classes.cheers}

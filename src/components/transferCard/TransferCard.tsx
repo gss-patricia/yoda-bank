@@ -51,6 +51,8 @@ const Transfer = () => {
         setTimeout(() => {
           setStatusCode(messageCode.NOMONEY);
           setModal(true);
+          setCurrency(0);
+          setReceiver("");
         }, 1000);
       }
 
@@ -85,11 +87,14 @@ const Transfer = () => {
     if (STATUS_CODE_SUCCESS.includes(response?.status!)) {
       setModal(true);
       setCurrency(0);
+      setReceiver("");
       setStatusCode(messageCode.SUCCESS);
       handleSaldo().then((saldoAction) => dispatch(saldoAction));
       handleExtrato().then((extratoAction) => dispatch(extratoAction));
     } else {
       setModal(true);
+      setCurrency(0);
+      setReceiver("");
       setStatusCode(messageCode.ERROR);
     }
   };
@@ -188,7 +193,7 @@ const Transfer = () => {
         </AlertDialog>
       </form>
 
-      {!loading && openModal && (
+      {!loading && statusCode && openModal && (
         <TransitionsModal title={getMessage(statusCode)}>
           <img
             className={classes.cheers}
