@@ -29,8 +29,11 @@ yarn start-client
 ```sh
 yarn build
 ```
+### Wireframe
 
-## Author
+Figma: https://www.figma.com/file/QGCwM3BJ5NlZwgMyB8h3Xl/Yoda-Coins-Beertech?node-id=0%3A1
+
+## Authors
 - Jemison Vidal: https://github.com/JemisonVidal
 - Ana Carolina Crus: https://github.com/anac-ac
 - Guilherme Torrijo: https://github.com/gtorrijo
