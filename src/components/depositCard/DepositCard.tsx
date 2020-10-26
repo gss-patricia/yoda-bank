@@ -50,7 +50,7 @@ const Deposit = () => {
 
   const getMessage = (status: messageCode) => {
     const options = {
-      success: "Com sucesso transferido foi!",
+      success: "Com sucesso depositado foi!",
       error: "Com erro, o fracasso é.",
       nomoney: "Dinheiro suficiente deve você ter!!!",
     };
