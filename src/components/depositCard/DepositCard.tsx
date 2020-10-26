@@ -81,8 +81,9 @@ const Deposit = () => {
     return actions.getSaldo(yoUuid, yoToken);
   };
 
-  const handleSubmit = async () => {
-    if (loading) return null;
+  const handleSubmit = async (event?: any) => {
+    event.preventDefault();
+    if (loading || valueMoney <= 0) return null;
 
     const { url, options } = POST_OPERACAO(
       {
