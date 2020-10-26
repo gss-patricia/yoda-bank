@@ -20,15 +20,14 @@ yarn install
 yarn dev
 ```
 
-### Deploy
-```sh
-yarn start
-```
-
-#### Build project to production
+### Build project to production
 
 ```sh
 yarn build
+```
+
+```sh
+yarn start
 ```
 
 ## Demo
