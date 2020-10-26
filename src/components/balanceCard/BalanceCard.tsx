@@ -1,24 +1,25 @@
-import React, { useState, useEffect, useRef, ChangeEvent } from 'react';
+import React, { useState, useEffect, useRef, ChangeEvent } from "react";
 import {
   Grid,
   Box,
   Typography,
   Paper,
   CircularProgress,
-} from '@material-ui/core';
-import { useSelector, useDispatch } from 'react-redux';
-import clsx from 'clsx';
+} from "@material-ui/core";
+import { useSelector, useDispatch } from "react-redux";
+import clsx from "clsx";
 
-import useStyles from './BalanceCard.style';
-import pigbank from '../../assets/pigbank.svg';
+import useStyles from "./BalanceCard.style";
+import pigbank from "../../assets/pigbank.svg";
 
-import useFetch from '../../helpers/Hooks/useFetch';
-import { actions } from '../../actions/globalActions';
+import useFetch from "../../helpers/Hooks/useFetch";
+import { actions } from "../../actions/globalActions";
 
 const Balance = () => {
   const classes = useStyles();
 
   const dispatch = useDispatch();
+  const [erroSaldo, setErroSaldo] = useState(false);
   const { loading, error, request } = useFetch();
   const { userReducers }: any = useSelector((state) => state);
   const { localStorageReducers }: any = useSelector((state) => state);
@@ -33,7 +34,9 @@ const Balance = () => {
   };
 
   useEffect(() => {
-    handleSaldo().then((saldoAction) => dispatch(saldoAction));
+    handleSaldo()
+      .then((saldoAction) => dispatch(saldoAction))
+      .catch(() => setErroSaldo(true));
   }, [saldo]);
 
   return (
@@ -58,12 +61,12 @@ const Balance = () => {
             variant="h5"
             className={clsx([classes.saldo, classes.saldoInfo])}
           >
-            {loading || error ? (
+            {loading || error || erroSaldo ? (
               <CircularProgress size={24} color="secondary" />
             ) : (
-              saldo.toLocaleString('pt-br', {
-                style: 'currency',
-                currency: 'BRL',
+              saldo.toLocaleString("pt-br", {
+                style: "currency",
+                currency: "BRL",
               })
             )}
           </Typography>

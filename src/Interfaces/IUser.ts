@@ -4,4 +4,5 @@ export default interface IUser {
   email: string;
   nome: string;
   senha: string;
+  exp?: number;
 }
