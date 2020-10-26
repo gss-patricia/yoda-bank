@@ -51,7 +51,7 @@ export const GET_EXTRATO = (
   page: number = 0
 ) => {
   return {
-    url: baseURL + `/conta/${uuid}/extrato?${page}&size=10`,
+    url: baseURL + `/conta/${uuid}/extrato?page=${page}&size=10`,
     options: {
       method: "GET",
       headers: {
