@@ -31,3 +31,6 @@ yarn build
 ```
 
 ## Author
+- Jemison Vidal: https://github.com/JemisonVidal
+- Ana Carolina Crus: https://github.com/anac-ac
+- Guilherme Torrijo: https://github.com/gtorrijo
