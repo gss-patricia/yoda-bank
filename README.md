@@ -12,15 +12,17 @@ Yoda Coin project for beertech studies.
 yarn install
 ```
 
-#### Usage
+## Usage
 
-```sh
-yarn start
-```
 ### Dev
 
 ```sh
 yarn dev
+```
+
+### Deploy
+```sh
+yarn start
 ```
 
 #### Build project to production
