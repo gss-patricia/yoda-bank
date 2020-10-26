@@ -84,6 +84,7 @@ const Transfer = () => {
 
     if (STATUS_CODE_SUCCESS.includes(response?.status!)) {
       setModal(true);
+      setCurrency(0);
       setStatusCode(messageCode.SUCCESS);
       handleSaldo().then((saldoAction) => dispatch(saldoAction));
       handleExtrato().then((extratoAction) => dispatch(extratoAction));

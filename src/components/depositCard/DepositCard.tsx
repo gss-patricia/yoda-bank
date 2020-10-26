@@ -97,6 +97,7 @@ const Deposit = () => {
 
     if (STATUS_CODE_SUCCESS.includes(response?.status!)) {
       setStatusCode(messageCode.SUCCESS);
+      setCurrency(0);
       handleSaldo().then((saldoAction) => dispatch(saldoAction));
       handleExtrato().then((state) => dispatch(state));
     } else {
