@@ -45,7 +45,7 @@ Source: https://github.com/gfreguglia/beertech.bancobeer
 ## Authors
 ### FrontEnd
 - Jemison Vidal: https://github.com/JemisonVidal
-- Ana Carolina Crus: https://github.com/anac-ac
+- Ana Carolina Cruz: https://github.com/anac-ac
 - Guilherme Torrijo: https://github.com/gtorrijo
 - Patrícia Silva: https://github.com/gss-patricia
 
