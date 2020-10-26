@@ -17,11 +17,10 @@ yarn install
 ```sh
 yarn start
 ```
-
-Or dev env
+## Dev
 
 ```sh
-yarn start-client
+yarn dev
 ```
 
 #### Build project to production
