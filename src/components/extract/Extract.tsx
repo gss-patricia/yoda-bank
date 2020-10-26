@@ -111,13 +111,7 @@ const Extract = () => {
       />
     );
   }
-  if (loading) {
-    return (
-      <>
-        <CircularProgress size={24} color="secondary" />
-      </>
-    );
-  }
+
   if (extrato.length === 0)
     return (
       <>
