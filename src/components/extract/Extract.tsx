@@ -133,7 +133,7 @@ const Extract = () => {
         square
         className={classes.paper}
       >
-        {renderPagination()}
+        
         {extrato.length > 0 && (
           <List className={`${classes.list} ${classes.paper}`}>
             {extrato.map((extratoResult: any) => {
