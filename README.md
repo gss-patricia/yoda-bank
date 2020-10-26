@@ -17,7 +17,7 @@ yarn install
 ```sh
 yarn start
 ```
-## Dev
+### Dev
 
 ```sh
 yarn dev
