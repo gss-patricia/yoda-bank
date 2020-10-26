@@ -82,7 +82,7 @@ const Deposit = () => {
   };
 
   const handleSubmit = async (event?: any) => {
-    event.preventDefault();
+    if (event) event.preventDefault();
     if (loading || valueMoney <= 0) return null;
 
     const { url, options } = POST_OPERACAO(
