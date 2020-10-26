@@ -38,10 +38,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   dataGrid: {
-    justifyContent: "center",
-    [theme.breakpoints.up(880)]: {
-      justifyContent: "start",
-    },
+    justifyContent: "start",
   },
   typography: {
     fontWeight: "bold",
@@ -114,6 +111,9 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   widthBox: {
+    [theme.breakpoints.down(880)]: {
+      marginLeft: '5%',
+    },
     [theme.breakpoints.between(425,600)]: {
       width: '80%',
     }

@@ -52,24 +52,25 @@ const Balance = () => {
       >
         <img alt="transfer" src={pigbank} />
         <Box>
-          <Typography component="h3" variant="h5" className={classes.saldo}>
-            Meu Saldo
-          </Typography>
-
-          <Typography
-            component="h2"
-            variant="h5"
-            className={clsx([classes.saldo, classes.saldoInfo])}
-          >
-            {loading || error || erroSaldo ? (
-              <CircularProgress size={24} color="secondary" />
-            ) : (
-              saldo.toLocaleString("pt-br", {
-                style: "currency",
-                currency: "BRL",
-              })
-            )}
-          </Typography>
+          <div>
+            <Typography component="h3" variant="h5" className={classes.saldo}>
+              Meu Saldo
+            </Typography>
+            <Typography
+              component="h2"
+              variant="h5"
+              className={clsx([classes.saldo, classes.saldoInfo])}
+            >
+              {loading || error || erroSaldo ? (
+                <CircularProgress size={24} color="secondary" />
+              ) : (
+                saldo.toLocaleString("pt-br", {
+                  style: "currency",
+                  currency: "BRL",
+                })
+              )}
+            </Typography>
+          </div>
           <Typography variant="subtitle1" className={classes.date}>
             {date}
           </Typography>

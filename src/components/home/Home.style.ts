@@ -52,8 +52,10 @@ const useStyles = makeStyles((theme) => ({
   gridHeigh: {
     maxHeight: "30%",
     justifyContent: "center",
-    borderBottom: "1px solid #D2CDD1",
     margin: "25px 5%",
+  },
+  borderBottom: {
+    borderBottom: "1px solid #D2CDD1",
   },
   typography: {
     fontWeight: "bold",

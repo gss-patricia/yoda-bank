@@ -16,6 +16,9 @@ const useStyles = makeStyles((theme) => ({
   },
   listItem: {
     textAlign: "right",
+    "& span": {
+      wordBreak: "break-word",
+    }
   },
   thumbnail: {
     width: "100px",

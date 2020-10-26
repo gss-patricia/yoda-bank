@@ -61,8 +61,14 @@ const useStyles = makeStyles((theme) => ({
   balanceGrid: {
     justifyContent: "start",
     borderRadius: '10px',
-    [theme.breakpoints.up(600)]: {
-      margin: "0 0 0 5%",
+    margin: "5% 0 10% 5%",
+    [theme.breakpoints.down(600)]: {
+      marginLeft: "0",
+      marginTop: "0",
+    },
+    [theme.breakpoints.up(767)]: {
+      marginBottom: '5%',
+      marginTop: "2%",
     },
   },
   typography: {
@@ -85,7 +91,7 @@ const useStyles = makeStyles((theme) => ({
     color: "#275F40",
     maxHeight: "155px",
     minHeight: "155px",
-    margin: "5% 0 10%",
+    margin: "0",
     position: 'relative',
     [theme.breakpoints.down(600)]: {
       marginTop: "0",
@@ -93,12 +99,13 @@ const useStyles = makeStyles((theme) => ({
     "& img": {
       margin: "0 5% 0 0",
       borderRadius: '10px',
-      [theme.breakpoints.between(600, 768)]: {
+      [theme.breakpoints.down(880)]: {
         opacity: "0",
         position: "absolute",
       },
     },
     "& h3": {
+      width: "100%",
       [theme.breakpoints.down(800)]: {
         fontSize: "1.3rem",
       },
@@ -110,6 +117,14 @@ const useStyles = makeStyles((theme) => ({
     },
     "& div": {
       marginLeft: "5%",
+      display: "flex",
+      flexWrap: "wrap",
+      alignContent: "space-around",
+      "& div": {
+        width: "100%",
+        wordBreak: "break-word",
+        margin: "0",
+      }
     },
   },
   saldo: {
@@ -123,7 +138,6 @@ const useStyles = makeStyles((theme) => ({
   },
   date: {
     color: "#9C9696",
-    marginTop: "30%",
   },
 }));
 
