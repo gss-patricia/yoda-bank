@@ -41,7 +41,7 @@ const useForm = (type?: EFieldForm) => {
     if (!type) return true;
 
     if (value.length === 0) {
-      setHelperText("");
+      setHelperText("Preencha um valor");
       return false;
     }
 
