@@ -27,6 +27,17 @@ const localStorageReducers = (
         if (yoToken === null || yoUuid === null) {
           return null;
         }
+
+        const { uuid, email, cnpj, exp }: IUser = jwt_decode(yoToken);
+
+        if (!uuid || !email || !cnpj || !exp) {
+          return null;
+        }
+
+        //TODO: Validar a data de expiração com o backend
+        // const dataExp = new Date(exp);
+        // if (dataExp < new Date()) return null;
+
         state = {
           ...state,
           yoToken: JSON.parse(yoToken),
