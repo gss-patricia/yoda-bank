@@ -1,6 +1,8 @@
+<h1 align="center"><img src="https://beertech-lupulo-yoda.herokuapp.com/static/media/logo-letters.b9acc68a.svg" alt="Yoda Coins" width="665" /></h1>
+<p align="center">
+  
 # yoda-coins
-Yoda bank project
-
+Yoda Coin project for beertech studies.
 
 ## Usage
 
