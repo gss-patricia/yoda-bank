@@ -34,9 +34,8 @@ const localStorageReducers = (
           return null;
         }
 
-        //TODO: Validar a data de expiração com o backend
-        // const dataExp = new Date(exp);
-        // if (dataExp < new Date()) return null;
+        const dataExp = new Date(exp * 1000);
+        if (dataExp < new Date()) return null;
 
         state = {
           ...state,
