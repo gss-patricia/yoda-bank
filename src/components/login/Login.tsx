@@ -92,7 +92,6 @@ const Login = () => {
         </div>
       </Grid>
       <Grid item xs={12} sm={12} md={5} className={classes.main}>
-
         <Paper className={classes.paper} elevation={6} square>
           <Logo />
           <Typography component="h1" variant="h5">
