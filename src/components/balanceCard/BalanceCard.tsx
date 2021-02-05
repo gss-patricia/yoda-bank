@@ -54,7 +54,7 @@ const Balance = () => {
         <Box>
           <div>
             <Typography component="h3" variant="h5" className={classes.saldo}>
-              Meu Saldo
+              Meu Saldo Agora
             </Typography>
             <Typography
               component="h2"
